@@ -1,656 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartBase - Accountancy Learning</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    :root {
-      --primary: #4361ee;
-      --secondary: #3a0ca3;
-      --accent: #7209b7;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --success: #4cc9f0;
-      --warning: #f72585;
-      --gray: #6c757d;
-      --card-bg: rgba(255, 255, 255, 0.85);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SmartBase Dashboard</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
     body {
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      color: var(--dark);
-      min-height: 100vh;
-      padding: 20px;
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background: #f0f2f5;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Header Styles */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--card-bg);
-      padding: 15px 25px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo img {
-      height: 40px;
-    }
-
-    .logo h1 {
-      color: var(--primary);
-      font-size: 24px;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .user-info img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-    }
-
-    /* Main Content Layout */
-    .main-content {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 20px;
-    }
-
-    /* Sidebar Styles */
     .sidebar {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
+        width: 260px;
+        background: #4b4276;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+        box-shadow: 2px 0 12px rgba(0,0,0,0.1);
     }
 
-    .sidebar h2 {
-      color: var(--primary);
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--primary);
+    .profile {
+        display: flex;
+        align-items: center;
+        padding: 0 30px 30px 30px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
     }
 
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    .profile img {
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        margin-right: 12px;
+        border: 2px solid #fff;
     }
 
-    .nav-item:hover {
-      background: rgba(67, 97, 238, 0.1);
+    .profile-name {
+        font-weight: 700;
+        font-size: 1rem;
+        color: #fff;
     }
 
-    .nav-item.active {
-      background: var(--primary);
-      color: white;
+    .nav-link {
+        padding: 15px 30px;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        transition: background 0.3s;
+        user-select: none;
     }
 
-    .nav-item i {
-      font-size: 20px;
+    .nav-link:hover, .nav-link.active {
+        background: #6a5acd;
     }
 
-    /* Content Area Styles */
-    .content-area {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      min-height: 600px;
+    .content {
+        flex-grow: 1;
+        padding: 30px;
+        overflow-y: auto;
+        background: #fff;
     }
 
-    .welcome-banner {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 25px;
-      border-radius: 16px;
-      margin-bottom: 25px;
+    h2 {
+        margin-top: 0;
+        font-weight: 700;
+        color: #4b4276;
     }
 
-    .welcome-banner h2 {
-      margin-bottom: 10px;
+    .section-card {
+        background: #ede7f6;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(75, 66, 118, 0.2);
     }
 
-    /* Card Styles */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h3 {
-      color: var(--primary);
-      margin-bottom: 15px;
-    }
-
-    .card p {
-      color: var(--gray);
-      margin-bottom: 15px;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: #e9ecef;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    .progress {
-      height: 100%;
-      background: var(--success);
-      border-radius: 4px;
-    }
-
-    /* MCQ Styling */
-    .mcq-container {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
+    .section-card h3 {
+        margin-top: 0;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #4b4276;
     }
 
     .mcq-question {
-      font-weight: 600;
-      margin-bottom: 15px;
+        font-weight: 600;
+        margin-bottom: 12px;
     }
 
     .mcq-options {
-      list-style: none;
+        list-style: none;
+        padding: 0;
     }
 
-    .mcq-option {
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .mcq-options li {
+        background: white;
+        margin-bottom: 8px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        transition: background 0.3s;
     }
 
-    .mcq-option:hover {
-      background: #f8f9fa;
+    .mcq-options li:hover {
+        background: #c5cae9;
     }
 
-    .mcq-option.selected {
-      background: rgba(76, 201, 240, 0.2);
-      border-color: var(--success);
+    .mcq-options li.selected {
+        background-color: #7e57c2;
+        color: white;
+        font-weight: 700;
     }
 
-    .btn {
-      padding: 12px 20px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
+    .progress-bar {
+        background: #d1c4e9;
+        border-radius: 12px;
+        overflow: hidden;
+        height: 16px;
+        margin-top: 10px;
     }
 
-    .btn:hover {
-      background: var(--secondary);
-      transform: translateY(-2px);
+    .progress-bar-fill {
+        background: #5e35b1;
+        height: 100%;
+        width: 0;
+        transition: width 0.4s ease-in-out;
     }
 
-    /* Progress Section */
-    .progress-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
+    @media (max-width: 768px) {
+        body {
+            flex-direction: column;
+            height: auto;
+        }
+        .sidebar {
+            width: 100%;
+            flex-direction: row;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .nav-link {
+            flex: 1 0 auto;
+            text-align: center;
+            padding: 12px 10px;
+            font-size: 0.85rem;
+            border-right: 1px solid #6a5acd;
+        }
+        .nav-link:last-child {
+            border-right: none;
+        }
+        .content {
+            padding: 15px;
+            height: auto;
+        }
+        .profile {
+            padding: 10px;
+            justify-content: center;
+            border-bottom: none;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .profile-name {
+            font-size: 0.9rem;
+        }
     }
-
-    .progress-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .progress-card h4 {
-      color: var(--primary);
-      margin-bottom: 15px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 900px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-      
-      .sidebar {
-        order: 2;
-      }
-      
-      .content-area {
-        order: 1;
-      }
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-      }
-      
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="container">
-    <!-- Header with Logo and User Info -->
-    <header>
-      <div class="logo">
-        <i class="fas fa-book-open fa-2x" style="color: var(--primary);"></i>
-        <h1>SmartBase</h1>
-      </div>
-      <div class="user-info">
-        <div>
-          <h3>Welcome, <span id="user-name">Student</span>!</h3>
-          <p>Class 12 Accountancy</p>
-        </div>
-        <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Profile">
-        <button id="sign-out" class="btn">Sign Out</button>
-      </div>
-    </header>
-
-    <div class="main-content">
-      <!-- Sidebar Navigation -->
-      <aside class="sidebar">
-        <h2>Learning Dashboard</h2>
-        <div class="nav-item active" data-tab="overview">
-          <i class="fas fa-home"></i>
-          <span>Overview</span>
-        </div>
-        <div class="nav-item" data-tab="learn">
-          <i class="fas fa-graduation-cap"></i>
-          <span>Learn Concepts</span>
-        </div>
-        <div class="nav-item" data-tab="practice">
-          <i class="fas fa-tasks"></i>
-          <span>Practice Questions</span>
-        </div>
-        <div class="nav-item" data-tab="progress">
-          <i class="fas fa-chart-line"></i>
-          <span>Progress Tracker</span>
-        </div>
-        <div class="nav-item" data-tab="resources">
-          <i class="fas fa-book"></i>
-          <span>Study Resources</span>
-        </div>
-      </aside>
-
-      <!-- Main Content Area -->
-      <main class="content-area">
-        <!-- Welcome Banner -->
-        <div class="welcome-banner">
-          <h2>Continue Your Accountancy Journey</h2>
-          <p>You've completed 65% of the course. Keep up the good work!</p>
-        </div>
-
-        <!-- Overview Tab Content -->
-        <div id="overview-tab" class="tab-content">
-          <h2>Course Overview</h2>
-          <p>Class 12 Accountancy covers advanced accounting principles, partnership accounts, company accounts, and financial statement analysis.</p>
-          
-          <div class="cards-grid">
-            <div class="card">
-              <h3>Chapter 4: Dissolution of Partnership</h3>
-              <p>Understanding the process of dissolving a partnership firm and settlement of accounts.</p>
-              <div class="progress-bar">
-                <div class="progress" style="width: 75%;"></div>
-              </div>
-              <p>75% Completed</p>
-              <button class="btn">Continue Learning</button>
-            </div>
-            
-            <div class="card">
-              <h3>Chapter 5: Accounting for Share Capital</h3>
-              <p>Learn about issue of shares, forfeiture, and reissue of shares.</p>
-              <div class="progress-bar">
-                <div class="progress" style="width: 40%;"></div>
-              </div>
-              <p>40% Completed</p>
-              <button class="btn">Start Learning</button>
-            </div>
-            
-            <div class="card">
-              <h3>Recent Quiz Performance</h3>
-              <p>Your average score: 82%</p>
-              <p>Last quiz: Dissolution of Partnership - 88%</p>
-              <button class="btn">View Details</button>
-            </div>
-          </div>
-          
-          <h2>Recommended For You</h2>
-          <div class="cards-grid">
-            <div class="card">
-              <h3>Video Lesson: Goodwill Calculation</h3>
-              <p>Watch a detailed explanation of various methods for calculating goodwill.</p>
-              <button class="btn"><i class="fas fa-play-circle"></i> Watch Now</button>
-            </div>
-            
-            <div class="card">
-              <h3>Practice Set: Partnership Fundamentals</h3>
-              <p>Test your knowledge with 15 practice questions on partnership accounting.</p>
-              <button class="btn">Start Practice</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Practice Questions Tab Content -->
-        <div id="practice-tab" class="tab-content" style="display: none;">
-          <h2>Practice Questions</h2>
-          <p>Test your knowledge with these multiple choice questions on Dissolution of Partnership.</p>
-          
-          <div class="mcq-container">
-            <div class="mcq-question">
-              1. What is the correct order of payment upon dissolution of a partnership firm?
-            </div>
-            <ul class="mcq-options">
-              <li class="mcq-option">A. Partners' loan, partners' capital, creditors</li>
-              <li class="mcq-option">B. Creditors, partners' loan, partners' capital</li>
-              <li class="mcq-option selected">C. Creditors, partners' capital, partners' loan</li>
-              <li class="mcq-option">D. Partners' capital, creditors, partners' loan</li>
-            </ul>
-          </div>
-          
-          <div class="mcq-container">
-            <div class="mcq-question">
-              2. Which of the following is not a method of calculating goodwill?
-            </div>
-            <ul class="mcq-options">
-              <li class="mcq-option">A. Average profit method</li>
-              <li class="mcq-option">B. Super profit method</li>
-              <li class="mcq-option">C. Capitalization method</li>
-              <li class="mcq-option selected">D. Double entry method</li>
-            </ul>
-          </div>
-          
-          <div class="mcq-container">
-            <div class="mcq-question">
-              3. Realization account is a:
-            </div>
-            <ul class="mcq-options">
-              <li class="mcq-option">A. Personal account</li>
-              <li class="mcq-option selected">B. Nominal account</li>
-              <li class="mcq-option">C. Real account</li>
-              <li class="mcq-option">D. None of the above</li>
-            </ul>
-          </div>
-          
-          <button class="btn"><i class="fas fa-check-circle"></i> Submit Answers</button>
-          <button class="btn" style="background: var(--gray);"><i class="fas fa-sync-alt"></i> Try New Questions</button>
-        </div>
-
-        <!-- Progress Tracker Tab Content -->
-        <div id="progress-tab" class="tab-content" style="display: none;">
-          <h2>Your Progress Tracker</h2>
-          <p>Here's your learning progress across all chapters of Accountancy.</p>
-          
-          <div class="progress-container">
-            <div class="progress-card">
-              <h4>Chapter 1: Accounting for Partnership</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 90%;"></div>
-              </div>
-              <p>90% Completed</p>
-              <p>Last activity: 3 days ago</p>
-            </div>
-            
-            <div class="progress-card">
-              <h4>Chapter 2: Goodwill</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 65%;"></div>
-              </div>
-              <p>65% Completed</p>
-              <p>Last activity: 1 week ago</p>
-            </div>
-            
-            <div class="progress-card">
-              <h4>Chapter 3: Reconstitution of Partnership</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 80%;"></div>
-              </div>
-              <p>80% Completed</p>
-              <p>Last activity: 2 days ago</p>
-            </div>
-            
-            <div class="progress-card">
-              <h4>Chapter 4: Dissolution of Partnership</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 75%;"></div>
-              </div>
-              <p>75% Completed</p>
-              <p>Last activity: Today</p>
-            </div>
-          </div>
-          
-          <h3 style="margin-top: 30px;">Quiz Scores Overview</h3>
-          <div class="cards-grid">
-            <div class="card">
-              <h4>Average Score</h4>
-              <p style="font-size: 32px; color: var(--success); font-weight: bold;">82%</p>
-              <p>Across all chapters</p>
-            </div>
-            
-            <div class="card">
-              <h4>Highest Score</h4>
-              <p style="font-size: 32px; color: var(--primary); font-weight: bold;">96%</p>
-              <p>Chapter 1: Partnership Fundamentals</p>
-            </div>
-            
-            <div class="card">
-              <h4>Total Questions Attempted</h4>
-              <p style="font-size: 32px; color: var(--accent); font-weight: bold;">147</p>
-              <p>Across all practice sets</p>
-            </div>
-          </div>
-        </div>
-      </main>
+<div class="sidebar">
+    <div class="profile">
+        <img id="profile-pic" src="" alt="Profile Picture" />
+        <div class="profile-name" id="profile-name"></div>
     </div>
-  </div>
+    <div class="nav-link active" data-section="learn">Learn Concepts</div>
+    <div class="nav-link" data-section="practice">Practice Questions</div>
+    <div class="nav-link" data-section="progress">Progress Tracker</div>
+</div>
 
-  <script>
-    // Firebase configuration (replace with your actual config)
+<div class="content" id="content">
+    <!-- Dynamic content loads here -->
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<script>
+    // TODO: Replace with your Firebase project config
     const firebaseConfig = {
-      apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
-      authDomain: "smartbase-dc49d.firebaseapp.com",
-      projectId: "smartbase-dc49d",
-      storageBucket: "smartbase-dc49d.firebasestorage.app",
-      messagingSenderId: "786622743871",
-      appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
-      measurementId: "G-6BDB0TD641"
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
     };
 
-    // Initialize Firebase (commented out for safety in this example)
-    // firebase.initializeApp(firebaseConfig);
-    // const auth = firebase.auth();
-    // const db = firebase.firestore();
-    // const storage = firebase.storage();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
-    // Simulated user data (would come from Firebase in real implementation)
-    const userData = {
-      displayName: "Rahul Sharma",
-      photoURL: "https://randomuser.me/api/portraits/men/32.jpg",
-      progress: {
-        chapter1: 90,
-        chapter2: 65,
-        chapter3: 80,
-        chapter4: 75
-      },
-      quizScores: {
-        average: 82,
-        highest: 96,
-        totalAttempted: 147
-      }
-    };
+    const contentDiv = document.getElementById('content');
+    const profilePic = document.getElementById('profile-pic');
+    const profileName = document.getElementById('profile-name');
+    const navLinks = document.querySelectorAll('.nav-link');
 
-    // DOM Elements
-    const userNameEl = document.getElementById('user-name');
-    const userPhotoEl = document.getElementById('user-photo');
-    const signOutBtn = document.getElementById('sign-out');
-    const navItems = document.querySelectorAll('.nav-item');
-    const tabContents = document.querySelectorAll('.tab-content');
+    let currentUser = null;
 
-    // Set user data
-    userNameEl.textContent = userData.displayName;
-    userPhotoEl.src = userData.photoURL;
-
-    // Navigation tab switching
-    navItems.forEach(item => {
-      item.addEventListener('click', function() {
-        // Remove active class from all items
-        navItems.forEach(navItem => navItem.classList.remove('active'));
-        
-        // Add active class to clicked item
-        this.classList.add('active');
-        
-        // Hide all tab contents
-        tabContents.forEach(tab => tab.style.display = 'none');
-        
-        // Show the selected tab content
-        const tabId = `${this.dataset.tab}-tab`;
-        document.getElementById(tabId).style.display = 'block';
-      });
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            currentUser = user;
+            profileName.textContent = user.displayName || 'Student';
+            profilePic.src = user.photoURL || '';
+            loadSection('learn'); // default load Learn Concepts
+        } else {
+            window.location.href = 'index.html';
+        }
     });
 
-    // MCQ option selection
-    const mcqOptions = document.querySelectorAll('.mcq-option');
-    mcqOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        // Remove selected class from all options in this question
-        const parentList = this.parentElement;
-        parentList.querySelectorAll('.mcq-option').forEach(opt => {
-          opt.classList.remove('selected');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            loadSection(link.getAttribute('data-section'));
         });
-        
-        // Add selected class to clicked option
-        this.classList.add('selected');
-      });
     });
 
-    // Sign out functionality
-    signOutBtn.addEventListener('click', function() {
-      // Firebase sign out would go here
-      // auth.signOut().then(() => {
-      //   window.location.href = 'index.html';
-      // });
-      
-      // For demo purposes, just redirect
-      alert('Signing out...');
-      window.location.href = 'index.html';
-    });
-
-    // Simulate loading practice questions from Firebase Storage
-    function loadPracticeQuestions(chapter, topic) {
-      // This would be the actual implementation:
-      /*
-      const storageRef = storage.ref();
-      const questionsRef = storageRef.child(`Accountancy/${chapter}/${topic}/mcq/Questions.json`);
-      
-      questionsRef.getDownloadURL().then((url) => {
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            displayQuestions(data);
-          });
-      }).catch((error) => {
-        console.error("Error loading questions:", error);
-      });
-      */
-      
-      // For demo, we're using hardcoded questions
-      console.log(`Loading questions for ${chapter} > ${topic}`);
+    function loadSection(section) {
+        if (section === 'learn') {
+            loadLearnConcepts();
+        } else if (section === 'practice') {
+            loadPracticeQuestions();
+        } else if (section === 'progress') {
+            loadProgressTracker();
+        }
     }
 
-    // Simulate saving progress to Firestore
-    function saveProgress(userId, chapter, progress) {
-      // This would be the actual implementation:
-      /*
-      db.collection('userProgress').doc(userId).set({
-        [chapter]: progress
-      }, { merge: true })
-      .then(() => {
-        console.log("Progress saved successfully");
-      })
-      .catch((error) => {
-        console.error("Error saving progress: ", error);
-      });
-      */
-      
-      // For demo, just log to console
-      console.log(`Saving progress for ${chapter}: ${progress}%`);
+    // Learn Concepts - simple static content for demonstration
+    function loadLearnConcepts() {
+        contentDiv.innerHTML = `
+            <h2>Learn Concepts</h2>
+            <div class="section-card">
+                <h3>Chapter 4: Dissolution of Partnership</h3>
+                <p>Dissolution of partnership refers to termination of partnership, i.e., closing the partnership business.</p>
+                <p>In this chapter, you will learn about dissolution process, settlement of accounts, and legal aspects.</p>
+            </div>
+        `;
     }
 
-    // Initialize the page
-    window.addEventListener('load', function() {
-      // Check if user is signed in (would use Firebase Auth in real implementation)
-      const isSignedIn = true; // This would come from Firebase Auth state observer
-      
-      if (!isSignedIn) {
-        window.location.href = 'index.html';
-        return;
-      }
-      
-      // Load initial data
-      loadPracticeQuestions('Chapter4 Dissolution', 'mcq');
-    });
-  </script>
+    // Load Practice Questions - get MCQs JSON from Firebase Storage
+    async function loadPracticeQuestions() {
+        contentDiv.innerHTML = '<h2>Practice Questions</h2><div id="mcq-container"></div>';
+        const container = document.getElementById('mcq-container');
+
+        try {
+            const mcqPath = 'Accountancy/Chapter4 Dissolution/mcq/Questions.json';
+            const mcqRef = storage.ref(mcqPath);
+            const url = await mcqRef.getDownloadURL();
+            const response = await fetch(url);
+            const mcqData = await response.json();
+
+            const userProgressDoc = db.collection('progress').doc(currentUser.uid);
+            const userProgressSnap = await userProgressDoc.get();
+            const userProgress = userProgressSnap.exists ? userProgressSnap.data() : {};
+
+            container.innerHTML = '';
+            mcqData.questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'section-card';
+
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'mcq-question';
+                questionTitle.textContent = (index + 1) + '. ' + q.question;
+
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'mcq-options';
+
+                q.options.forEach(opt => {
+                    const optionItem = document.createElement('li');
+                    optionItem.textContent = opt;
+
+                    if (userProgress[q.id] === opt) {
+                        optionItem.classList.add('selected');
+                    }
+
+                    optionItem.addEventListener('click', () => {
+                        optionsList.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                        optionItem.classList.add('selected');
+                        userProgressDoc.set({ [q.id]: opt }, { merge: true });
+                    });
+
+                    optionsList.appendChild(optionItem);
+                });
+
+                questionDiv.appendChild(questionTitle);
+                questionDiv.appendChild(optionsList);
+                container.appendChild(questionDiv);
+            });
+        } catch (err) {
+            container.innerHTML = '<p style="color: red;">Failed to load questions. Please try again later.</p>';
+            console.error('Error loading MCQs:', err);
+        }
+    }
+
+    // Show Progress Tracker based on answered questions
+    async function loadProgressTracker() {
+        contentDiv.innerHTML = '<h2>Progress Tracker</h2><div id="progress-content">Loading progress...</div>';
+        const progressContent = document.getElementById('progress-content');
+
+        try {
+            const userProgressDoc = db.collection('progress').doc(currentUser.uid);
+            const progressSnap = await userProgressDoc.get();
+            const progressData = progressSnap.exists ? progressSnap.data() : {};
+
+            const answeredKeys = Object.keys(progressData);
+
+            const mcqPath = 'Accountancy/Chapter4 Dissolution/mcq/Questions.json';
+            const mcqRef = storage.ref(mcqPath);
+            const url = await mcqRef.getDownloadURL();
+            const response = await fetch(url);
+            const mcqData = await response.json();
+            const totalQuestionsCount = mcqData.questions.length;
+
+            const answeredCount = answeredKeys.length;
+            const percentComplete = totalQuestionsCount === 0 ? 0 : Math.round((answeredCount / totalQuestionsCount) * 100);
+
+            progressContent.innerHTML = `
+                <p>You have answered <strong>${answeredCount}</strong> out of <strong>${totalQuestionsCount}</strong> questions.</p>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: ${percentComplete}%;"></div>
+                </div>
+                <p>Completion: <strong>${percentComplete}%</strong></p>
+            `;
+        } catch (err) {
+            progressContent.innerHTML = '<p style="color: red;">Failed to load progress. Please try again later.</p>';
+            console.error('Error loading progress:', err);
+        }
+    }
+</script>
 </body>
 </html>
