@@ -1,350 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SmartBase Dashboard</title>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartBase - Learn Concepts</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #7209b7;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --warning: #f72585;
+      --gray: #6c757d;
+      --card-bg: rgba(255, 255, 255, 0.85);
+    }
 
     body {
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-        background: #f0f2f5;
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    .sidebar {
-        width: 260px;
-        background: #4b4276;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        padding: 20px 0;
-        box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    .profile {
-        display: flex;
-        align-items: center;
-        padding: 0 30px 30px 30px;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
+    /* Header Styles */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 15px 25px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
     }
 
-    .profile img {
-        border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        margin-right: 12px;
-        border: 2px solid #fff;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
     }
 
-    .profile-name {
-        font-weight: 700;
-        font-size: 1rem;
-        color: #fff;
+    .logo img {
+      height: 40px;
     }
 
-    .nav-link {
-        padding: 15px 30px;
-        cursor: pointer;
-        text-transform: uppercase;
-        font-weight: 600;
-        font-size: 0.9rem;
-        letter-spacing: 1px;
-        transition: background 0.3s;
-        user-select: none;
+    .logo h1 {
+      color: var(--primary);
+      font-size: 24px;
     }
 
-    .nav-link:hover, .nav-link.active {
-        background: #6a5acd;
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .content {
-        flex-grow: 1;
-        padding: 30px;
-        overflow-y: auto;
-        background: #fff;
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
     }
 
-    h2 {
-        margin-top: 0;
-        font-weight: 700;
-        color: #4b4276;
+    /* Main Content */
+    .main-content {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      min-height: 600px;
     }
 
-    .section-card {
-        background: #ede7f6;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 8px rgba(75, 66, 118, 0.2);
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--primary);
     }
 
-    .section-card h3 {
-        margin-top: 0;
-        font-weight: 700;
-        margin-bottom: 12px;
-        color: #4b4276;
+    .page-header h2 {
+      color: var(--primary);
     }
 
-    .mcq-question {
-        font-weight: 600;
-        margin-bottom: 12px;
+    .back-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .mcq-options {
-        list-style: none;
-        padding: 0;
+    .back-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
     }
 
-    .mcq-options li {
-        background: white;
-        margin-bottom: 8px;
-        padding: 10px 16px;
-        border-radius: 12px;
-        cursor: pointer;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-        transition: background 0.3s;
+    /* Chapters Grid */
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
     }
 
-    .mcq-options li:hover {
-        background: #c5cae9;
+    .chapter-card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
-    .mcq-options li.selected {
-        background-color: #7e57c2;
-        color: white;
-        font-weight: 700;
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .chapter-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .chapter-number {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .chapter-card h3 {
+      color: var(--dark);
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .chapter-card p {
+      color: var(--gray);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .chapter-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .lessons, .duration {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      color: var(--gray);
     }
 
     .progress-bar {
-        background: #d1c4e9;
-        border-radius: 12px;
-        overflow: hidden;
-        height: 16px;
-        margin-top: 10px;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
     }
 
-    .progress-bar-fill {
-        background: #5e35b1;
-        height: 100%;
-        width: 0;
-        transition: width 0.4s ease-in-out;
+    .progress {
+      height: 100%;
+      background: var(--success);
+      border-radius: 4px;
     }
 
-    @media (max-width: 768px) {
-        body {
-            flex-direction: column;
-            height: auto;
-        }
-        .sidebar {
-            width: 100%;
-            flex-direction: row;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-        .nav-link {
-            flex: 1 0 auto;
-            text-align: center;
-            padding: 12px 10px;
-            font-size: 0.85rem;
-            border-right: 1px solid #6a5acd;
-        }
-        .nav-link:last-child {
-            border-right: none;
-        }
-        .content {
-            padding: 15px;
-            height: auto;
-        }
-        .profile {
-            padding: 10px;
-            justify-content: center;
-            border-bottom: none;
-            border-top: 1px solid rgba(255,255,255,0.2);
-        }
-        .profile-name {
-            font-size: 0.9rem;
-        }
+    .btn {
+      padding: 12px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 15px;
     }
-</style>
+
+    .btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .chapters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+      
+      .chapters-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="sidebar">
-    <div class="profile">
-        <img id="profile-pic" src="" alt="Profile Picture" />
-        <div class="profile-name" id="profile-name"></div>
+  <div class="container">
+    <!-- Header with Logo and User Info -->
+    <header>
+      <div class="logo" onclick="window.location.href='smartbase.html'">
+        <i class="fas fa-book-open fa-2x" style="color: var(--primary);"></i>
+        <h1>SmartBase</h1>
+      </div>
+      <div class="user-info">
+        <div>
+          <h3>Welcome, <span id="user-name">Student</span>!</h3>
+          <p>Class 12 Accountancy</p>
+        </div>
+        <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Profile">
+        <button id="sign-out" class="btn">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="page-header">
+        <h2>Accountancy Chapters</h2>
+        <button class="back-btn" onclick="window.location.href='smartbase.html'">
+          <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+      </div>
+
+      <div class="chapters-grid">
+        <!-- Chapter 1 -->
+        <div class="chapter-card">
+          <div class="chapter-number">Chapter 1</div>
+          <h3>Accounting for Partnership Firms</h3>
+          <p>Fundamentals of partnership accounting, profit sharing, and maintaining partnership books.</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 90%;"></div>
+          </div>
+          <p>90% Completed</p>
+          <div class="chapter-meta">
+            <div class="lessons">
+              <i class="fas fa-book"></i> 12 Lessons
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> 4h 20m
+            </div>
+          </div>
+          <button class="btn">Continue Learning</button>
+        </div>
+
+        <!-- Chapter 2 -->
+        <div class="chapter-card">
+          <div class="chapter-number">Chapter 2</div>
+          <h3>Goodwill: Nature and Valuation</h3>
+          <p>Understanding goodwill, its nature, and various methods of valuation in partnership firms.</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 65%;"></div>
+          </div>
+          <p>65% Completed</p>
+          <div class="chapter-meta">
+            <div class="lessons">
+              <i class="fas fa-book"></i> 8 Lessons
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> 3h 15m
+            </div>
+          </div>
+          <button class="btn">Continue Learning</button>
+        </div>
+
+        <!-- Chapter 3 -->
+        <div class="chapter-card">
+          <div class="chapter-number">Chapter 3</div>
+          <h3>Reconstitution of Partnership</h3>
+          <p>Changes in profit-sharing ratio, admission of a partner, retirement and death of a partner.</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 80%;"></div>
+          </div>
+          <p>80% Completed</p>
+          <div class="chapter-meta">
+            <div class="lessons">
+              <i class="fas fa-book"></i> 10 Lessons
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> 5h 10m
+            </div>
+          </div>
+          <button class="btn">Continue Learning</button>
+        </div>
+
+        <!-- Chapter 4 -->
+        <div class="chapter-card">
+          <div class="chapter-number">Chapter 4</div>
+          <h3>Dissolution of Partnership Firm</h3>
+          <p>Accounting for dissolution of partnership firms, settlement of accounts, and realization.</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 75%;"></div>
+          </div>
+          <p>75% Completed</p>
+          <div class="chapter-meta">
+            <div class="lessons">
+              <i class="fas fa-book"></i> 9 Lessons
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> 4h 5m
+            </div>
+          </div>
+          <button class="btn">Continue Learning</button>
+        </div>
+
+        <!-- Chapter 5 -->
+        <div class="chapter-card">
+          <div class="chapter-number">Chapter 5</div>
+          <h3>Accounting for Share Capital</h3>
+          <p>Issue of shares, forfeiture, and reissue of shares in company accounts.</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 40%;"></div>
+          </div>
+          <p>40% Completed</p>
+          <div class="chapter-meta">
+            <div class="lessons">
+              <i class="fas fa-book"></i> 11 Lessons
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> 5h 45m
+            </div>
+          </div>
+          <button class="btn">Start Learning</button>
+        </div>
+
+        <!-- Chapter 6 -->
+        <div class="chapter-card">
+          <div class="chapter-number">Chapter 6</div>
+          <h3>Issue and Redemption of Debentures</h3>
+          <p>Accounting treatment for issue and redemption of debentures in company accounts.</p>
+          <div class="progress-bar">
+            <div class="progress" style="width: 20%;"></div>
+          </div>
+          <p>20% Completed</p>
+          <div class="chapter-meta">
+            <div class="lessons">
+              <i class="fas fa-book"></i> 7 Lessons
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> 3h 30m
+            </div>
+          </div>
+          <button class="btn">Start Learning</button>
+        </div>
+      </div>
     </div>
-    <div class="nav-link active" data-section="learn">Learn Concepts</div>
-    <div class="nav-link" data-section="practice">Practice Questions</div>
-    <div class="nav-link" data-section="progress">Progress Tracker</div>
-</div>
+  </div>
 
-<div class="content" id="content">
-    <!-- Dynamic content loads here -->
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
-<script>
-    // TODO: Replace with your Firebase project config
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+  <script>
+    // Get user data from localStorage
+    const userData = JSON.parse(localStorage.getItem('user')) || {
+      displayName: "Student",
+      photoURL: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.storage();
+    // DOM Elements
+    const userNameEl = document.getElementById('user-name');
+    const userPhotoEl = document.getElementById('user-photo');
+    const signOutBtn = document.getElementById('sign-out');
 
-    const contentDiv = document.getElementById('content');
-    const profilePic = document.getElementById('profile-pic');
-    const profileName = document.getElementById('profile-name');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // Set user data
+    userNameEl.textContent = userData.displayName;
+    userPhotoEl.src = userData.photoURL;
 
-    let currentUser = null;
-
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            currentUser = user;
-            profileName.textContent = user.displayName || 'Student';
-            profilePic.src = user.photoURL || '';
-            loadSection('learn'); // default load Learn Concepts
-        } else {
-            window.location.href = 'index.html';
-        }
+    // Sign out functionality
+    signOutBtn.addEventListener('click', function() {
+      // Clear user data from localStorage
+      localStorage.removeItem('user');
+      
+      // Redirect to sign-in page
+      window.location.href = 'index.html';
     });
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            loadSection(link.getAttribute('data-section'));
-        });
+    // Initialize the page
+    window.addEventListener('load', function() {
+      // Check if user is signed in
+      if (!localStorage.getItem('user')) {
+        window.location.href = 'index.html';
+        return;
+      }
     });
-
-    function loadSection(section) {
-        if (section === 'learn') {
-            loadLearnConcepts();
-        } else if (section === 'practice') {
-            loadPracticeQuestions();
-        } else if (section === 'progress') {
-            loadProgressTracker();
-        }
-    }
-
-    // Learn Concepts - simple static content for demonstration
-    function loadLearnConcepts() {
-        contentDiv.innerHTML = `
-            <h2>Learn Concepts</h2>
-            <div class="section-card">
-                <h3>Chapter 4: Dissolution of Partnership</h3>
-                <p>Dissolution of partnership refers to termination of partnership, i.e., closing the partnership business.</p>
-                <p>In this chapter, you will learn about dissolution process, settlement of accounts, and legal aspects.</p>
-            </div>
-        `;
-    }
-
-    // Load Practice Questions - get MCQs JSON from Firebase Storage
-    async function loadPracticeQuestions() {
-        contentDiv.innerHTML = '<h2>Practice Questions</h2><div id="mcq-container"></div>';
-        const container = document.getElementById('mcq-container');
-
-        try {
-            const mcqPath = 'Accountancy/Chapter4 Dissolution/mcq/Questions.json';
-            const mcqRef = storage.ref(mcqPath);
-            const url = await mcqRef.getDownloadURL();
-            const response = await fetch(url);
-            const mcqData = await response.json();
-
-            const userProgressDoc = db.collection('progress').doc(currentUser.uid);
-            const userProgressSnap = await userProgressDoc.get();
-            const userProgress = userProgressSnap.exists ? userProgressSnap.data() : {};
-
-            container.innerHTML = '';
-            mcqData.questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'section-card';
-
-                const questionTitle = document.createElement('div');
-                questionTitle.className = 'mcq-question';
-                questionTitle.textContent = (index + 1) + '. ' + q.question;
-
-                const optionsList = document.createElement('ul');
-                optionsList.className = 'mcq-options';
-
-                q.options.forEach(opt => {
-                    const optionItem = document.createElement('li');
-                    optionItem.textContent = opt;
-
-                    if (userProgress[q.id] === opt) {
-                        optionItem.classList.add('selected');
-                    }
-
-                    optionItem.addEventListener('click', () => {
-                        optionsList.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
-                        optionItem.classList.add('selected');
-                        userProgressDoc.set({ [q.id]: opt }, { merge: true });
-                    });
-
-                    optionsList.appendChild(optionItem);
-                });
-
-                questionDiv.appendChild(questionTitle);
-                questionDiv.appendChild(optionsList);
-                container.appendChild(questionDiv);
-            });
-        } catch (err) {
-            container.innerHTML = '<p style="color: red;">Failed to load questions. Please try again later.</p>';
-            console.error('Error loading MCQs:', err);
-        }
-    }
-
-    // Show Progress Tracker based on answered questions
-    async function loadProgressTracker() {
-        contentDiv.innerHTML = '<h2>Progress Tracker</h2><div id="progress-content">Loading progress...</div>';
-        const progressContent = document.getElementById('progress-content');
-
-        try {
-            const userProgressDoc = db.collection('progress').doc(currentUser.uid);
-            const progressSnap = await userProgressDoc.get();
-            const progressData = progressSnap.exists ? progressSnap.data() : {};
-
-            const answeredKeys = Object.keys(progressData);
-
-            const mcqPath = 'Accountancy/Chapter4 Dissolution/mcq/Questions.json';
-            const mcqRef = storage.ref(mcqPath);
-            const url = await mcqRef.getDownloadURL();
-            const response = await fetch(url);
-            const mcqData = await response.json();
-            const totalQuestionsCount = mcqData.questions.length;
-
-            const answeredCount = answeredKeys.length;
-            const percentComplete = totalQuestionsCount === 0 ? 0 : Math.round((answeredCount / totalQuestionsCount) * 100);
-
-            progressContent.innerHTML = `
-                <p>You have answered <strong>${answeredCount}</strong> out of <strong>${totalQuestionsCount}</strong> questions.</p>
-                <div class="progress-bar">
-                    <div class="progress-bar-fill" style="width: ${percentComplete}%;"></div>
-                </div>
-                <p>Completion: <strong>${percentComplete}%</strong></p>
-            `;
-        } catch (err) {
-            progressContent.innerHTML = '<p style="color: red;">Failed to load progress. Please try again later.</p>';
-            console.error('Error loading progress:', err);
-        }
-    }
-</script>
+  </script>
 </body>
 </html>
