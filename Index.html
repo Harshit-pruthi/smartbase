@@ -2,81 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartBase - Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a73e8, #4285f4, #34a853);
-      height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 100vh;
       color: #fff;
     }
     .container {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
+      border-radius: 16px;
       padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
       text-align: center;
-      width: 350px;
+      width: 320px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
     h1 {
       margin-bottom: 20px;
       font-size: 28px;
       font-weight: bold;
-      color: #fff;
+      letter-spacing: 1px;
     }
-    .google-btn {
+    button {
+      background: #fff;
+      color: #444;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      background: #fff;
-      color: #444;
-      border: none;
-      border-radius: 30px;
-      padding: 12px 20px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      margin: auto;
     }
-    .google-btn img {
-      width: 22px;
-      height: 22px;
+    button img {
+      height: 20px;
+      margin-right: 10px;
     }
-    .google-btn:hover {
-      background: #f1f1f1;
+    button:hover {
       transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
-    .tagline {
-      margin-top: 15px;
-      font-size: 14px;
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
       opacity: 0.8;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
     <h1>Welcome to SmartBase</h1>
-    <button class="google-btn" id="googleSignIn">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+    <button onclick="googleSignIn()">
+      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
       Sign in with Google
     </button>
-    <p class="tagline">Manage everything smarter with SmartBase</p>
+    <div class="footer">Secure Google Login</div>
   </div>
 
-  <!-- Firebase App -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
   <script>
-    // TODO: Replace with your Firebase project config
+    // 🔹 Replace this with your Firebase project config
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -90,17 +89,20 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    document.getElementById("googleSignIn").addEventListener("click", () => {
+    // Google Sign-In
+    function googleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then((result) => {
-          // Redirect to smartbase.html after login
+          console.log("Signed in:", result.user);
+          // Redirect after success
           window.location.href = "smartbase.html";
         })
         .catch((error) => {
-          alert("Error: " + error.message);
+          console.error("Error:", error.message);
+          alert("Sign-in failed: " + error.message);
         });
-    });
+    }
   </script>
 </body>
 </html>
