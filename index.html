@@ -77,14 +77,14 @@
   <script>
     // 🔹 Replace this with your Firebase project config
     const firebaseConfig = {
-  apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
-  authDomain: "smartbase-dc49d.firebaseapp.com",
-  projectId: "smartbase-dc49d",
-  storageBucket: "smartbase-dc49d.firebasestorage.app",
-  messagingSenderId: "786622743871",
-  appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
-  measurementId: "G-6BDB0TD641"
-};
+      apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+      authDomain: "smartbase-dc49d.firebaseapp.com",
+      projectId: "smartbase-dc49d",
+      storageBucket: "smartbase-dc49d.firebasestorage.app",
+      messagingSenderId: "786622743871",
+      appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
+      measurementId: "G-6BDB0TD641"
+    };
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -96,6 +96,12 @@
       auth.signInWithPopup(provider)
         .then((result) => {
           console.log("Signed in:", result.user);
+          // Store user data in localStorage
+          localStorage.setItem('user', JSON.stringify({
+            displayName: result.user.displayName,
+            email: result.user.email,
+            photoURL: result.user.photoURL
+          }));
           // Redirect after success
           window.location.href = "smartbase.html";
         })
@@ -107,4 +113,3 @@
   </script>
 </body>
 </html>
-
