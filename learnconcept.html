@@ -259,6 +259,42 @@
       margin-bottom: 15px;
     }
 
+    /* Quiz Section */
+    .quiz-section {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .quiz-question {
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .quiz-options {
+      margin-bottom: 20px;
+    }
+
+    .quiz-option {
+      display: block;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .quiz-option:hover {
+      background: #e9ecef;
+    }
+
+    .quiz-option.selected {
+      background: rgba(76, 201, 240, 0.2);
+      border-color: var(--success);
+    }
+
     /* Loading spinner */
     .loading {
       display: flex;
@@ -354,6 +390,14 @@
         <div class="content-body" id="content-body">
           <!-- Content will be loaded here -->
         </div>
+        
+        <!-- Quiz Section (initially hidden) -->
+        <div class="quiz-section" id="quiz-section" style="display: none;">
+          <h3>Test Your Knowledge</h3>
+          <div class="quiz-question" id="quiz-question"></div>
+          <div class="quiz-options" id="quiz-options"></div>
+          <button class="btn" id="submit-quiz">Submit Answer</button>
+        </div>
       </div>
     </div>
   </div>
@@ -364,7 +408,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Firebase configuration (same as in index.html)
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
       authDomain: "smartbase-dc49d.firebaseapp.com",
@@ -373,7 +417,6 @@
       messagingSenderId: "786622743871",
       appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
       measurementId: "G-6BDB0TD641",
-      // Add your Realtime Database URL if different from default
       databaseURL: "https://smartbase-dc49d-default-rtdb.firebaseio.com/"
     };
 
@@ -396,10 +439,18 @@
     const contentViewer = document.getElementById('content-viewer');
     const contentTitle = document.getElementById('content-title');
     const contentBody = document.getElementById('content-body');
+    const quizSection = document.getElementById('quiz-section');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    const submitQuiz = document.getElementById('submit-quiz');
 
     // Set user data
     userNameEl.textContent = userData.displayName;
     userPhotoEl.src = userData.photoURL;
+
+    // Current chapter state
+    let currentChapter = null;
+    let userProgress = {};
 
     // Load chapters from Firebase Realtime Database
     function loadChaptersFromDatabase() {
@@ -410,34 +461,61 @@
         </div>
       `;
       
-      // Reference to the chapters in the database
-      const chaptersRef = database.ref('chapters');
-      
-      // Fetch chapters data
-      chaptersRef.once('value')
-        .then((snapshot) => {
-          const chaptersData = snapshot.val();
-          chaptersGrid.innerHTML = '';
-          
-          if (chaptersData) {
-            // Convert object to array and sort by chapter number
-            const chaptersArray = Object.values(chaptersData).sort((a, b) => a.number - b.number);
+      // Load user progress first
+      loadUserProgress().then(() => {
+        // Then load chapters
+        const chaptersRef = database.ref('chapters');
+        
+        chaptersRef.once('value')
+          .then((snapshot) => {
+            const chaptersData = snapshot.val();
+            chaptersGrid.innerHTML = '';
             
-            chaptersArray.forEach((chapter) => {
-              createChapterCard(chapter);
-            });
-          } else {
-            chaptersGrid.innerHTML = '<p>No chapters found in database.</p>';
-          }
-        })
-        .catch((error) => {
-          console.error('Error loading chapters:', error);
-          chaptersGrid.innerHTML = '<p>Error loading chapters. Please try again.</p>';
-        });
+            if (chaptersData) {
+              // Convert object to array and sort by chapter number
+              const chaptersArray = Object.values(chaptersData).sort((a, b) => a.number - b.number);
+              
+              chaptersArray.forEach((chapter) => {
+                createChapterCard(chapter);
+              });
+            } else {
+              chaptersGrid.innerHTML = '<p>No chapters found in database.</p>';
+            }
+          })
+          .catch((error) => {
+            console.error('Error loading chapters:', error);
+            chaptersGrid.innerHTML = '<p>Error loading chapters. Please try again.</p>';
+          });
+      });
+    }
+
+    // Load user progress from Firebase
+    function loadUserProgress() {
+      return new Promise((resolve) => {
+        if (!userData.uid) {
+          resolve();
+          return;
+        }
+        
+        const userProgressRef = database.ref(`userProgress/${userData.uid}`);
+        
+        userProgressRef.once('value')
+          .then((snapshot) => {
+            userProgress = snapshot.val() || {};
+            resolve();
+          })
+          .catch((error) => {
+            console.error('Error loading user progress:', error);
+            userProgress = {};
+            resolve();
+          });
+      });
     }
 
     // Create a chapter card
     function createChapterCard(chapter) {
+      const chapterProgress = userProgress[chapter.id] ? userProgress[chapter.id].progress : 0;
+      
       const chapterCard = document.createElement('div');
       chapterCard.className = 'chapter-card';
       chapterCard.innerHTML = `
@@ -445,9 +523,9 @@
         <h3>${chapter.title}</h3>
         <p>${chapter.description}</p>
         <div class="progress-bar">
-          <div class="progress" style="width: ${chapter.progress || 0}%;"></div>
+          <div class="progress" style="width: ${chapterProgress}%;"></div>
         </div>
-        <p>${chapter.progress || 0}% Completed</p>
+        <p>${chapterProgress}% Completed</p>
         <div class="chapter-meta">
           <div class="lessons">
             <i class="fas fa-book"></i> ${chapter.lessons || 5} Lessons
@@ -456,11 +534,10 @@
             <i class="fas fa-clock"></i> ${chapter.duration || '3h 0m'}
           </div>
         </div>
-        <button class="btn">${chapter.progress > 0 ? 'Continue Learning' : 'Start Learning'}</button>
+        <button class="btn">${chapterProgress > 0 ? 'Continue Learning' : 'Start Learning'}</button>
       `;
       
       chapterCard.querySelector('.btn').addEventListener('click', () => {
-        // Load this chapter's content
         loadChapterContent(chapter);
       });
       
@@ -469,8 +546,10 @@
 
     // Load chapter content
     function loadChapterContent(chapter) {
+      currentChapter = chapter;
       contentViewer.style.display = 'block';
       chaptersGrid.style.display = 'none';
+      quizSection.style.display = 'none';
       
       contentTitle.textContent = chapter.title;
       contentBody.innerHTML = `
@@ -492,7 +571,12 @@
             displayChapterContent(contentData);
             
             // Update user progress
-            updateUserProgress(chapter.id, chapter.number);
+            updateUserProgress(chapter.id, chapter.number, 100);
+            
+            // Show quiz if available
+            if (contentData.quiz) {
+              displayQuiz(contentData.quiz);
+            }
           } else {
             contentBody.innerHTML = '<p>No content available for this chapter.</p>';
           }
@@ -530,27 +614,81 @@
       contentBody.innerHTML = htmlContent;
     }
 
+    // Display quiz
+    function displayQuiz(quizData) {
+      quizSection.style.display = 'block';
+      
+      if (quizData.questions && quizData.questions.length > 0) {
+        const question = quizData.questions[0]; // Show first question for demo
+        
+        quizQuestion.textContent = question.question;
+        quizOptions.innerHTML = '';
+        
+        question.options.forEach((option, index) => {
+          const optionEl = document.createElement('div');
+          optionEl.className = 'quiz-option';
+          optionEl.textContent = option;
+          optionEl.dataset.index = index;
+          
+          optionEl.addEventListener('click', () => {
+            // Remove selected class from all options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+              opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            optionEl.classList.add('selected');
+          });
+          
+          quizOptions.appendChild(optionEl);
+        });
+        
+        submitQuiz.onclick = () => {
+          const selectedOption = document.querySelector('.quiz-option.selected');
+          if (!selectedOption) {
+            alert('Please select an answer');
+            return;
+          }
+          
+          const selectedIndex = parseInt(selectedOption.dataset.index);
+          if (selectedIndex === question.correctIndex) {
+            alert('Correct answer!');
+          } else {
+            alert('Incorrect answer. Please try again.');
+          }
+        };
+      }
+    }
+
     // Hide content and show chapters
     function hideContent() {
       contentViewer.style.display = 'none';
       chaptersGrid.style.display = 'grid';
+      currentChapter = null;
     }
 
     // Update user progress in the database
-    function updateUserProgress(chapterId, chapterNumber) {
+    function updateUserProgress(chapterId, chapterNumber, progress) {
       const userId = userData.uid;
       if (!userId) return;
       
       const userProgressRef = database.ref(`userProgress/${userId}/${chapterId}`);
       
-      // Update progress to 100% when user views the content
+      // Update progress
       userProgressRef.set({
-        progress: 100,
+        progress: progress,
         lastAccessed: new Date().toISOString(),
         chapterNumber: chapterNumber
       });
       
-      // Also update local chapter progress for UI
+      // Update local progress for UI
+      userProgress[chapterId] = {
+        progress: progress,
+        lastAccessed: new Date().toISOString(),
+        chapterNumber: chapterNumber
+      };
+      
+      // Update chapter cards
       const chapterCards = document.querySelectorAll('.chapter-card');
       chapterCards.forEach(card => {
         const chapterNumberEl = card.querySelector('.chapter-number');
@@ -558,11 +696,11 @@
           const progressBar = card.querySelector('.progress');
           const progressText = card.querySelector('.progress-bar + p');
           
-          progressBar.style.width = '100%';
-          progressText.textContent = '100% Completed';
+          progressBar.style.width = `${progress}%`;
+          progressText.textContent = `${progress}% Completed`;
           
           const button = card.querySelector('.btn');
-          button.textContent = 'Review Content';
+          button.textContent = progress > 0 ? 'Continue Learning' : 'Start Learning';
         }
       });
     }
