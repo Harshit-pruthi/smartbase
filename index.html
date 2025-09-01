@@ -58,21 +58,29 @@
       font-size: 13px;
       opacity: 0.8;
     }
+    .loading {
+      display: none;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to SmartBase</h1>
-    <button onclick="googleSignIn()">
+    <button onclick="googleSignIn()" id="signin-btn">
       <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
       Sign in with Google
     </button>
+    <div class="loading" id="loading">
+      <i class="fas fa-spinner fa-spin"></i> Signing in...
+    </div>
     <div class="footer">Secure Google Login</div>
   </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
   <script>
     // 🔹 Replace this with your Firebase project config
@@ -90,8 +98,30 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Check if user is already signed in
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, redirect to dashboard
+        console.log("User already signed in:", user);
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify({
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          uid: user.uid
+        }));
+        window.location.href = "smartbase.html";
+      }
+    });
+
     // Google Sign-In
     function googleSignIn() {
+      const signinBtn = document.getElementById('signin-btn');
+      const loading = document.getElementById('loading');
+      
+      signinBtn.style.display = 'none';
+      loading.style.display = 'block';
+      
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then((result) => {
@@ -100,7 +130,8 @@
           localStorage.setItem('user', JSON.stringify({
             displayName: result.user.displayName,
             email: result.user.email,
-            photoURL: result.user.photoURL
+            photoURL: result.user.photoURL,
+            uid: result.user.uid
           }));
           // Redirect after success
           window.location.href = "smartbase.html";
@@ -108,6 +139,8 @@
         .catch((error) => {
           console.error("Error:", error.message);
           alert("Sign-in failed: " + error.message);
+          signinBtn.style.display = 'flex';
+          loading.style.display = 'none';
         });
     }
   </script>
