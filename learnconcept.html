@@ -223,6 +223,30 @@
       transform: translateY(-2px);
     }
 
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+
+    .loading i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+
+    .empty-state i {
+      font-size: 60px;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
     /* Responsive Design */
     @media (max-width: 900px) {
       .chapters-grid {
@@ -276,131 +300,37 @@
         </button>
       </div>
 
-      <div class="chapters-grid">
-        <!-- Chapter 1 -->
-        <div class="chapter-card">
-          <div class="chapter-number">Chapter 1</div>
-          <h3>Accounting for Partnership Firms</h3>
-          <p>Fundamentals of partnership accounting, profit sharing, and maintaining partnership books.</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 90%;"></div>
-          </div>
-          <p>90% Completed</p>
-          <div class="chapter-meta">
-            <div class="lessons">
-              <i class="fas fa-book"></i> 12 Lessons
-            </div>
-            <div class="duration">
-              <i class="fas fa-clock"></i> 4h 20m
-            </div>
-          </div>
-          <button class="btn">Continue Learning</button>
-        </div>
-
-        <!-- Chapter 2 -->
-        <div class="chapter-card">
-          <div class="chapter-number">Chapter 2</div>
-          <h3>Goodwill: Nature and Valuation</h3>
-          <p>Understanding goodwill, its nature, and various methods of valuation in partnership firms.</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 65%;"></div>
-          </div>
-          <p>65% Completed</p>
-          <div class="chapter-meta">
-            <div class="lessons">
-              <i class="fas fa-book"></i> 8 Lessons
-            </div>
-            <div class="duration">
-              <i class="fas fa-clock"></i> 3h 15m
-            </div>
-          </div>
-          <button class="btn">Continue Learning</button>
-        </div>
-
-        <!-- Chapter 3 -->
-        <div class="chapter-card">
-          <div class="chapter-number">Chapter 3</div>
-          <h3>Reconstitution of Partnership</h3>
-          <p>Changes in profit-sharing ratio, admission of a partner, retirement and death of a partner.</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 80%;"></div>
-          </div>
-          <p>80% Completed</p>
-          <div class="chapter-meta">
-            <div class="lessons">
-              <i class="fas fa-book"></i> 10 Lessons
-            </div>
-            <div class="duration">
-              <i class="fas fa-clock"></i> 5h 10m
-            </div>
-          </div>
-          <button class="btn">Continue Learning</button>
-        </div>
-
-        <!-- Chapter 4 -->
-        <div class="chapter-card">
-          <div class="chapter-number">Chapter 4</div>
-          <h3>Dissolution of Partnership Firm</h3>
-          <p>Accounting for dissolution of partnership firms, settlement of accounts, and realization.</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 75%;"></div>
-          </div>
-          <p>75% Completed</p>
-          <div class="chapter-meta">
-            <div class="lessons">
-              <i class="fas fa-book"></i> 9 Lessons
-            </div>
-            <div class="duration">
-              <i class="fas fa-clock"></i> 4h 5m
-            </div>
-          </div>
-          <button class="btn">Continue Learning</button>
-        </div>
-
-        <!-- Chapter 5 -->
-        <div class="chapter-card">
-          <div class="chapter-number">Chapter 5</div>
-          <h3>Accounting for Share Capital</h3>
-          <p>Issue of shares, forfeiture, and reissue of shares in company accounts.</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 40%;"></div>
-          </div>
-          <p>40% Completed</p>
-          <div class="chapter-meta">
-            <div class="lessons">
-              <i class="fas fa-book"></i> 11 Lessons
-            </div>
-            <div class="duration">
-              <i class="fas fa-clock"></i> 5h 45m
-            </div>
-          </div>
-          <button class="btn">Start Learning</button>
-        </div>
-
-        <!-- Chapter 6 -->
-        <div class="chapter-card">
-          <div class="chapter-number">Chapter 6</div>
-          <h3>Issue and Redemption of Debentures</h3>
-          <p>Accounting treatment for issue and redemption of debentures in company accounts.</p>
-          <div class="progress-bar">
-            <div class="progress" style="width: 20%;"></div>
-          </div>
-          <p>20% Completed</p>
-          <div class="chapter-meta">
-            <div class="lessons">
-              <i class="fas fa-book"></i> 7 Lessons
-            </div>
-            <div class="duration">
-              <i class="fas fa-clock"></i> 3h 30m
-            </div>
-          </div>
-          <button class="btn">Start Learning</button>
+      <div id="chapters-container">
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading available chapters from cloud storage...</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
   <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+      authDomain: "smartbase-dc49d.firebaseapp.com",
+      projectId: "smartbase-dc49d",
+      storageBucket: "smartbase-dc49d.firebasestorage.app",
+      messagingSenderId: "786622743871",
+      appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
+      measurementId: "G-6BDB0TD641"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const storage = firebase.storage();
+
     // Get user data from localStorage
     const userData = JSON.parse(localStorage.getItem('user')) || {
       displayName: "Student",
@@ -411,18 +341,201 @@
     const userNameEl = document.getElementById('user-name');
     const userPhotoEl = document.getElementById('user-photo');
     const signOutBtn = document.getElementById('sign-out');
+    const chaptersContainer = document.getElementById('chapters-container');
 
     // Set user data
     userNameEl.textContent = userData.displayName;
     userPhotoEl.src = userData.photoURL;
+
+    // Function to fetch available chapters from cloud storage
+    async function fetchAvailableChapters() {
+      try {
+        // Reference to the storage root
+        const storageRef = storage.ref();
+        
+        // In a real implementation, we would list the folders in the Accountancy directory
+        // For this example, we'll simulate the data with a timeout to mimic network delay
+        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Simulated response from Firebase Storage
+        // In a real implementation, you would use:
+        // const result = await storageRef.child('Accountancy').listAll();
+        // const chapters = result.prefixes.map(prefix => prefix.name);
+        
+        const availableChapters = [
+          { 
+            id: 1, 
+            name: "Accounting for Partnership Firms", 
+            description: "Fundamentals of partnership accounting, profit sharing, and maintaining partnership books.",
+            lessons: 12,
+            duration: "4h 20m",
+            progress: 90,
+            available: true
+          },
+          { 
+            id: 2, 
+            name: "Goodwill: Nature and Valuation", 
+            description: "Understanding goodwill, its nature, and various methods of valuation in partnership firms.",
+            lessons: 8,
+            duration: "3h 15m",
+            progress: 65,
+            available: true
+          },
+          { 
+            id: 3, 
+            name: "Reconstitution of Partnership", 
+            description: "Changes in profit-sharing ratio, admission of a partner, retirement and death of a partner.",
+            lessons: 10,
+            duration: "5h 10m",
+            progress: 80,
+            available: true
+          },
+          { 
+            id: 4, 
+            name: "Dissolution of Partnership Firm", 
+            description: "Accounting for dissolution of partnership firms, settlement of accounts, and realization.",
+            lessons: 9,
+            duration: "4h 5m",
+            progress: 75,
+            available: true
+          },
+          { 
+            id: 5, 
+            name: "Accounting for Share Capital", 
+            description: "Issue of shares, forfeiture, and reissue of shares in company accounts.",
+            lessons: 11,
+            duration: "5h 45m",
+            progress: 40,
+            available: true
+          }
+        ];
+        
+        // Check if we have any chapters
+        if (availableChapters.length === 0) {
+          displayEmptyState();
+          return;
+        }
+        
+        // Display the chapters
+        displayChapters(availableChapters);
+        
+      } catch (error) {
+        console.error("Error fetching chapters:", error);
+        displayError("Failed to load chapters. Please try again later.");
+      }
+    }
+
+    // Function to display chapters in the UI
+    function displayChapters(chapters) {
+      let chaptersHTML = '';
+      
+      chapters.forEach(chapter => {
+        chaptersHTML += `
+          <div class="chapter-card" data-chapter-id="${chapter.id}">
+            <div class="chapter-number">Chapter ${chapter.id}</div>
+            <h3>${chapter.name}</h3>
+            <p>${chapter.description}</p>
+            <div class="progress-bar">
+              <div class="progress" style="width: ${chapter.progress}%;"></div>
+            </div>
+            <p>${chapter.progress}% Completed</p>
+            <div class="chapter-meta">
+              <div class="lessons">
+                <i class="fas fa-book"></i> ${chapter.lessons} Lessons
+              </div>
+              <div class="duration">
+                <i class="fas fa-clock"></i> ${chapter.duration}
+              </div>
+            </div>
+            <button class="btn chapter-btn">${chapter.progress > 0 ? 'Continue Learning' : 'Start Learning'}</button>
+          </div>
+        `;
+      });
+      
+      chaptersContainer.innerHTML = `<div class="chapters-grid">${chaptersHTML}</div>`;
+      
+      // Add event listeners to chapter buttons
+      document.querySelectorAll('.chapter-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const chapterId = this.closest('.chapter-card').dataset.chapterId;
+          openChapter(chapterId);
+        });
+      });
+      
+      // Add event listeners to chapter cards
+      document.querySelectorAll('.chapter-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const chapterId = this.dataset.chapterId;
+          openChapter(chapterId);
+        });
+      });
+    }
+
+    // Function to display empty state
+    function displayEmptyState() {
+      chaptersContainer.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-folder-open"></i>
+          <h3>No Chapters Available</h3>
+          <p>There are currently no chapters available in cloud storage.</p>
+          <p>Please check back later or contact your instructor.</p>
+        </div>
+      `;
+    }
+
+    // Function to display error
+    function displayError(message) {
+      chaptersContainer.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-exclamation-circle"></i>
+          <h3>Error Loading Content</h3>
+          <p>${message}</p>
+          <button class="btn" onclick="fetchAvailableChapters()">Try Again</button>
+        </div>
+      `;
+    }
+
+    // Function to open a chapter
+    function openChapter(chapterId) {
+      // In a real implementation, this would navigate to the chapter content
+      // For now, we'll just show an alert
+      alert(`Opening Chapter ${chapterId} content from cloud storage...`);
+      
+      // Example of how you would retrieve content from Firebase Storage:
+      /*
+      const chapterRef = storage.ref(`Accountancy/Chapter${chapterId}/content.json`);
+      chapterRef.getDownloadURL()
+        .then((url) => {
+          // Fetch the chapter content
+          return fetch(url);
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Display the chapter content
+          displayChapterContent(data);
+        })
+        .catch((error) => {
+          console.error("Error loading chapter content:", error);
+          alert("Failed to load chapter content. Please try again.");
+        });
+      */
+    }
 
     // Sign out functionality
     signOutBtn.addEventListener('click', function() {
       // Clear user data from localStorage
       localStorage.removeItem('user');
       
-      // Redirect to sign-in page
-      window.location.href = 'index.html';
+      // Firebase sign out
+      auth.signOut().then(() => {
+        window.location.href = 'index.html';
+      }).catch((error) => {
+        console.error("Sign out error:", error);
+        window.location.href = 'index.html';
+      });
     });
 
     // Initialize the page
@@ -432,6 +545,9 @@
         window.location.href = 'index.html';
         return;
       }
+      
+      // Fetch available chapters from cloud storage
+      fetchAvailableChapters();
     });
   </script>
 </body>
