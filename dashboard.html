@@ -1,582 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartBase - Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    :root {
-      --primary: #4361ee;
-      --secondary: #3a0ca3;
-      --accent: #7209b7;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --success: #4cc9f0;
-      --warning: #f72585;
-      --gray: #6c757d;
-      --card-bg: rgba(255, 255, 255, 0.85);
-    }
-
-    body {
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      color: var(--dark);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Header Styles */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--card-bg);
-      padding: 15px 25px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo img {
-      height: 40px;
-    }
-
-    .logo h1 {
-      color: var(--primary);
-      font-size: 24px;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .user-info img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-    }
-
-    /* Main Content Layout */
-    .main-content {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 20px;
-    }
-
-    /* Sidebar Styles */
-    .sidebar {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-    }
-
-    .sidebar h2 {
-      color: var(--primary);
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--primary);
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-item:hover {
-      background: rgba(67, 97, 238, 0.1);
-    }
-
-    .nav-item.active {
-      background: var(--primary);
-      color: white;
-    }
-
-    .nav-item i {
-      font-size: 20px;
-    }
-
-    /* Content Area Styles */
-    .content-area {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      min-height: 600px;
-    }
-
-    .welcome-banner {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 25px;
-      border-radius: 16px;
-      margin-bottom: 25px;
-    }
-
-    .welcome-banner h2 {
-      margin-bottom: 10px;
-    }
-
-    /* Card Styles */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h3 {
-      color: var(--primary);
-      margin-bottom: 15px;
-    }
-
-    .card p {
-      color: var(--gray);
-      margin-bottom: 15px;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: #e9ecef;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    .progress {
-      height: 100%;
-      background: var(--success);
-      border-radius: 4px;
-    }
-
-    /* MCQ Styling */
-    .mcq-container {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
-    }
-
-    .mcq-question {
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
-
-    .mcq-options {
-      list-style: none;
-    }
-
-    .mcq-option {
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .mcq-option:hover {
-      background: #f8f9fa;
-    }
-
-    .mcq-option.selected {
-      background: rgba(76, 201, 240, 0.2);
-      border-color: var(--success);
-    }
-
-    .btn {
-      padding: 12px 20px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      background: var(--secondary);
-      transform: translateY(-2px);
-    }
-
-    /* Progress Section */
-    .progress-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .progress-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .progress-card h4 {
-      color: var(--primary);
-      margin-bottom: 15px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 900px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-      
-      .sidebar {
-        order: 2;
-      }
-      
-      .content-area {
-        order: 1;
-      }
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-      }
-      
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smartbase</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+            color: white;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: #4285F4;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+        
+        .menu-item {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid white;
+        }
+        
+        .menu-item i {
+            margin-right: 12px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .user-section {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4285F4;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            flex-grow: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-header {
+            background-color: white;
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 5;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f1f5f9;
+            border-radius: 10px;
+            padding: 8px 16px;
+            width: 300px;
+        }
+        
+        .search-bar i {
+            color: #64748b;
+            margin-right: 10px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-btn {
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 10px;
+            color: #64748b;
+            position: relative;
+        }
+        
+        .notification-btn:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content-area {
+            padding: 30px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-text p {
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .banner-icon {
+            font-size: 60px;
+            opacity: 0.8;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .card-content {
+            margin-top: 10px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .course-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-image {
+            height: 140px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .course-content {
+            padding: 16px;
+        }
+        
+        .course-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .course-progress {
+            margin-top: 15px;
+        }
+        
+        .btn {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a56d4;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                margin-bottom: 10px;
+            }
+            
+            .menu-item {
+                border-left: none;
+                border-bottom: 4px solid transparent;
+                padding: 10px 15px;
+            }
+            
+            .menu-item.active {
+                border-left: none;
+                border-bottom: 4px solid white;
+            }
+            
+            .user-section {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .banner-icon {
+                margin-top: 15px;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Header with Logo and User Info -->
-    <header>
-      <div class="logo">
-        <i class="fas fa-book-open fa-2x" style="color: var(--primary);"></i>
-        <h1>SmartBase</h1>
-      </div>
-      <div class="user-info">
-        <div>
-          <h3>Welcome, <span id="user-name">Student</span>!</h3>
-          <p>Class 12 Accountancy</p>
-        </div>
-        <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Profile">
-        <button id="sign-out" class="btn">Sign Out</button>
-      </div>
-    </header>
-
-    <div class="main-content">
-      <!-- Sidebar Navigation -->
-      <aside class="sidebar">
-        <h2>Learning Dashboard</h2>
-        <div class="nav-item active" data-tab="overview">
-          <i class="fas fa-home"></i>
-          <span>Overview</span>
-        </div>
-        <div class="nav-item" data-tab="learn" onclick="window.location.href='learnconcept.html'">
-          <i class="fas fa-graduation-cap"></i>
-          <span>Learn Concepts</span>
-        </div>
-        <div class="nav-item" data-tab="practice">
-          <i class="fas fa-tasks"></i>
-          <span>Practice Questions</span>
-        </div>
-        <div class="nav-item" data-tab="progress">
-          <i class="fas fa-chart-line"></i>
-          <span>Progress Tracker</span>
-        </div>
-        <div class="nav-item" data-tab="resources">
-          <i class="fas fa-book"></i>
-          <span>Study Resources</span>
-        </div>
-      </aside>
-
-      <!-- Main Content Area -->
-      <main class="content-area">
-        <!-- Welcome Banner -->
-        <div class="welcome-banner">
-          <h2>Continue Your Accountancy Journey</h2>
-          <p>You've completed 65% of the course. Keep up the good work!</p>
-        </div>
-
-        <!-- Overview Tab Content -->
-        <div id="overview-tab" class="tab-content">
-          <h2>Course Overview</h2>
-          <p>Class 12 Accountancy covers advanced accounting principles, partnership accounts, company accounts, and financial statement analysis.</p>
-          
-          <div class="cards-grid">
-            <div class="card">
-              <h3>Chapter 4: Dissolution of Partnership</h3>
-              <p>Understanding the process of dissolving a partnership firm and settlement of accounts.</p>
-              <div class="progress-bar">
-                <div class="progress" style="width: 75%;"></div>
-              </div>
-              <p>75% Completed</p>
-              <button class="btn">Continue Learning</button>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">Smartbase</div>
             </div>
             
-            <div class="card">
-              <h3>Chapter 5: Accounting for Share Capital</h3>
-              <p>Learn about issue of shares, forfeiture, and reissue of shares.</p>
-              <div class="progress-bar">
-                <div class="progress" style="width: 40%;"></div>
-              </div>
-              <p>40% Completed</p>
-              <button class="btn">Start Learning</button>
-            </div>
-            
-            <div class="card">
-              <h3>Recent Quiz Performance</h3>
-              <p>Your average score: 82%</p>
-              <p>Last quiz: Dissolution of Partnership - 88%</p>
-              <button class="btn">View Details</button>
-            </div>
-          </div>
-          
-          <h2>Recommended For You</h2>
-          <div class="cards-grid">
-            <div class="card">
-              <h3>Video Lesson: Goodwill Calculation</h3>
-              <p>Watch a detailed explanation of various methods for calculating goodwill.</p>
-              <button class="btn"><i class="fas fa-play-circle"></i> Watch Now</button>
-            </div>
-            
-            <div class="card">
-              <h3>Practice Set: Partnership Fundamentals</h3>
-              <p>Test your knowledge with 15 practice questions on partnership accounting.</p>
-              <button class="btn">Start Practice</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Practice Questions Tab Content -->
-        <div id="practice-tab" class="tab-content" style="display: none;">
-          <h2>Practice Questions</h2>
-          <p>Test your knowledge with these multiple choice questions on Dissolution of Partnership.</p>
-          
-          <div class="mcq-container">
-            <div class="mcq-question">
-              1. What is the correct order of payment upon dissolution of a partnership firm?
-            </div>
-            <ul class="mcq-options">
-              <li class="mcq-option">A. Partners' loan, partners' capital, creditors</li>
-              <li class="mcq-option">B. Creditors, partners' loan, partners' capital</li>
-              <li class="mcq-option selected">C. Creditors, partners' capital, partners' loan</li>
-              <li class="mcq-option">D. Partners' capital, creditors, partners' loan</li>
+            <ul class="sidebar-menu">
+                <li class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Assignments</span>
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Schedule</span>
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Discussions</span>
+                </li>
+                <li class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
             </ul>
-          </div>
-          
-          <div class="mcq-container">
-            <div class="mcq-question">
-              2. Which of the following is not a method of calculating goodwill?
+            
+            <div class="user-section">
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role">Student</div>
+                </div>
+                <i class="fas fa-sign-out-alt" style="cursor: pointer;"></i>
             </div>
-            <ul class="mcq-options">
-              <li class="mcq-option">A. Average profit method</li>
-              <li class="mcq-option">B. Super profit method</li>
-              <li class="mcq-option">C. Capitalization method</li>
-              <li class="mcq-option selected">D. Double entry method</li>
-            </ul>
-          </div>
-          
-          <div class="mcq-container">
-            <div class="mcq-question">
-              3. Realization account is a:
-            </div>
-            <ul class="mcq-options">
-              <li class="mcq-option">A. Personal account</li>
-              <li class="mcq-option selected">B. Nominal account</li>
-              <li class="mcq-option">C. Real account</li>
-              <li class="mcq-option">D. None of the above</li>
-            </ul>
-          </div>
-          
-          <button class="btn"><i class="fas fa-check-circle"></i> Submit Answers</button>
-          <button class="btn" style="background: var(--gray);"><i class="fas fa-sync-alt"></i> Try New Questions</button>
         </div>
-
-        <!-- Progress Tracker Tab Content -->
-        <div id="progress-tab" class="tab-content" style="display: none;">
-          <h2>Your Progress Tracker</h2>
-          <p>Here's your learning progress across all chapters of Accountancy.</p>
-          
-          <div class="progress-container">
-            <div class="progress-card">
-              <h4>Chapter 1: Accounting for Partnership</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 90%;"></div>
-              </div>
-              <p>90% Completed</p>
-              <p>Last activity: 3 days ago</p>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <div class="top-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search courses, materials...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">7</span>
+                    </button>
+                </div>
             </div>
             
-            <div class="progress-card">
-              <h4>Chapter 2: Goodwill</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 65%;"></div>
-              </div>
-              <p>65% Completed</p>
-              <p>Last activity: 1 week ago</p>
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h2>Welcome back, John!</h2>
+                        <p>You have 3 upcoming assignments and 2 new courses recommended for you. Keep up the good work!</p>
+                    </div>
+                    <div class="banner-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Enrolled Courses</div>
+                            <div class="card-icon" style="background-color: #4361ee;">
+                                <i class="fas fa-book"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3>12</h3>
+                            <p>+2 from last week</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Hours Spent</div>
+                            <div class="card-icon" style="background-color: #06d6a0;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3>24.5h</h3>
+                            <p>+5.5h from last week</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Average Progress</div>
+                            <div class="card-icon" style="background-color: #118ab2;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="progress-text">
+                                <span>Overall Completion</span>
+                                <span>68%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 68%; background-color: #118ab2;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Current Courses -->
+                <h2 style="margin-bottom: 20px; color: #1e293b;">Continue Learning</h2>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #ff6b6b;"></div>
+                        <div class="course-content">
+                            <h3 class="course-title">Data Science Fundamentals</h3>
+                            <div class="course-info">
+                                <span>8/12 Lessons</span>
+                                <span>4.8 ★</span>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-text">
+                                    <span>Progress</span>
+                                    <span>67%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 67%; background-color: #4361ee;"></div>
+                                </div>
+                            </div>
+                            <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
+                        </div>
+                    </div>
+                    
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #4cc9f0;"></div>
+                        <div class="course-content">
+                            <h3 class="course-title">Web Development Bootcamp</h3>
+                            <div class="course-info">
+                                <span>12/16 Lessons</span>
+                                <span>4.9 ★</span>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-text">
+                                    <span>Progress</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%; background-color: #4361ee;"></div>
+                                </div>
+                            </div>
+                            <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
+                        </div>
+                    </div>
+                    
+                    <div class="course-card">
+                        <div class="course-image" style="background-color: #7209b7;"></div>
+                        <div class="course-content">
+                            <h3 class="course-title">Machine Learning Advanced</h3>
+                            <div class="course-info">
+                                <span>5/10 Lessons</span>
+                                <span>4.7 ★</span>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-text">
+                                    <span>Progress</span>
+                                    <span>50%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%; background-color: #4361ee;"></div>
+                                </div>
+                            </div>
+                            <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="progress-card">
-              <h4>Chapter 3: Reconstitution of Partnership</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 80%;"></div>
-              </div>
-              <p>80% Completed</p>
-              <p>Last activity: 2 days ago</p>
-            </div>
-            
-            <div class="progress-card">
-              <h4>Chapter 4: Dissolution of Partnership</h4>
-              <div class="progress-bar">
-                <div class="progress" style="width: 75%;"></div>
-              </div>
-              <p>75% Completed</p>
-              <p>Last activity: Today</p>
-            </div>
-          </div>
-          
-          <h3 style="margin-top: 30px;">Quiz Scores Overview</h3>
-          <div class="cards-grid">
-            <div class="card">
-              <h4>Average Score</h4>
-              <p style="font-size: 32px; color: var(--success); font-weight: bold;">82%</p>
-              <p>Across all chapters</p>
-            </div>
-            
-            <div class="card">
-              <h4>Highest Score</h4>
-              <p style="font-size: 32px; color: var(--primary); font-weight: bold;">96%</p>
-              <p>Chapter 1: Partnership Fundamentals</p>
-            </div>
-            
-            <div class="card">
-              <h4>Total Questions Attempted</h4>
-              <p style="font-size: 32px; color: var(--accent); font-weight: bold;">147</p>
-              <p>Across all practice sets</p>
-            </div>
-          </div>
         </div>
-      </main>
     </div>
-  </div>
 
-  <script>
-    // Get user data from localStorage
-    const userData = JSON.parse(localStorage.getItem('user')) || {
-      displayName: "Student",
-      photoURL: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-    };
-
-    // DOM Elements
-    const userNameEl = document.getElementById('user-name');
-    const userPhotoEl = document.getElementById('user-photo');
-    const signOutBtn = document.getElementById('sign-out');
-    const navItems = document.querySelectorAll('.nav-item');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    // Set user data
-    userNameEl.textContent = userData.displayName;
-    userPhotoEl.src = userData.photoURL;
-
-    // Navigation tab switching
-    navItems.forEach(item => {
-      item.addEventListener('click', function() {
-        if (this.dataset.tab === 'learn') return; // Skip for learn tab as it redirects
-        
-        // Remove active class from all items
-        navItems.forEach(navItem => navItem.classList.remove('active'));
-        
-        // Add active class to clicked item
-        this.classList.add('active');
-        
-        // Hide all tab contents
-        tabContents.forEach(tab => tab.style.display = 'none');
-        
-        // Show the selected tab content
-        const tabId = `${this.dataset.tab}-tab`;
-        document.getElementById(tabId).style.display = 'block';
-      });
-    });
-
-    // MCQ option selection
-    const mcqOptions = document.querySelectorAll('.mcq-option');
-    mcqOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        // Remove selected class from all options in this question
-        const parentList = this.parentElement;
-        parentList.querySelectorAll('.mcq-option').forEach(opt => {
-          opt.classList.remove('selected');
+    <script>
+        // Simple tab functionality
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.menu-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // In a real app, you would load content based on the selected tab
+                console.log('Selected:', this.querySelector('span').textContent);
+            });
         });
         
-        // Add selected class to clicked option
-        this.classList.add('selected');
-      });
-    });
-
-    // Sign out functionality
-    signOutBtn.addEventListener('click', function() {
-      // Clear user data from localStorage
-      localStorage.removeItem('user');
-      
-      // Firebase sign out would go here
-      // For now, just redirect
-      window.location.href = 'index.html';
-    });
-
-    // Initialize the page
-    window.addEventListener('load', function() {
-      // Check if user is signed in
-      if (!localStorage.getItem('user')) {
-        window.location.href = 'index.html';
-        return;
-      }
-    });
-  </script>
+        // Simulate user data (in a real app, this would come from Firebase)
+        const userData = {
+            name: "John Doe",
+            role: "Student",
+            enrolledCourses: 12,
+            hoursSpent: 24.5,
+            progress: 68
+        };
+        
+        // Update user info in the dashboard
+        document.querySelector('.user-name').textContent = userData.name;
+        document.querySelector('.user-role').textContent = userData.role;
+        document.querySelector('.welcome-text h2').textContent = `Welcome back, ${userData.name.split(' ')[0]}!`;
+        
+        // Simulate loading (in a real app, you would fetch data from Firebase)
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded');
+            // You would initialize Firebase and check auth status here
+        });
+    </script>
 </body>
 </html>
