@@ -6,6 +6,8 @@
     <title>Dashboard - Smartbase</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -442,7 +444,7 @@
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </li>
-                <li class="menu-item" id="courses-tab">
+                <li class="menu-item" id="coursesTab">
                     <i class="fas fa-book"></i>
                     <span>Courses</span>
                 </li>
@@ -469,12 +471,12 @@
             </ul>
             
             <div class="user-section">
-                <div class="user-avatar" id="user-avatar">JD</div>
+                <div class="user-avatar" id="userAvatar">JD</div>
                 <div class="user-info">
-                    <div class="user-name" id="user-name">John Doe</div>
+                    <div class="user-name" id="userName">Loading...</div>
                     <div class="user-role">Student</div>
                 </div>
-                <i class="fas fa-sign-out-alt" id="sign-out-btn" style="cursor: pointer;"></i>
+                <i class="fas fa-sign-out-alt" style="cursor: pointer;" id="signOutBtn"></i>
             </div>
         </div>
         
@@ -504,7 +506,7 @@
                 <!-- Welcome Banner -->
                 <div class="welcome-banner">
                     <div class="welcome-text">
-                        <h2 id="welcome-message">Welcome back, User!</h2>
+                        <h2 id="welcomeMessage">Welcome back!</h2>
                         <p>You have 3 upcoming assignments and 2 new courses recommended for you. Keep up the good work!</p>
                     </div>
                     <div class="banner-icon">
@@ -644,27 +646,27 @@
         firebase.initializeApp(firebaseConfig);
         
         // DOM elements
-        const welcomeMessage = document.getElementById('welcome-message');
-        const userNameElement = document.getElementById('user-name');
-        const userAvatar = document.getElementById('user-avatar');
-        const coursesTab = document.getElementById('courses-tab');
-        const signOutBtn = document.getElementById('sign-out-btn');
+        const userNameElement = document.getElementById('userName');
+        const userAvatarElement = document.getElementById('userAvatar');
+        const welcomeMessageElement = document.getElementById('welcomeMessage');
+        const coursesTab = document.getElementById('coursesTab');
+        const signOutBtn = document.getElementById('signOutBtn');
         
         // Check if user is signed in
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                // User is signed in, display user info
-                const displayName = user.displayName || "User";
+                // User is signed in
+                const displayName = user.displayName || user.email;
                 const firstName = displayName.split(' ')[0];
                 
-                welcomeMessage.textContent = `Welcome back, ${firstName}!`;
+                // Update UI with user info
                 userNameElement.textContent = displayName;
-                userAvatar.textContent = displayName.charAt(0).toUpperCase();
+                userAvatarElement.textContent = displayName.charAt(0).toUpperCase();
+                welcomeMessageElement.textContent = `Welcome back, ${firstName}!`;
                 
-                // Load user data from Firestore if needed
-                // loadUserData(user.uid);
+                console.log('User is signed in:', user);
             } else {
-                // No user is signed in, redirect to index.html
+                // User is signed out, redirect to sign-in page
                 window.location.href = 'index.html';
             }
         });
@@ -677,9 +679,11 @@
         // Sign out handler
         signOutBtn.addEventListener('click', () => {
             firebase.auth().signOut().then(() => {
-                // Sign-out successful, redirect to index.html
+                // Sign-out successful
+                console.log('User signed out');
                 window.location.href = 'index.html';
             }).catch((error) => {
+                // An error happened
                 console.error('Sign out error:', error);
             });
         });
@@ -687,13 +691,18 @@
         // Simple tab functionality
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function() {
-                // Remove active class from all items
-                document.querySelectorAll('.menu-item').forEach(i => {
-                    i.classList.remove('active');
-                });
-                
-                // Add active class to clicked item
-                this.classList.add('active');
+                if (this.id !== 'coursesTab') {
+                    // Remove active class from all items
+                    document.querySelectorAll('.menu-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // In a real app, you would load content based on the selected tab
+                    console.log('Selected:', this.querySelector('span').textContent);
+                }
             });
         });
     </script>
