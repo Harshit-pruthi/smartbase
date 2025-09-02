@@ -1,148 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SmartBase - Sign In</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
-    .container {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 40px;
-      text-align: center;
-      width: 320px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-    h1 {
-      margin-bottom: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    button {
-      background: #fff;
-      color: #444;
-      font-size: 16px;
-      font-weight: 500;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: auto;
-    }
-    button img {
-      height: 20px;
-      margin-right: 10px;
-    }
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 13px;
-      opacity: 0.8;
-    }
-    .loading {
-      display: none;
-      margin-top: 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartbase - Sign In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .logo h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .card h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .sign-in-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 14px;
+            background: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(66, 133, 244, 0.2);
+        }
+        
+        .sign-in-btn:hover {
+            background: #357ae8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(66, 133, 244, 0.3);
+        }
+        
+        .sign-in-btn:active {
+            transform: translateY(0);
+        }
+        
+        .sign-in-btn i {
+            background: white;
+            color: #4285F4;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #999;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .divider span {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            width: 140px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 500px) {
+            .card {
+                padding: 30px 20px;
+            }
+            
+            .features {
+                gap: 10px;
+            }
+            
+            .feature {
+                width: 120px;
+                padding: 15px 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to SmartBase</h1>
-    <button onclick="googleSignIn()" id="signin-btn">
-      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
-      Sign in with Google
-    </button>
-    <div class="loading" id="loading">
-      <i class="fas fa-spinner fa-spin"></i> Signing in...
+    <div class="container">
+        <div class="logo">
+            <h1>Smartbase</h1>
+            <p>Your intelligent learning platform</p>
+        </div>
+        
+        <div class="card">
+            <h2>Welcome Back</h2>
+            <p>Sign in to continue your learning journey with Smartbase</p>
+            
+            <button id="googleSignIn" class="sign-in-btn">
+                <i class="fab fa-google"></i>
+                Sign in with Google
+                <div id="loading" class="loading"></div>
+            </button>
+            
+            <div class="divider">
+                <span>Secure Login</span>
+            </div>
+            
+            <p style="font-size: 14px; margin-bottom: 0;">
+                By signing in, you agree to our <a href="#" style="color: #4285F4; text-decoration: none;">Terms</a> and <a href="#" style="color: #4285F4; text-decoration: none;">Privacy Policy</a>
+            </p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-book"></i>
+                <p>Interactive Courses</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-chart-line"></i>
+                <p>Progress Tracking</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-certificate"></i>
+                <p>Certifications</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Smartbase Learning Platform. All rights reserved.</p>
+        </div>
     </div>
-    <div class="footer">Secure Google Login</div>
-  </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Firebase App (core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-  <script>
-    // 🔹 Replace this with your Firebase project config
-    const firebaseConfig = {
-      apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
-      authDomain: "smartbase-dc49d.firebaseapp.com",
-      projectId: "smartbase-dc49d",
-      storageBucket: "smartbase-dc49d.firebasestorage.app",
-      messagingSenderId: "786622743871",
-      appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
-      measurementId: "G-6BDB0TD641"
-    };
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+            authDomain: "smartbase-dc49d.firebaseapp.com",
+            databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smartbase-dc49d",
+            storageBucket: "smartbase-dc49d.firebasestorage.app",
+            messagingSenderId: "786622743871",
+            appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
+            measurementId: "G-6BDB0TD641"
+        };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Check if user is already signed in
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in, redirect to dashboard
-        console.log("User already signed in:", user);
-        // Store user data in localStorage
-        localStorage.setItem('user', JSON.stringify({
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          uid: user.uid
-        }));
-        window.location.href = "smartbase.html";
-      }
-    });
-
-    // Google Sign-In
-    function googleSignIn() {
-      const signinBtn = document.getElementById('signin-btn');
-      const loading = document.getElementById('loading');
-      
-      signinBtn.style.display = 'none';
-      loading.style.display = 'block';
-      
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          console.log("Signed in:", result.user);
-          // Store user data in localStorage
-          localStorage.setItem('user', JSON.stringify({
-            displayName: result.user.displayName,
-            email: result.user.email,
-            photoURL: result.user.photoURL,
-            uid: result.user.uid
-          }));
-          // Redirect after success
-          window.location.href = "smartbase.html";
-        })
-        .catch((error) => {
-          console.error("Error:", error.message);
-          alert("Sign-in failed: " + error.message);
-          signinBtn.style.display = 'flex';
-          loading.style.display = 'none';
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Get DOM elements
+        const googleSignInBtn = document.getElementById('googleSignIn');
+        const loadingIndicator = document.getElementById('loading');
+        
+        // Google Sign-In function
+        function googleSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'inline-block';
+            googleSignInBtn.disabled = true;
+            
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // Successful sign-in
+                    console.log('Successfully signed in:', result.user);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    // Handle errors
+                    console.error('Error signing in:', error);
+                    alert('Sign-in failed. Please try again.');
+                    
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+                    googleSignInBtn.disabled = false;
+                });
+        }
+        
+        // Add event listener to the sign-in button
+        googleSignInBtn.addEventListener('click', googleSignIn);
+        
+        // Check if user is already signed in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
         });
-    }
-  </script>
+    </script>
 </body>
 </html>
