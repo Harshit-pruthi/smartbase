@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Smartbase</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -472,9 +472,9 @@
                 <div class="user-avatar" id="userAvatar">JD</div>
                 <div class="user-info">
                     <div class="user-name" id="userName">John Doe</div>
-                    <div class="user-role">Student</div>
+                    <div class="user-role" id="userRole">Student</div>
                 </div>
-                <i class="fas fa-sign-out-alt" style="cursor: pointer;" id="signOutBtn"></i>
+                <i class="fas fa-sign-out-alt" id="signOutBtn" style="cursor: pointer;"></i>
             </div>
         </div>
         
@@ -504,7 +504,7 @@
                 <!-- Welcome Banner -->
                 <div class="welcome-banner">
                     <div class="welcome-text">
-                        <h2 id="welcomeTitle">Welcome back, John!</h2>
+                        <h2 id="welcomeMessage">Welcome back, User!</h2>
                         <p>You have 3 upcoming assignments and 2 new courses recommended for you. Keep up the good work!</p>
                     </div>
                     <div class="banner-icon">
@@ -629,69 +629,71 @@
         </div>
     </div>
 
+    <!-- Firebase App (core SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
     <script>
         // Firebase configuration - REPLACE WITH YOUR CONFIG
         const firebaseConfig = {
-  apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
-  authDomain: "smartbase-dc49d.firebaseapp.com",
-  databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "smartbase-dc49d",
-  storageBucket: "smartbase-dc49d.firebasestorage.app",
-  messagingSenderId: "786622743871",
-  appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
-  measurementId: "G-6BDB0TD641"
-};
+            apiKey: "YOUR_API_KEY",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
         
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         
         // DOM elements
-        const userNameElement = document.getElementById('userName');
-        const userAvatarElement = document.getElementById('userAvatar');
-        const welcomeTitleElement = document.getElementById('welcomeTitle');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const userName = document.getElementById('userName');
+        const userRole = document.getElementById('userRole');
+        const userAvatar = document.getElementById('userAvatar');
         const coursesTab = document.getElementById('coursesTab');
         const signOutBtn = document.getElementById('signOutBtn');
         
-        // Check if user is signed in and update UI
+        // Check if user is signed in
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in
-                const displayName = user.displayName || 'User';
-                const firstName = displayName.split(' ')[0];
+                const displayName = user.displayName || "User";
+                const email = user.email;
+                const firstLetter = displayName.charAt(0) || email.charAt(0);
                 
                 // Update UI with user data
-                userNameElement.textContent = displayName;
-                userAvatarElement.textContent = displayName.charAt(0);
-                welcomeTitleElement.textContent = `Welcome back, ${firstName}!`;
-                
-                console.log('User signed in:', user);
+                welcomeMessage.textContent = `Welcome back, ${displayName}!`;
+                userName.textContent = displayName;
+                userRole.textContent = "Student"; // You could customize this based on user data
+                userAvatar.textContent = firstLetter.toUpperCase();
             } else {
-                // No user is signed in, redirect to login
+                // No user is signed in, redirect to login page
                 window.location.href = 'index.html';
             }
         });
         
-        // Courses tab click handler
+        // Courses tab navigation
         coursesTab.addEventListener('click', () => {
             window.location.href = 'courses.html';
         });
         
-        // Sign out handler
+        // Sign out functionality
         signOutBtn.addEventListener('click', () => {
             firebase.auth().signOut().then(() => {
-                // Sign-out successful
-                console.log('User signed out');
+                // Sign-out successful, redirect to login page
                 window.location.href = 'index.html';
             }).catch((error) => {
-                // An error happened
                 console.error('Sign out error:', error);
             });
         });
         
         // Simple tab functionality
         document.querySelectorAll('.menu-item').forEach(item => {
-            if (item.id !== 'coursesTab') {
-                item.addEventListener('click', function() {
+            item.addEventListener('click', function() {
+                if (this.id !== 'coursesTab') { // Don't process click for courses tab as it has its own handler
                     // Remove active class from all items
                     document.querySelectorAll('.menu-item').forEach(i => {
                         i.classList.remove('active');
@@ -702,8 +704,8 @@
                     
                     // In a real app, you would load content based on the selected tab
                     console.log('Selected:', this.querySelector('span').textContent);
-                });
-            }
+                }
+            });
         });
     </script>
 </body>
