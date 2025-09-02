@@ -371,6 +371,22 @@
             background-color: #3a56d4;
         }
         
+        /* Loading spinner */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4361ee;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 100px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* Responsive styles */
         @media (max-width: 992px) {
             .dashboard-container {
@@ -503,127 +519,131 @@
             
             <!-- Content Area -->
             <div class="content-area">
-                <!-- Welcome Banner -->
-                <div class="welcome-banner">
-                    <div class="welcome-text">
-                        <h2 id="welcomeMessage">Welcome back!</h2>
-                        <p>You have 3 upcoming assignments and 2 new courses recommended for you. Keep up the good work!</p>
-                    </div>
-                    <div class="banner-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                </div>
+                <div id="loader" class="loader"></div>
                 
-                <!-- Stats Cards -->
-                <div class="dashboard-cards">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Enrolled Courses</div>
-                            <div class="card-icon" style="background-color: #4361ee;">
-                                <i class="fas fa-book"></i>
-                            </div>
+                <div id="dashboardContent" style="display: none;">
+                    <!-- Welcome Banner -->
+                    <div class="welcome-banner">
+                        <div class="welcome-text">
+                            <h2 id="welcomeMessage">Welcome back!</h2>
+                            <p>You have 3 upcoming assignments and 2 new courses recommended for you. Keep up the good work!</p>
                         </div>
-                        <div class="card-content">
-                            <h3>12</h3>
-                            <p>+2 from last week</p>
+                        <div class="banner-icon">
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
                     </div>
                     
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Hours Spent</div>
-                            <div class="card-icon" style="background-color: #06d6a0;">
-                                <i class="fas fa-clock"></i>
+                    <!-- Stats Cards -->
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Enrolled Courses</div>
+                                <div class="card-icon" style="background-color: #4361ee;">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>12</h3>
+                                <p>+2 from last week</p>
                             </div>
                         </div>
-                        <div class="card-content">
-                            <h3>24.5h</h3>
-                            <p>+5.5h from last week</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Average Progress</div>
-                            <div class="card-icon" style="background-color: #118ab2;">
-                                <i class="fas fa-chart-line"></i>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Hours Spent</div>
+                                <div class="card-icon" style="background-color: #06d6a0;">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3>24.5h</h3>
+                                <p>+5.5h from last week</p>
                             </div>
                         </div>
-                        <div class="card-content">
-                            <div class="progress-text">
-                                <span>Overall Completion</span>
-                                <span>68%</span>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Average Progress</div>
+                                <div class="card-icon" style="background-color: #118ab2;">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
                             </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 68%; background-color: #118ab2;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Current Courses -->
-                <h2 style="margin-bottom: 20px; color: #1e293b;">Continue Learning</h2>
-                <div class="courses-grid">
-                    <div class="course-card">
-                        <div class="course-image" style="background-color: #ff6b6b;"></div>
-                        <div class="course-content">
-                            <h3 class="course-title">Data Science Fundamentals</h3>
-                            <div class="course-info">
-                                <span>8/12 Lessons</span>
-                                <span>4.8 ★</span>
-                            </div>
-                            <div class="course-progress">
+                            <div class="card-content">
                                 <div class="progress-text">
-                                    <span>Progress</span>
-                                    <span>67%</span>
+                                    <span>Overall Completion</span>
+                                    <span>68%</span>
                                 </div>
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 67%; background-color: #4361ee;"></div>
+                                    <div class="progress-fill" style="width: 68%; background-color: #118ab2;"></div>
                                 </div>
                             </div>
-                            <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
                         </div>
                     </div>
                     
-                    <div class="course-card">
-                        <div class="course-image" style="background-color: #4cc9f0;"></div>
-                        <div class="course-content">
-                            <h3 class="course-title">Web Development Bootcamp</h3>
-                            <div class="course-info">
-                                <span>12/16 Lessons</span>
-                                <span>4.9 ★</span>
-                            </div>
-                            <div class="course-progress">
-                                <div class="progress-text">
-                                    <span>Progress</span>
-                                    <span>75%</span>
+                    <!-- Current Courses -->
+                    <h2 style="margin-bottom: 20px; color: #1e293b;">Continue Learning</h2>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-image" style="background-color: #ff6b6b;"></div>
+                            <div class="course-content">
+                                <h3 class="course-title">Data Science Fundamentals</h3>
+                                <div class="course-info">
+                                    <span>8/12 Lessons</span>
+                                    <span>4.8 ★</span>
                                 </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 75%; background-color: #4361ee;"></div>
+                                <div class="course-progress">
+                                    <div class="progress-text">
+                                        <span>Progress</span>
+                                        <span>67%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 67%; background-color: #4361ee;"></div>
+                                    </div>
                                 </div>
+                                <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
                             </div>
-                            <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
                         </div>
-                    </div>
-                    
-                    <div class="course-card">
-                        <div class="course-image" style="background-color: #7209b7;"></div>
-                        <div class="course-content">
-                            <h3 class="course-title">Machine Learning Advanced</h3>
-                            <div class="course-info">
-                                <span>5/10 Lessons</span>
-                                <span>4.7 ★</span>
-                            </div>
-                            <div class="course-progress">
-                                <div class="progress-text">
-                                    <span>Progress</span>
-                                    <span>50%</span>
+                        
+                        <div class="course-card">
+                            <div class="course-image" style="background-color: #4cc9f0;"></div>
+                            <div class="course-content">
+                                <h3 class="course-title">Web Development Bootcamp</h3>
+                                <div class="course-info">
+                                    <span>12/16 Lessons</span>
+                                    <span>4.9 ★</span>
                                 </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 50%; background-color: #4361ee;"></div>
+                                <div class="course-progress">
+                                    <div class="progress-text">
+                                        <span>Progress</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%; background-color: #4361ee;"></div>
+                                    </div>
                                 </div>
+                                <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
                             </div>
-                            <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image" style="background-color: #7209b7;"></div>
+                            <div class="course-content">
+                                <h3 class="course-title">Machine Learning Advanced</h3>
+                                <div class="course-info">
+                                    <span>5/10 Lessons</span>
+                                    <span>4.7 ★</span>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-text">
+                                        <span>Progress</span>
+                                        <span>50%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 50%; background-color: #4361ee;"></div>
+                                    </div>
+                                </div>
+                                <button class="btn" style="margin-top: 15px; width: 100%;">Continue</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -651,9 +671,16 @@
         const welcomeMessageElement = document.getElementById('welcomeMessage');
         const coursesTab = document.getElementById('coursesTab');
         const signOutBtn = document.getElementById('signOutBtn');
+        const loader = document.getElementById('loader');
+        const dashboardContent = document.getElementById('dashboardContent');
+        
+        // Track authentication state to prevent redirect loops
+        let authChecked = false;
         
         // Check if user is signed in
         firebase.auth().onAuthStateChanged((user) => {
+            authChecked = true;
+            
             if (user) {
                 // User is signed in
                 const displayName = user.displayName || user.email;
@@ -664,12 +691,26 @@
                 userAvatarElement.textContent = displayName.charAt(0).toUpperCase();
                 welcomeMessageElement.textContent = `Welcome back, ${firstName}!`;
                 
+                // Show dashboard content
+                loader.style.display = 'none';
+                dashboardContent.style.display = 'block';
+                
                 console.log('User is signed in:', user);
             } else {
                 // User is signed out, redirect to sign-in page
+                console.log('User is not signed in, redirecting to sign-in page');
                 window.location.href = 'index.html';
             }
         });
+        
+        // Set a timeout to handle cases where auth state doesn't change
+        setTimeout(() => {
+            if (!authChecked) {
+                console.log('Auth check timeout, showing content anyway');
+                loader.style.display = 'none';
+                dashboardContent.style.display = 'block';
+            }
+        }, 3000);
         
         // Courses tab click handler
         coursesTab.addEventListener('click', () => {
@@ -685,6 +726,7 @@
             }).catch((error) => {
                 // An error happened
                 console.error('Sign out error:', error);
+                alert('Error signing out: ' + error.message);
             });
         });
         
