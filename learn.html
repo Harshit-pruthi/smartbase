@@ -96,8 +96,6 @@
             flex: 1;
             padding: 24px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
         }
 
         .header {
@@ -135,202 +133,116 @@
             font-weight: 600;
         }
 
-        /* Learn Page Specific Styles */
-        .learn-container {
-            display: flex;
-            gap: 24px;
-            flex: 1;
-        }
-
-        .chapters-panel {
-            flex: 0 0 300px;
+        /* Chapters List */
+        .chapters-container {
             background: white;
             border-radius: 16px;
             padding: 24px;
             box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
         }
 
-        .panel-title {
-            font-size: 18px;
+        .section-title {
+            font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
-        .panel-title i {
+        .section-title i {
+            margin-right: 12px;
             color: var(--primary);
         }
 
-        .chapters-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+        .chapters-list {
+            list-style: none;
         }
 
-        .chapter-btn {
-            background: var(--light);
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 14px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-
-        .chapter-btn:hover {
-            background: rgba(66, 133, 244, 0.08);
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .chapter-btn.active {
-            background: rgba(66, 133, 244, 0.12);
-            border-color: var(--primary);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .viewer-panel {
-            flex: 1;
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .viewer-header {
-            padding: 20px 24px;
+        .chapter-item {
+            padding: 20px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
 
-        .viewer-title {
+        .chapter-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .chapter-item:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-title {
             font-size: 18px;
             font-weight: 600;
-        }
-
-        .viewer-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .action-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            background: var(--light);
-            border: 1px solid #e0e0e0;
-            cursor: pointer;
+            color: var(--primary);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-weight: 500;
-            transition: all 0.2s ease;
         }
 
-        .action-btn:hover {
-            background: #f1f3f4;
-        }
-
-        .action-btn.primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-        }
-
-        .action-btn.primary:hover {
-            background: #3367d6;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: var(--light);
-            border-radius: 8px;
-            padding: 0 12px;
-            border: 1px solid #e0e0e0;
-            margin: 16px 24px 0;
-        }
-
-        .search-box i {
-            color: var(--gray);
-        }
-
-        .search-box input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 12px;
-            outline: none;
-            font-size: 15px;
-        }
-
-        .viewer-content {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-            line-height: 1.6;
+        .chapter-title i {
+            margin-right: 10px;
             font-size: 16px;
         }
 
-        .content-placeholder {
+        .chapter-excerpt {
             color: var(--gray);
-            text-align: center;
-            margin-top: 40px;
+            line-height: 1.5;
+            margin-left: 26px;
         }
 
-        .content-placeholder i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: #dadce0;
-        }
-
-        .loading-indicator {
+        /* Loading and Error States */
+        .loading {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 40px;
-            color: var(--gray);
         }
 
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(66, 133, 244, 0.2);
+            border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
+            border-left-color: var(--primary);
+            animation: spin 1s linear infinite;
             margin-bottom: 16px;
         }
 
-        .error-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            text-align: center;
-            color: var(--gray);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .error-state i {
+        .error-state {
+            background: #ffebee;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .error-icon {
             font-size: 48px;
             color: #f44336;
             margin-bottom: 16px;
         }
 
-        .retry-btn {
-            margin-top: 16px;
+        .error-state h3 {
+            color: #c62828;
+            margin-bottom: 12px;
+        }
+
+        .error-state p {
+            color: #5f6368;
+            margin-bottom: 20px;
+        }
+
+        .retry-button {
             padding: 10px 20px;
             background: var(--primary);
             color: white;
@@ -338,30 +250,17 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
+            transition: background 0.2s;
         }
 
-        .highlight {
-            background-color: rgba(255, 234, 0, 0.5);
-            padding: 0 2px;
-            border-radius: 3px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .retry-button:hover {
+            background: #3367d6;
         }
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .learn-container {
-                flex-direction: column;
-            }
-            
-            .chapters-panel {
-                flex: 0;
-            }
-            
-            .chapters-grid {
-                grid-template-columns: repeat(4, 1fr);
+            .chapters-container {
+                padding: 20px;
             }
         }
 
@@ -385,27 +284,41 @@
                 flex-shrink: 0;
             }
             
-            .chapters-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .chapters-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
             }
             
-            .viewer-actions {
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }
-            
-            .action-btn {
-                padding: 6px 12px;
-                font-size: 14px;
+            .user-profile {
+                align-self: flex-end;
             }
         }
     </style>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+            authDomain: "smartbase-dc49d.firebaseapp.com",
+            databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smartbase-dc49d",
+            storageBucket: "smartbase-dc49d.firebasestorage.app",
+            messagingSenderId: "786622743871",
+            appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
+            measurementId: "G-6BDB0TD641"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+    </script>
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -445,282 +358,119 @@
     <main class="main-content">
         <div class="header">
             <div class="welcome">
-                <h1>Learning Center</h1>
+                <h1>Accountancy Chapters</h1>
                 <p>Select a chapter to start learning</p>
             </div>
             
             <div class="user-profile">
-                <div class="user-avatar">A</div>
+                <div class="user-avatar" id="userAvatar">A</div>
                 <div>
-                    <div style="font-weight: 600;">Alex Johnson</div>
+                    <div style="font-weight: 600;" id="userName">Loading...</div>
                     <div style="font-size: 13px; color: var(--gray);">Student</div>
                 </div>
             </div>
         </div>
 
-        <div class="learn-container">
-            <!-- Chapters Panel -->
-            <div class="chapters-panel">
-                <div class="panel-title">
-                    <i class="fas fa-list-ol"></i>
-                    Chapters
-                </div>
-                <div class="chapters-grid" id="chaptersGrid">
-                    <!-- Chapters will be generated by JavaScript -->
-                </div>
+        <!-- Chapters Container -->
+        <div class="chapters-container">
+            <h2 class="section-title">
+                <i class="fas fa-book-open"></i>Available Chapters
+            </h2>
+            
+            <div id="loadingState" class="loading">
+                <div class="spinner"></div>
+                <p>Loading chapters...</p>
             </div>
-
-            <!-- Viewer Panel -->
-            <div class="viewer-panel">
-                <div class="viewer-header">
-                    <div class="viewer-title" id="viewerTitle">Select a chapter to view content</div>
-                    <div class="viewer-actions">
-                        <button class="action-btn" id="copyBtn" disabled>
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                        <button class="action-btn" id="downloadBtn" disabled>
-                            <i class="fas fa-download"></i> Download
-                        </button>
-                    </div>
-                </div>
-
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search in text..." disabled>
-                </div>
-
-                <div class="viewer-content" id="viewerContent">
-                    <div class="content-placeholder">
-                        <i class="fas fa-book-open"></i>
-                        <p>Select a chapter from the list to view its content</p>
-                    </div>
-                </div>
+            
+            <div id="errorState" class="error-state" style="display: none;">
+                <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <h3>Failed to Load Chapters</h3>
+                <p id="errorMessage">An unexpected error occurred</p>
+                <button class="retry-button" onclick="loadChapters()">Try Again</button>
             </div>
+            
+            <ul class="chapters-list" id="chaptersList" style="display: none;">
+                <!-- Chapters will be loaded here dynamically -->
+            </ul>
         </div>
     </main>
 
     <script>
-        // Configuration
-        const GITHUB_OWNER = 'your-username';
-        const GITHUB_REPO = 'your-repo';
-        const GITHUB_BRANCH = 'main';
-        
-        // Chapter path mapping (example for Accountancy)
-        const chapterPaths = {
-            1: "Accountancy/Chapter 4 Dissolution of partnership firm/Chapter 4 Dissolution of partnership firm/1. Overview And Definations.txt",
-            2: "smartbase/Accountancy/Chapter 2 Fundamentals/Chapter 2 Fundamentals/Overview.txt",
-            3: "smartbase/Accountancy/Chapter 3 Advanced Topics/Chapter 3 Advanced Topics/Overview.txt",
-            4: "Accountancy/Chapter 4 Dissolution of partnership firm/1. Overview And Definations.txt",
-            5: "smartbase/Accountancy/Chapter 5 Accounting Procedures/Chapter 5 Accounting Procedures/Overview.txt",
-            6: "smartbase/Accountancy/Chapter 6 Financial Statements/Chapter 6 Financial Statements/Overview.txt",
-            7: "smartbase/Accountancy/Chapter 7 Analysis/Chapter 7 Analysis/Overview.txt",
-            8: "smartbase/Accountancy/Chapter 8 Cash Flow/Chapter 8 Cash Flow/Overview.txt",
-            9: "smartbase/Accountancy/Chapter 9 Accounting Standards/Chapter 9 Accounting Standards/Overview.txt",
-            10: "smartbase/Accountancy/Chapter 10 Special Transactions/Chapter 10 Special Transactions/Overview.txt",
-            11: "smartbase/Accountancy/Chapter 11 Company Accounts/Chapter 11 Company Accounts/Overview.txt",
-            12: "smartbase/Accountancy/Chapter 12 Computerized Accounting/Chapter 12 Computerized Accounting/Overview.txt"
-        };
-
-        // State management
-        let currentChapter = null;
-        let chapterCache = {};
-        let searchTimeout = null;
-
-        // DOM elements
-        const chaptersGrid = document.getElementById('chaptersGrid');
-        const viewerTitle = document.getElementById('viewerTitle');
-        const viewerContent = document.getElementById('viewerContent');
-        const copyBtn = document.getElementById('copyBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const searchInput = document.getElementById('searchInput');
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeChapters();
-            loadLastOpenedChapter();
-            setupEventListeners();
+        // Check authentication state and load data
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                document.getElementById('userAvatar').textContent = user.displayName ? user.displayName.charAt(0) : user.email.charAt(0);
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                
+                // Load chapters
+                loadChapters();
+            } else {
+                // No user is signed in, redirect to sign-in page
+                window.location.href = 'signin.html';
+            }
         });
 
-        // Create chapter buttons
-        function initializeChapters() {
-            for (let i = 1; i <= 12; i++) {
-                const chapterBtn = document.createElement('button');
-                chapterBtn.className = 'chapter-btn';
-                chapterBtn.id = `chapter-${i}`;
-                chapterBtn.textContent = `Chapter ${i}`;
-                chapterBtn.setAttribute('aria-label', `Open Chapter ${i}`);
-                chapterBtn.addEventListener('click', () => selectChapter(i));
-                chaptersGrid.appendChild(chapterBtn);
-            }
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            copyBtn.addEventListener('click', copyContent);
-            downloadBtn.addEventListener('click', downloadContent);
+        // Function to load chapters from Firestore
+        function loadChapters() {
+            // Show loading state, hide others
+            document.getElementById('loadingState').style.display = 'flex';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('chaptersList').style.display = 'none';
             
-            searchInput.addEventListener('input', function(e) {
-                // Debounce search to improve performance
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    highlightSearchTerms(e.target.value);
-                }, 300);
-            });
-        }
-
-        // Select a chapter
-        function selectChapter(chapterNumber) {
-            // Update UI
-            document.querySelectorAll('.chapter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(`chapter-${chapterNumber}`).classList.add('active');
+            // Reference to the Accountancy collection in Firestore
+            const chaptersRef = db.collection('Learn').doc('Accountancy').collection('Chapters');
             
-            // Update state
-            currentChapter = chapterNumber;
-            viewerTitle.textContent = `Chapter ${chapterNumber}`;
-            
-            // Save to localStorage
-            localStorage.setItem('lastChapter', chapterNumber);
-            
-            // Check if chapter is cached
-            if (chapterCache[chapterNumber]) {
-                displayContent(chapterCache[chapterNumber]);
-            } else {
-                fetchChapterContent(chapterNumber);
-            }
-        }
-
-        // Fetch chapter content from GitHub
-        function fetchChapterContent(chapterNumber) {
-            // Show loading state
-            viewerContent.innerHTML = `
-                <div class="loading-indicator">
-                    <div class="spinner"></div>
-                    <p>Loading content...</p>
-                </div>
-            `;
-            
-            // Enable search and buttons
-            searchInput.disabled = false;
-            copyBtn.disabled = false;
-            downloadBtn.disabled = false;
-            
-            const path = chapterPaths[chapterNumber];
-            if (!path) {
-                showError("Chapter path not configured");
-                return;
-            }
-            
-            // Encode each segment of the path
-            const encodedPath = path.split('/').map(segment => encodeURIComponent(segment)).join('/');
-            const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${encodedPath}`;
-            
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+            // Get all documents (chapters) from the collection
+            chaptersRef.orderBy('order', 'asc').get()
+                .then((querySnapshot) => {
+                    const chaptersList = document.getElementById('chaptersList');
+                    chaptersList.innerHTML = ''; // Clear any existing content
+                    
+                    if (querySnapshot.empty) {
+                        showError('No chapters found. Please check back later.');
+                        return;
                     }
-                    return response.text();
+                    
+                    // Process each document
+                    querySnapshot.forEach((doc) => {
+                        const chapterData = doc.data();
+                        const listItem = document.createElement('li');
+                        listItem.className = 'chapter-item';
+                        listItem.innerHTML = `
+                            <div class="chapter-title">
+                                <i class="fas fa-file-alt"></i>
+                                ${chapterData.title || 'Untitled Chapter'}
+                            </div>
+                            <div class="chapter-excerpt">
+                                ${chapterData.excerpt || 'No description available.'}
+                            </div>
+                        `;
+                        
+                        // Add click event to navigate to chapter details
+                        listItem.addEventListener('click', () => {
+                            window.location.href = `chapter.html?id=${doc.id}`;
+                        });
+                        
+                        chaptersList.appendChild(listItem);
+                    });
+                    
+                    // Show chapters, hide loading state
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('chaptersList').style.display = 'block';
                 })
-                .then(text => {
-                    // Cache the content
-                    chapterCache[chapterNumber] = text;
-                    displayContent(text);
-                })
-                .catch(error => {
-                    console.error('Error fetching content:', error);
-                    showError(`Failed to load content: ${error.message}`);
+                .catch((error) => {
+                    console.error('Error loading chapters:', error);
+                    showError('Failed to load chapters: ' + error.message);
                 });
         }
 
-        // Display content in viewer
-        function displayContent(text) {
-            // Format text with line breaks
-            const formattedText = text.replace(/\n/g, '<br>');
-            viewerContent.innerHTML = formattedText;
-            
-            // Clear search
-            searchInput.value = '';
-        }
-
-        // Show error state
+        // Function to show error state
         function showError(message) {
-            viewerContent.innerHTML = `
-                <div class="error-state">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p>${message}</p>
-                    <button class="retry-btn" onclick="fetchChapterContent(${currentChapter})">Retry</button>
-                </div>
-            `;
-        }
-
-        // Highlight search terms in content
-        function highlightSearchTerms(term) {
-            if (!term.trim()) {
-                // Reset to original content if search is empty
-                const originalContent = chapterCache[currentChapter];
-                if (originalContent) {
-                    displayContent(originalContent);
-                }
-                return;
-            }
-            
-            const content = chapterCache[currentChapter];
-            if (!content) return;
-            
-            const regex = new RegExp(term, 'gi');
-            const highlightedContent = content.replace(regex, match => 
-                `<span class="highlight">${match}</span>`
-            );
-            
-            viewerContent.innerHTML = highlightedContent.replace(/\n/g, '<br>');
-        }
-
-        // Copy content to clipboard
-        function copyContent() {
-            const content = chapterCache[currentChapter];
-            if (!content) return;
-            
-            navigator.clipboard.writeText(content)
-                .then(() => {
-                    // Show temporary feedback
-                    const originalText = copyBtn.innerHTML;
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalText;
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-        }
-
-        // Download content as text file
-        function downloadContent() {
-            const content = chapterCache[currentChapter];
-            if (!content) return;
-            
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Chapter-${currentChapter}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // Load last opened chapter from localStorage
-        function loadLastOpenedChapter() {
-            const lastChapter = localStorage.getItem('lastChapter');
-            if (lastChapter) {
-                selectChapter(parseInt(lastChapter));
-            }
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorState').style.display = 'block';
         }
     </script>
 </body>
 </html>
-
-
