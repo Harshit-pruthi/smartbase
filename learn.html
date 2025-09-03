@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn - Smartbase</title>
+    <title>Accountancy - Smartbase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -97,6 +97,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border-left: 4px solid transparent;
+            text-decoration: none;
+            color: white;
         }
         
         .nav-item:hover {
@@ -154,78 +156,22 @@
             margin: 0 10px;
         }
         
-        .subjects-grid {
+        .content-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
         }
         
-        .subject-card {
-            background: var(--light);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .subject-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .subject-header {
-            padding: 20px;
-            color: white;
-            display: flex;
-            align-items: center;
-        }
-        
-        .subject-icon {
-            font-size: 28px;
-            margin-right: 15px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .subject-title {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        
-        .subject-info {
-            padding: 20px;
-        }
-        
-        .subject-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            color: #5F6368;
-            font-size: 14px;
-        }
-        
-        .subject-stats i {
-            margin-right: 5px;
-        }
-        
-        .chapters-container {
-            display: none;
+        .chapters-list {
             background: var(--light);
             border-radius: 16px;
             padding: 20px;
             box-shadow: var(--card-shadow);
-            margin-top: 20px;
+            max-height: 600px;
+            overflow-y: auto;
         }
         
         .chapters-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid var(--gray);
@@ -243,36 +189,11 @@
             color: var(--primary);
         }
         
-        .back-button {
-            background: var(--gray);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .back-button:hover {
-            background: #e8e8e8;
-        }
-        
-        .back-button i {
-            margin-right: 8px;
-        }
-        
-        .chapter-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
         .chapter-item {
             background: var(--gray);
             border-radius: 12px;
             padding: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
@@ -282,6 +203,11 @@
         .chapter-item:hover {
             background: #e8e8e8;
             transform: translateX(5px);
+        }
+        
+        .chapter-item.active {
+            background: var(--primary);
+            color: white;
         }
         
         .chapter-number {
@@ -298,6 +224,11 @@
             flex-shrink: 0;
         }
         
+        .chapter-item.active .chapter-number {
+            background: white;
+            color: var(--primary);
+        }
+        
         .chapter-details {
             flex-grow: 1;
         }
@@ -307,15 +238,82 @@
             margin-bottom: 5px;
         }
         
-        .chapter-duration {
-            font-size: 13px;
-            color: #5F6368;
+        .definitions-container {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .definitions-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .definitions-title {
+            font-size: 22px;
+            color: var(--dark);
             display: flex;
             align-items: center;
         }
         
-        .chapter-duration i {
-            margin-right: 5px;
+        .definitions-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .chapter-definitions {
+            display: none;
+        }
+        
+        .chapter-definitions.active {
+            display: block;
+        }
+        
+        .definition-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--gray);
+            border-radius: 12px;
+        }
+        
+        .term {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .definition {
+            color: #5F6368;
+            line-height: 1.6;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #5F6368;
+        }
+        
+        .loading i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: #5F6368;
+        }
+        
+        .no-data i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--accent2);
         }
         
         /* Responsive Design */
@@ -328,7 +326,7 @@
                 display: none;
             }
             
-            .subjects-grid {
+            .content-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -373,309 +371,281 @@
         
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <div class="nav-item">
+            <a href="dashboard.html" class="nav-item">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
-            </div>
-            <div class="nav-item active">
+            </a>
+            <a href="learn.html" class="nav-item active">
                 <i class="fas fa-book-open"></i>
                 <span>Learn</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a href="test.html" class="nav-item">
                 <i class="fas fa-task"></i>
                 <span>Test</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a href="progress.html" class="nav-item">
                 <i class="fas fa-chart-bar"></i>
                 <span>Progress</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a href="resources.html" class="nav-item">
                 <i class="fas fa-video"></i>
                 <span>Resources</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a href="community.html" class="nav-item">
                 <i class="fas fa-users"></i>
                 <span>Community</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a href="settings.html" class="nav-item">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a href="index.html" class="nav-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
-            </div>
+            </a>
         </aside>
         
         <!-- Main Content -->
         <main>
             <div class="page-header">
-                <h1 class="page-title"><i class="fas fa-book-open"></i> Learn - 12th Commerce</h1>
+                <h1 class="page-title"><i class="fas fa-calculator"></i> Accountancy - 12th Commerce</h1>
                 <div class="breadcrumb">
-                    <a href="#">Dashboard</a>
+                    <a href="dashboard.html">Dashboard</a>
                     <i class="fas fa-chevron-right"></i>
-                    <span>Learn</span>
+                    <a href="learn.html">Learn</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Accountancy</span>
                 </div>
             </div>
             
-            <div class="subjects-grid" id="subjectsGrid">
-                <!-- Accountancy -->
-                <div class="subject-card" data-subject="accountancy">
-                    <div class="subject-header" style="background: linear-gradient(45deg, #4285F4, #34A853);">
-                        <div class="subject-icon">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <h2 class="subject-title">Accountancy</h2>
+            <div class="content-container">
+                <div class="chapters-list">
+                    <div class="chapters-header">
+                        <h2 class="chapters-title"><i class="fas fa-list-ol"></i> Chapters</h2>
                     </div>
-                    <div class="subject-info">
-                        <p>Learn accounting principles, financial statements, and business transactions.</p>
-                        <div class="subject-stats">
-                            <span><i class="fas fa-book"></i> 15 Chapters</span>
-                            <span><i class="fas fa-clock"></i> 24 hours</span>
+                    <div class="chapter-item" data-chapter="1">
+                        <div class="chapter-number">1</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Introduction to Accounting</div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Business Studies -->
-                <div class="subject-card" data-subject="business">
-                    <div class="subject-header" style="background: linear-gradient(45deg, #EA4335, #FBBC05);">
-                        <div class="subject-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h2 class="subject-title">Business Studies</h2>
-                    </div>
-                    <div class="subject-info">
-                        <p>Understand business organizations, management, and operational strategies.</p>
-                        <div class="subject-stats">
-                            <span><i class="fas fa-book"></i> 12 Chapters</span>
-                            <span><i class="fas fa-clock"></i> 18 hours</span>
+                    <div class="chapter-item" data-chapter="2">
+                        <div class="chapter-number">2</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Theory Base of Accounting</div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Economics -->
-                <div class="subject-card" data-subject="economics">
-                    <div class="subject-header" style="background: linear-gradient(45deg, #34A853, #4285F4);">
-                        <div class="subject-icon">
-                            <i class="fas fa-money-bill-wave"></i>
+                    <div class="chapter-item" data-chapter="3">
+                        <div class="chapter-number">3</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Recording of Transactions</div>
                         </div>
-                        <h2 class="subject-title">Economics</h2>
                     </div>
-                    <div class="subject-info">
-                        <p>Study micro and macroeconomics, market structures, and economic policies.</p>
-                        <div class="subject-stats">
-                            <span><i class="fas fa-book"></i> 10 Chapters</span>
-                            <span><i class="fas fa-clock"></i> 20 hours</span>
+                    <div class="chapter-item" data-chapter="4">
+                        <div class="chapter-number">4</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Bank Reconciliation Statement</div>
+                        </div>
+                    </div>
+                    <div class="chapter-item" data-chapter="5">
+                        <div class="chapter-number">5</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Depreciation Provisions and Reserves</div>
+                        </div>
+                    </div>
+                    <div class="chapter-item" data-chapter="6">
+                        <div class="chapter-number">6</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Accounting for Bills of Exchange</div>
+                        </div>
+                    </div>
+                    <div class="chapter-item" data-chapter="7">
+                        <div class="chapter-number">7</div>
+                        <div class="chapter-details">
+                            <div class="chapter-name">Financial Statements</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Mathematics -->
-                <div class="subject-card" data-subject="mathematics">
-                    <div class="subject-header" style="background: linear-gradient(45deg, #FBBC05, #EA4335);">
-                        <div class="subject-icon">
-                            <i class="fas fa-square-root-alt"></i>
-                        </div>
-                        <h2 class="subject-title">Mathematics</h2>
+                <div class="definitions-container">
+                    <div class="definitions-header">
+                        <h2 class="definitions-title"><i class="fas fa-book"></i> Chapter Definitions</h2>
                     </div>
-                    <div class="subject-info">
-                        <p>Master calculus, algebra, probability, and other mathematical concepts.</p>
-                        <div class="subject-stats">
-                            <span><i class="fas fa-book"></i> 14 Chapters</span>
-                            <span><i class="fas fa-clock"></i> 30 hours</span>
+                    <div id="definitions-content">
+                        <div class="no-data">
+                            <i class="fas fa-book-open"></i>
+                            <p>Select a chapter to view definitions</p>
                         </div>
                     </div>
-                </div>
-                
-                <!-- English -->
-                <div class="subject-card" data-subject="english">
-                    <div class="subject-header" style="background: linear-gradient(45deg, #4285F4, #EA4335);">
-                        <div class="subject-icon">
-                            <i class="fas fa-language"></i>
-                        </div>
-                        <h2 class="subject-title">English</h2>
-                    </div>
-                    <div class="subject-info">
-                        <p>Improve language skills, comprehension, and business communication.</p>
-                        <div class="subject-stats">
-                            <span><i class="fas fa-book"></i> 8 Chapters</span>
-                            <span><i class="fas fa-clock"></i> 15 hours</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Informatics Practices -->
-                <div class="subject-card" data-subject="informatics">
-                    <div class="subject-header" style="background: linear-gradient(45deg, #EA4335, #34A853);">
-                        <div class="subject-icon">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                        <h2 class="subject-title">Informatics Practices</h2>
-                    </div>
-                    <div class="subject-info">
-                        <p>Learn programming, databases, and information technology applications.</p>
-                        <div class="subject-stats">
-                            <span><i class="fas fa-book"></i> 12 Chapters</span>
-                            <span><i class="fas fa-clock"></i> 22 hours</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Chapters Container (initially hidden) -->
-            <div class="chapters-container" id="chaptersContainer">
-                <div class="chapters-header">
-                    <h2 class="chapters-title"><i class="fas fa-list-ol"></i> <span id="chaptersTitle">Chapters</span></h2>
-                    <button class="back-button" id="backButton"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
-                </div>
-                <div class="chapter-list" id="chapterList">
-                    <!-- Chapters will be dynamically inserted here -->
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Firebase App (core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <script>
-        // Sample chapters data for each subject
-        const subjectsData = {
-            accountancy: {
-                title: "Accountancy Chapters",
-                chapters: [
-                    { number: 1, name: "Introduction to Accounting", duration: "2 hours" },
-                    { number: 2, name: "Theory Base of Accounting", duration: "1.5 hours" },
-                    { number: 3, name: "Recording of Transactions", duration: "3 hours" },
-                    { number: 4, name: "Bank Reconciliation Statement", duration: "2 hours" },
-                    { number: 5, name: "Depreciation Provisions and Reserves", duration: "2.5 hours" },
-                    { number: 6, name: "Accounting for Bills of Exchange", duration: "2 hours" },
-                    { number: 7, name: "Financial Statements", duration: "3 hours" },
-                    { number: 8, name: "Financial Statements of Not-for-Profit Organizations", duration: "2.5 hours" },
-                    { number: 9, name: "Accounts from Incomplete Records", duration: "2 hours" },
-                    { number: 10, name: "Computers in Accounting", duration: "1.5 hours" }
-                ]
-            },
-            business: {
-                title: "Business Studies Chapters",
-                chapters: [
-                    { number: 1, name: "Nature and Significance of Management", duration: "2 hours" },
-                    { number: 2, name: "Principles of Management", duration: "1.5 hours" },
-                    { number: 3, name: "Business Environment", duration: "2 hours" },
-                    { number: 4, name: "Planning", duration: "2 hours" },
-                    { number: 5, name: "Organizing", duration: "2.5 hours" },
-                    { number: 6, name: "Staffing", duration: "2 hours" },
-                    { number: 7, name: "Directing", duration: "2.5 hours" },
-                    { number: 8, name: "Controlling", duration: "2 hours" },
-                    { number: 9, name: "Financial Management", duration: "3 hours" },
-                    { number: 10, name: "Financial Markets", duration: "2 hours" }
-                ]
-            },
-            economics: {
-                title: "Economics Chapters",
-                chapters: [
-                    { number: 1, name: "Introduction to Microeconomics", duration: "2 hours" },
-                    { number: 2, name: "Theory of Consumer Behavior", duration: "2.5 hours" },
-                    { number: 3, name: "Production and Costs", duration: "2 hours" },
-                    { number: 4, name: "The Theory of the Firm", duration: "3 hours" },
-                    { number: 5, name: "Market Equilibrium", duration: "2 hours" },
-                    { number: 6, name: "Introduction to Macroeconomics", duration: "2 hours" },
-                    { number: 7, name: "National Income Accounting", duration: "2.5 hours" },
-                    { number: 8, name: "Money and Banking", duration: "2 hours" },
-                    { number: 9, name: "Determination of Income and Employment", duration: "3 hours" },
-                    { number: 10, name: "Government Budget and the Economy", duration: "2 hours" }
-                ]
-            },
-            mathematics: {
-                title: "Mathematics Chapters",
-                chapters: [
-                    { number: 1, name: "Relations and Functions", duration: "3 hours" },
-                    { number: 2, name: "Inverse Trigonometric Functions", duration: "2.5 hours" },
-                    { number: 3, name: "Matrices", duration: "3 hours" },
-                    { number: 4, name: "Determinants", duration: "2.5 hours" },
-                    { number: 5, name: "Continuity and Differentiability", duration: "4 hours" },
-                    { number: 6, name: "Application of Derivatives", duration: "3 hours" },
-                    { number: 7, name: "Integrals", duration: "4 hours" },
-                    { number: 8, name: "Application of Integrals", duration: "3 hours" },
-                    { number: 9, name: "Differential Equations", duration: "3 hours" },
-                    { number: 10, name: "Vector Algebra", duration: "3 hours" }
-                ]
-            },
-            english: {
-                title: "English Chapters",
-                chapters: [
-                    { number: 1, name: "Reading Comprehension", duration: "2 hours" },
-                    { number: 2, name: "Writing Skills", duration: "3 hours" },
-                    { number: 3, name: "Literature: The Last Lesson", duration: "1.5 hours" },
-                    { number: 4, name: "Literature: Lost Spring", duration: "1.5 hours" },
-                    { number: 5, name: "Literature: Deep Water", duration: "2 hours" },
-                    { number: 6, name: "Grammar: Tenses", duration: "2 hours" },
-                    { number: 7, name: "Grammar: Modals", duration: "1.5 hours" },
-                    { number: 8, name: "Business Correspondence", duration: "2 hours" }
-                ]
-            },
-            informatics: {
-                title: "Informatics Practices Chapters",
-                chapters: [
-                    { number: 1, name: "Introduction to Computer Systems", duration: "2 hours" },
-                    { number: 2, name: "Introduction to Python", duration: "3 hours" },
-                    { number: 3, name: "Python Programming Fundamentals", duration: "3 hours" },
-                    { number: 4, name: "Data Handling", duration: "3 hours" },
-                    { number: 5, name: "Database Concepts", duration: "2.5 hours" },
-                    { number: 6, name: "Structured Query Language (SQL)", duration: "4 hours" },
-                    { number: 7, name: "Introduction to Emerging Trends", duration: "2 hours" },
-                    { number: 8, name: "Society, Law and Ethics", duration: "2 hours" }
-                ]
-            }
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+            authDomain: "smartbase-dc49d.firebaseapp.com",
+            databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smartbase-dc49d",
+            storageBucket: "smartbase-dc49d.firebasestorage.app",
+            messagingSenderId: "786622743871",
+            appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
+            measurementId: "G-6BDB0TD641"
         };
 
-        // DOM Elements
-        const subjectsGrid = document.getElementById('subjectsGrid');
-        const chaptersContainer = document.getElementById('chaptersContainer');
-        const chaptersTitle = document.getElementById('chaptersTitle');
-        const chapterList = document.getElementById('chapterList');
-        const backButton = document.getElementById('backButton');
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // Add click events to subject cards
-        document.querySelectorAll('.subject-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const subject = card.getAttribute('data-subject');
-                showChapters(subject);
-            });
-        });
+        // Sample definitions data structure
+        const sampleDefinitions = {
+            1: [
+                { term: "Accounting", definition: "The process of recording, summarizing, analyzing, and reporting financial transactions of a business." },
+                { term: "Assets", definition: "Resources owned by a business that have economic value and can be converted to cash." },
+                { term: "Liabilities", definition: "Obligations or debts that a business must pay in the future." },
+                { term: "Capital", definition: "The money invested in a business by its owners." }
+            ],
+            2: [
+                { term: "Accounting Principles", definition: "The rules and guidelines that companies must follow when reporting financial data." },
+                { term: "GAAP", definition: "Generally Accepted Accounting Principles - a set of accounting standards followed in the United States." },
+                { term: "Business Entity Concept", definition: "The concept that a business is separate from its owners." },
+                { term: "Money Measurement Concept", definition: "The concept that only transactions measurable in monetary terms are recorded." }
+            ],
+            3: [
+                { term: "Journal", definition: "A book of original entry where transactions are first recorded." },
+                { term: "Ledger", definition: "A book of accounts where information from the journal is posted." },
+                { term: "Debit", definition: "An entry on the left side of an account." },
+                { term: "Credit", definition: "An entry on the right side of an account." }
+            ]
+        };
 
-        // Back button event
-        backButton.addEventListener('click', showSubjects);
+        // Function to initialize sample data in Firestore
+        async function initializeSampleData() {
+            try {
+                for (const chapter in sampleDefinitions) {
+                    const docRef = db.collection("accountancy").doc(`chapter${chapter}`);
+                    const doc = await docRef.get();
+                    
+                    if (!doc.exists) {
+                        await docRef.set({
+                            chapter: parseInt(chapter),
+                            definitions: sampleDefinitions[chapter]
+                        });
+                        console.log(`Sample data added for Chapter ${chapter}`);
+                    }
+                }
+            } catch (error) {
+                console.error("Error initializing sample data: ", error);
+            }
+        }
 
-        // Function to show chapters for a subject
-        function showChapters(subject) {
-            // Hide subjects grid and show chapters container
-            subjectsGrid.style.display = 'none';
-            chaptersContainer.style.display = 'block';
+        // Function to load definitions from Firestore
+        async function loadDefinitions(chapterNumber) {
+            const definitionsContent = document.getElementById('definitions-content');
+            definitionsContent.innerHTML = `
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading definitions...</p>
+                </div>
+            `;
             
-            // Set the chapters title
-            chaptersTitle.textContent = subjectsData[subject].title;
-            
-            // Clear previous chapters
-            chapterList.innerHTML = '';
-            
-            // Add chapters to the list
-            subjectsData[subject].chapters.forEach(chapter => {
-                const chapterElement = document.createElement('div');
-                chapterElement.className = 'chapter-item';
-                chapterElement.innerHTML = `
-                    <div class="chapter-number">${chapter.number}</div>
-                    <div class="chapter-details">
-                        <div class="chapter-name">${chapter.name}</div>
-                        <div class="chapter-duration"><i class="fas fa-clock"></i> ${chapter.duration}</div>
+            try {
+                const docRef = db.collection("accountancy").doc(`chapter${chapterNumber}`);
+                const doc = await docRef.get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    displayDefinitions(data.definitions, chapterNumber);
+                } else {
+                    definitionsContent.innerHTML = `
+                        <div class="no-data">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>No definitions found for this chapter</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error loading definitions: ", error);
+                definitionsContent.innerHTML = `
+                    <div class="no-data">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading definitions. Please try again.</p>
                     </div>
                 `;
-                chapterList.appendChild(chapterElement);
-            });
+            }
         }
 
-        // Function to show subjects list
-        function showSubjects() {
-            chaptersContainer.style.display = 'none';
-            subjectsGrid.style.display = 'grid';
+        // Function to display definitions
+        function displayDefinitions(definitions, chapterNumber) {
+            const definitionsContent = document.getElementById('definitions-content');
+            
+            if (definitions && definitions.length > 0) {
+                let html = `<div class="chapter-definitions active">`;
+                html += `<h3 style="margin-bottom: 20px; color: var(--primary);">Chapter ${chapterNumber} Definitions</h3>`;
+                
+                definitions.forEach(item => {
+                    html += `
+                        <div class="definition-item">
+                            <div class="term">${item.term}</div>
+                            <div class="definition">${item.definition}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+                definitionsContent.innerHTML = html;
+            } else {
+                definitionsContent.innerHTML = `
+                    <div class="no-data">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>No definitions available for this chapter</p>
+                    </div>
+                `;
+            }
         }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize sample data (in a real app, you'd do this separately)
+            initializeSampleData();
+            
+            // Add click events to chapter items
+            document.querySelectorAll('.chapter-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all items
+                    document.querySelectorAll('.chapter-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Get chapter number and load definitions
+                    const chapterNumber = this.getAttribute('data-chapter');
+                    loadDefinitions(chapterNumber);
+                });
+            });
+            
+            // Highlight current page in navigation
+            const currentPage = window.location.pathname.split('/').pop();
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
