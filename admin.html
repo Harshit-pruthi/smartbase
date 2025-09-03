@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add Accountancy Definitions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4285F4;
+            --secondary: #34A853;
+            --accent1: #FBBC05;
+            --accent2: #EA4335;
+            --dark: #202124;
+            --light: #FFFFFF;
+            --gray: #F8F9FA;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--gray) 0%, #E4EDF5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: var(--light);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: #3367d6;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .definition-item {
+            background: var(--gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .definition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .term {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .delete-btn {
+            background: var(--accent2);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-plus-circle"></i> Add Accountancy Definitions</h1>
+        
+        <div class="form-group">
+            <label for="chapter">Chapter</label>
+            <select id="chapter">
+                <option value="1">Chapter 1: Introduction to Accounting</option>
+                <option value="2">Chapter 2: Theory Base of Accounting</option>
+                <option value="3">Chapter 3: Recording of Transactions</option>
+                <option value="4">Chapter 4: Bank Reconciliation Statement</option>
+                <option value="5">Chapter 5: Depreciation Provisions and Reserves</option>
+                <option value="6">Chapter 6: Accounting for Bills of Exchange</option>
+                <option value="7">Chapter 7: Financial Statements</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="term">Term</label>
+            <input type="text" id="term" placeholder="Enter accounting term">
+        </div>
+        
+        <div class="form-group">
+            <label for="definition">Definition</label>
+            <textarea id="definition" placeholder="Enter definition"></textarea>
+        </div>
+        
+        <button id="addDefinition"><i class="fas fa-plus"></i> Add Definition</button>
+        
+        <div id="message" class="message"></div>
+        
+        <div style="margin-top: 30px;">
+            <h2>Current Definitions</h2>
+            <div id="definitionsList">
+                <p>No definitions added yet. Definitions will appear here after you add them.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase App (core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+            authDomain: "smartbase-dc49d.firebaseapp.com",
+            databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smartbase-dc49d",
+            storageBucket: "smartbase-dc49d.firebasestorage.app",
+            messagingSenderId: "786622743871",
+            appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
+            measurementId: "G-6BDB0TD641"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // DOM elements
+        const chapterSelect = document.getElementById('chapter');
+        const termInput = document.getElementById('term');
+        const definitionInput = document.getElementById('definition');
+        const addButton = document.getElementById('addDefinition');
+        const messageDiv = document.getElementById('message');
+        const definitionsList = document.getElementById('definitionsList');
+
+        // Add definition to Firestore
+        addButton.addEventListener('click', async function() {
+            const chapter = chapterSelect.value;
+            const term = termInput.value.trim();
+            const definition = definitionInput.value.trim();
+            
+            if (!term || !definition) {
+                showMessage('Please fill in both term and definition fields.', 'error');
+                return;
+            }
+            
+            try {
+                // Get the current document for this chapter
+                const docRef = db.collection("accountancy").doc(`chapter${chapter}`);
+                const doc = await docRef.get();
+                
+                if (doc.exists) {
+                    // Document exists, update it by adding the new definition
+                    const data = doc.data();
+                    const definitions = data.definitions || [];
+                    
+                    // Add the new definition
+                    definitions.push({ term, definition });
+                    
+                    // Update the document
+                    await docRef.update({ definitions });
+                } else {
+                    // Document doesn't exist, create it with the first definition
+                    await docRef.set({
+                        chapter: parseInt(chapter),
+                        definitions: [{ term, definition }]
+                    });
+                }
+                
+                // Clear the form
+                termInput.value = '';
+                definitionInput.value = '';
+                
+                showMessage('Definition added successfully!', 'success');
+                
+                // Refresh the definitions list
+                loadDefinitions(chapter);
+                
+            } catch (error) {
+                console.error("Error adding definition: ", error);
+                showMessage('Error adding definition. Please try again.', 'error');
+            }
+        });
+
+        // Load definitions for the selected chapter
+        chapterSelect.addEventListener('change', function() {
+            loadDefinitions(this.value);
+        });
+
+        // Function to load definitions from Firestore
+        async function loadDefinitions(chapterNumber) {
+            try {
+                const docRef = db.collection("accountancy").doc(`chapter${chapterNumber}`);
+                const doc = await docRef.get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    displayDefinitions(data.definitions || []);
+                } else {
+                    definitionsList.innerHTML = '<p>No definitions found for this chapter.</p>';
+                }
+            } catch (error) {
+                console.error("Error loading definitions: ", error);
+                definitionsList.innerHTML = '<p>Error loading definitions.</p>';
+            }
+        }
+
+        // Function to display definitions
+        function displayDefinitions(definitions) {
+            if (definitions.length === 0) {
+                definitionsList.innerHTML = '<p>No definitions found for this chapter.</p>';
+                return;
+            }
+            
+            let html = '';
+            definitions.forEach((item, index) => {
+                html += `
+                    <div class="definition-item">
+                        <div class="definition-header">
+                            <span class="term">${item.term}</span>
+                            <button class="delete-btn" data-index="${index}">Delete</button>
+                        </div>
+                        <div class="definition">${item.definition}</div>
+                    </div>
+                `;
+            });
+            
+            definitionsList.innerHTML = html;
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    deleteDefinition(index);
+                });
+            });
+        }
+
+        // Function to delete a definition
+        async function deleteDefinition(index) {
+            const chapter = chapterSelect.value;
+            
+            try {
+                const docRef = db.collection("accountancy").doc(`chapter${chapter}`);
+                const doc = await docRef.get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    const definitions = data.definitions || [];
+                    
+                    // Remove the definition at the specified index
+                    definitions.splice(index, 1);
+                    
+                    // Update the document
+                    await docRef.update({ definitions });
+                    
+                    showMessage('Definition deleted successfully!', 'success');
+                    
+                    // Refresh the definitions list
+                    loadDefinitions(chapter);
+                }
+            } catch (error) {
+                console.error("Error deleting definition: ", error);
+                showMessage('Error deleting definition.', 'error');
+            }
+        }
+
+        // Function to show message
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Load definitions for the initially selected chapter on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDefinitions(chapterSelect.value);
+        });
+    </script>
+</body>
+</html>
