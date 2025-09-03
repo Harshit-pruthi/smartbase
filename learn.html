@@ -418,42 +418,58 @@
             document.getElementById('errorState').style.display = 'none';
             document.getElementById('chaptersList').style.display = 'none';
             
-            // Reference to the Accountancy collection in Firestore
-            const chaptersRef = db.collection('Learn').doc('Accountancy').collection('Chapters');
+            // Reference to the Learn collection in Firestore
+            const learnRef = db.collection('Learn');
             
-            // Get all documents (chapters) from the collection
-            chaptersRef.orderBy('order', 'asc').get()
-                .then((querySnapshot) => {
-                    const chaptersList = document.getElementById('chaptersList');
-                    chaptersList.innerHTML = ''; // Clear any existing content
-                    
-                    if (querySnapshot.empty) {
-                        showError('No chapters found. Please check back later.');
+            // Get the Accountancy document from the Learn collection
+            learnRef.doc('Accountancy').get()
+                .then((doc) => {
+                    if (!doc.exists) {
+                        showError('Accountancy document not found in the Learn collection.');
                         return;
                     }
                     
-                    // Process each document
-                    querySnapshot.forEach((doc) => {
-                        const chapterData = doc.data();
-                        const listItem = document.createElement('li');
-                        listItem.className = 'chapter-item';
-                        listItem.innerHTML = `
-                            <div class="chapter-title">
-                                <i class="fas fa-file-alt"></i>
-                                ${chapterData.title || 'Untitled Chapter'}
-                            </div>
-                            <div class="chapter-excerpt">
-                                ${chapterData.excerpt || 'No description available.'}
-                            </div>
-                        `;
-                        
-                        // Add click event to navigate to chapter details
-                        listItem.addEventListener('click', () => {
-                            window.location.href = `chapter.html?id=${doc.id}`;
-                        });
-                        
-                        chaptersList.appendChild(listItem);
-                    });
+                    const accountancyData = doc.data();
+                    const chaptersList = document.getElementById('chaptersList');
+                    chaptersList.innerHTML = ''; // Clear any existing content
+                    
+                    // Check if there are any chapters in the document
+                    if (!accountancyData || Object.keys(accountancyData).length === 0) {
+                        showError('No chapters found in the Accountancy document.');
+                        return;
+                    }
+                    
+                    // Process each chapter field in the document
+                    let chapterCount = 0;
+                    for (const [key, value] of Object.entries(accountancyData)) {
+                        if (key.startsWith('Chapter')) {
+                            chapterCount++;
+                            const listItem = document.createElement('li');
+                            listItem.className = 'chapter-item';
+                            listItem.innerHTML = `
+                                <div class="chapter-title">
+                                    <i class="fas fa-file-alt"></i>
+                                    ${key}
+                                </div>
+                                <div class="chapter-excerpt">
+                                    ${typeof value === 'string' ? value : 'Content available'}
+                                </div>
+                            `;
+                            
+                            // Add click event to navigate to chapter details
+                            listItem.addEventListener('click', () => {
+                                // In a real app, you would navigate to a page showing the full content
+                                alert(`Opening ${key}\n\n${value}`);
+                            });
+                            
+                            chaptersList.appendChild(listItem);
+                        }
+                    }
+                    
+                    if (chapterCount === 0) {
+                        showError('No chapters found in the Accountancy document. Make sure your chapters are named with "Chapter" prefix (e.g., "Chapter 1").');
+                        return;
+                    }
                     
                     // Show chapters, hide loading state
                     document.getElementById('loadingState').style.display = 'none';
