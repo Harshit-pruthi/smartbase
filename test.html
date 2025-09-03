@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartbase - Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reuse the same styles from dashboard.html */
+        :root {
+            --primary: #4285F4;
+            --secondary: #34A853;
+            --accent1: #FBBC05;
+            --accent2: #EA4335;
+            --dark: #202124;
+            --light: #FFFFFF;
+            --gray: #F8F9FA;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--gray) 0%, #E4EDF5 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        header {
+            grid-column: 1 / -1;
+            background: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid var(--primary);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary) 0%, #3367D6 100%);
+            color: white;
+            padding: 25px 0;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent1);
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid var(--light);
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        main {
+            padding: 25px;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .page-title i {
+            margin-right: 15px;
+            color: var(--primary);
+        }
+        
+        .test-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .test-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .test-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .test-header i {
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            background: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+        
+        .test-card h3 {
+            font-size: 18px;
+        }
+        
+        .test-card p {
+            color: #5F6368;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .test-info {
+            display: flex;
+            justify-content: space-between;
+            color: #5F6368;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .test-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: #3367d6;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .test-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .user-name {
+                display: none;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smartbase</span>
+            </div>
+            <div class="user-info">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="User Profile">
+                <div class="user-name">Alex Johnson</div>
+            </div>
+        </header>
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="learn.html" class="nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </a>
+            <a href="test.html" class="nav-item active">
+                <i class="fas fa-task"></i>
+                <span>Test</span>
+            </a>
+            <a href="progress.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Progress</span>
+            </a>
+            <a href="resources.html" class="nav-item">
+                <i class="fas fa-video"></i>
+                <span>Resources</span>
+            </a>
+            <a href="community.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Community</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </aside>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-task"></i> Tests & Assessments</h1>
+            </div>
+            
+            <div class="test-container">
+                <div class="test-card">
+                    <div class="test-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Mathematics Quiz</h3>
+                    </div>
+                    <p>Test your knowledge of calculus and algebra concepts.</p>
+                    <div class="test-info">
+                        <span><i class="far fa-clock"></i> 30 minutes</span>
+                        <span><i class="far fa-question-circle"></i> 20 questions</span>
+                    </div>
+                    <button class="test-button">Start Quiz</button>
+                </div>
+                
+                <div class="test-card">
+                    <div class="test-header">
+                        <i class="fas fa-atom"></i>
+                        <h3>Physics Test</h3>
+                    </div>
+                    <p>Assess your understanding of thermodynamics principles.</p>
+                    <div class="test-info">
+                        <span><i class="far fa-clock"></i> 45 minutes</span>
+                        <span><i class="far fa-question-circle"></i> 25 questions</span>
+                    </div>
+                    <button class="test-button">Start Test</button>
+                </div>
+                
+                <div class="test-card">
+                    <div class="test-header">
+                        <i class="fas fa-book"></i>
+                        <h3>Accountancy Exam</h3>
+                    </div>
+                    <p>Final examination for Accountancy course.</p>
+                    <div class="test-info">
+                        <span><i class="far fa-clock"></i> 60 minutes</span>
+                        <span><i class="far fa-question-circle"></i> 30 questions</span>
+                    </div>
+                    <button class="test-button">Start Exam</button>
+                </div>
+                
+                <div class="test-card">
+                    <div class="test-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Business Studies</h3>
+                    </div>
+                    <p>Test on business management concepts.</p>
+                    <div class="test-info">
+                        <span><i class="far fa-clock"></i> 40 minutes</span>
+                        <span><i class="far fa-question-circle"></i> 22 questions</span>
+                    </div>
+                    <button class="test-button">Start Test</button>
+                </div>
+                
+                <div class="test-card">
+                    <div class="test-header">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Economics Quiz</h3>
+                    </div>
+                    <p>Quick quiz on microeconomics concepts.</p>
+                    <div class="test-info">
+                        <span><i class="far fa-clock"></i> 20 minutes</span>
+                        <span><i class="far fa-question-circle"></i> 15 questions</span>
+                    </div>
+                    <button class="test-button">Start Quiz</button>
+                </div>
+                
+                <div class="test-card">
+                    <div class="test-header">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Informatics Practices</h3>
+                    </div>
+                    <p>Test your programming and database knowledge.</p>
+                    <div class="test-info">
+                        <span><i class="far fa-clock"></i> 50 minutes</span>
+                        <span><i class="far fa-question-circle"></i> 28 questions</span>
+                    </div>
+                    <button class="test-button">Start Test</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simulate user data
+        const userData = {
+            name: "Alex Johnson",
+            profilePic: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
+        };
+        
+        // Update user info
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.user-name').textContent = userData.name;
+            document.querySelector('.user-info img').src = userData.profilePic;
+            
+            // Highlight current page in navigation
+            const currentPage = window.location.pathname.split('/').pop();
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Add event listeners to test buttons
+            document.querySelectorAll('.test-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Test would start now. In a real application, this would open the test interface.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
