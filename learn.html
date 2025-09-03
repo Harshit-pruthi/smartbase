@@ -6,124 +6,287 @@
     <title>Learn - Smartbase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #4285F4;
+            --secondary: #34A853;
+            --accent1: #FBBC05;
+            --accent2: #EA4335;
+            --dark: #202124;
+            --light: #FFFFFF;
+            --gray: #F8F9FA;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        :root {
-            --primary: #4285f4;
-            --secondary: #6066ff;
-            --accent: #00c853;
-            --light: #f8f9fa;
-            --dark: #202124;
-            --gray: #5f6368;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
+        
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(135deg, var(--gray) 0%, #E4EDF5 100%);
+            min-height: 100vh;
             color: var(--dark);
-            display: flex;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
             min-height: 100vh;
         }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 260px;
-            background: white;
-            box-shadow: var(--card-shadow);
-            padding: 24px 0;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            padding: 0 24px 24px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            margin-bottom: 24px;
-        }
-
-        .logo-icon {
-            font-size: 28px;
-            color: var(--primary);
-            margin-right: 12px;
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 24px;
-            margin: 6px 12px;
-            border-radius: 10px;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover {
-            background: rgba(66, 133, 244, 0.08);
-            color: var(--primary);
-        }
-
-        .nav-item.active {
-            background: rgba(66, 133, 244, 0.12);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .nav-icon {
-            margin-right: 12px;
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-        }
-
-        .header {
+        
+        /* Header Styles */
+        header {
+            grid-column: 1 / -1;
+            background: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            padding: 0 30px;
+            z-index: 10;
         }
-
-        .welcome h1 {
+        
+        .logo {
             font-size: 24px;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: var(--gray);
-        }
-
-        .user-profile {
+            font-weight: 700;
+            color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 12px;
         }
-
-        .user-avatar {
-            width: 42px;
-            height: 42px;
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid var(--primary);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary) 0%, #3367D6 100%);
+            color: white;
+            padding: 25px 0;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent1);
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid var(--light);
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        main {
+            padding: 25px;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .page-title i {
+            margin-right: 15px;
+            color: var(--primary);
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            color: #5F6368;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb i {
+            margin: 0 10px;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .subject-card {
+            background: var(--light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .subject-header {
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .subject-icon {
+            font-size: 28px;
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .subject-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .subject-info {
+            padding: 20px;
+        }
+        
+        .subject-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: #5F6368;
+            font-size: 14px;
+        }
+        
+        .subject-stats i {
+            margin-right: 5px;
+        }
+        
+        .chapters-container {
+            display: none;
+            background: var(--light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-top: 20px;
+        }
+        
+        .chapters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .chapters-title {
+            font-size: 22px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .chapters-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .back-button {
+            background: var(--gray);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: #e8e8e8;
+        }
+        
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        .chapter-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .chapter-item {
+            background: var(--gray);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .chapter-item:hover {
+            background: #e8e8e8;
+            transform: translateX(5px);
+        }
+        
+        .chapter-number {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--primary);
             color: white;
@@ -131,396 +294,388 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            margin-right: 15px;
+            flex-shrink: 0;
         }
-
-        /* Content Area */
-        .content-container {
-            background: white;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 32px;
+        
+        .chapter-details {
+            flex-grow: 1;
         }
-
-        .section-title {
-            font-size: 24px;
+        
+        .chapter-name {
             font-weight: 600;
-            margin-bottom: 24px;
-            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .chapter-duration {
+            font-size: 13px;
+            color: #5F6368;
             display: flex;
             align-items: center;
         }
-
-        .section-title i {
-            margin-right: 12px;
-            color: var(--primary);
+        
+        .chapter-duration i {
+            margin-right: 5px;
         }
-
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .subject-card {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            border-left: 4px solid var(--primary);
-        }
-
-        .subject-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--card-shadow);
-        }
-
-        .subject-card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: var(--dark);
-        }
-
-        .subject-card p {
-            color: var(--gray);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .card-button {
-            display: inline-block;
-            padding: 8px 16px;
-            background: var(--primary);
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.2s ease;
-            font-size: 14px;
-        }
-
-        .card-button:hover {
-            background: #3367d6;
-        }
-
-        .lesson-content {
-            line-height: 1.8;
-            color: var(--dark);
-        }
-
-        .lesson-content h2 {
-            font-size: 22px;
-            margin: 24px 0 16px;
-            color: var(--primary);
-        }
-
-        .lesson-content p {
-            margin-bottom: 16px;
-        }
-
-        .lesson-content ul, .lesson-content ol {
-            margin-left: 24px;
-            margin-bottom: 16px;
-        }
-
-        .lesson-content li {
-            margin-bottom: 8px;
-        }
-
-        .content-placeholder {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .placeholder-line {
-            height: 16px;
-            background: #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .database-info {
-            background: rgba(66, 133, 244, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 24px;
-            font-size: 14px;
-        }
-
-        .database-info h3 {
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
+        
         /* Responsive Design */
-        @media (max-width: 992px) {
-            .subject-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                padding: 16px;
-            }
-            
-            .nav-items {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 8px;
-            }
-            
-            .nav-item {
-                flex-shrink: 0;
-            }
-            
-            .subject-grid {
+        @media (max-width: 900px) {
+            .container {
                 grid-template-columns: 1fr;
             }
             
-            .content-container {
-                padding: 20px;
+            .sidebar {
+                display: none;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .user-name {
+                display: none;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .breadcrumb {
+                margin-top: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-icon"><i class="fas fa-brain"></i></div>
-            <div class="logo-text">Smartbase</div>
-        </div>
-        
-        <a href="learn.html" class="nav-item active">
-            <div class="nav-icon"><i class="fas fa-book"></i></div>
-            <span>Learn</span>
-        </a>
-        
-        <a href="practice.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-pen-to-square"></i></div>
-            <span>Practice</span>
-        </a>
-        
-        <a href="test.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
-            <span>Test</span>
-        </a>
-        
-        <a href="resources.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-box-open"></i></div>
-            <span>Resources</span>
-        </a>
-        
-        <a href="progress.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
-            <span>Progress</span>
-        </a>
-        
-        <div style="margin-top: auto; padding: 24px;">
-            <a href="#" id="logoutBtn" class="card-button" style="display: block; text-align: center;">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="header">
-            <div class="welcome">
-                <h1>Learning Center</h1>
-                <p>Explore subjects and expand your knowledge</p>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smartbase</span>
             </div>
-            
-            <div class="user-profile">
-                <div class="user-avatar">A</div>
-                <div>
-                    <div style="font-weight: 600;">Alex Johnson</div>
-                    <div style="font-size: 13px; color: var(--gray);">Student</div>
+            <div class="user-info">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="User Profile">
+                <div class="user-name">Alex Johnson</div>
+            </div>
+        </header>
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item active">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-task"></i>
+                <span>Test</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-video"></i>
+                <span>Resources</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Community</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-book-open"></i> Learn - 12th Commerce</h1>
+                <div class="breadcrumb">
+                    <a href="#">Dashboard</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Learn</span>
                 </div>
             </div>
-        </div>
-
-        <div class="content-container">
-            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Available Subjects</h2>
             
-            <div class="subject-grid">
-                <div class="subject-card">
-                    <h3>Mathematics</h3>
-                    <p>Algebra, Calculus, Geometry, and more. Build your mathematical foundation.</p>
-                    <a href="#" class="card-button" data-subject="math">View Lessons</a>
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- Accountancy -->
+                <div class="subject-card" data-subject="accountancy">
+                    <div class="subject-header" style="background: linear-gradient(45deg, #4285F4, #34A853);">
+                        <div class="subject-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h2 class="subject-title">Accountancy</h2>
+                    </div>
+                    <div class="subject-info">
+                        <p>Learn accounting principles, financial statements, and business transactions.</p>
+                        <div class="subject-stats">
+                            <span><i class="fas fa-book"></i> 15 Chapters</span>
+                            <span><i class="fas fa-clock"></i> 24 hours</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="subject-card">
-                    <h3>Physics</h3>
-                    <p>Mechanics, Thermodynamics, Electromagnetism. Understand the laws of nature.</p>
-                    <a href="#" class="card-button" data-subject="physics">View Lessons</a>
+                <!-- Business Studies -->
+                <div class="subject-card" data-subject="business">
+                    <div class="subject-header" style="background: linear-gradient(45deg, #EA4335, #FBBC05);">
+                        <div class="subject-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2 class="subject-title">Business Studies</h2>
+                    </div>
+                    <div class="subject-info">
+                        <p>Understand business organizations, management, and operational strategies.</p>
+                        <div class="subject-stats">
+                            <span><i class="fas fa-book"></i> 12 Chapters</span>
+                            <span><i class="fas fa-clock"></i> 18 hours</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="subject-card">
-                    <h3>Chemistry</h3>
-                    <p>Organic, Inorganic, Physical chemistry. Explore the world of elements and reactions.</p>
-                    <a href="#" class="card-button" data-subject="chemistry">View Lessons</a>
+                <!-- Economics -->
+                <div class="subject-card" data-subject="economics">
+                    <div class="subject-header" style="background: linear-gradient(45deg, #34A853, #4285F4);">
+                        <div class="subject-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h2 class="subject-title">Economics</h2>
+                    </div>
+                    <div class="subject-info">
+                        <p>Study micro and macroeconomics, market structures, and economic policies.</p>
+                        <div class="subject-stats">
+                            <span><i class="fas fa-book"></i> 10 Chapters</span>
+                            <span><i class="fas fa-clock"></i> 20 hours</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mathematics -->
+                <div class="subject-card" data-subject="mathematics">
+                    <div class="subject-header" style="background: linear-gradient(45deg, #FBBC05, #EA4335);">
+                        <div class="subject-icon">
+                            <i class="fas fa-square-root-alt"></i>
+                        </div>
+                        <h2 class="subject-title">Mathematics</h2>
+                    </div>
+                    <div class="subject-info">
+                        <p>Master calculus, algebra, probability, and other mathematical concepts.</p>
+                        <div class="subject-stats">
+                            <span><i class="fas fa-book"></i> 14 Chapters</span>
+                            <span><i class="fas fa-clock"></i> 30 hours</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- English -->
+                <div class="subject-card" data-subject="english">
+                    <div class="subject-header" style="background: linear-gradient(45deg, #4285F4, #EA4335);">
+                        <div class="subject-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h2 class="subject-title">English</h2>
+                    </div>
+                    <div class="subject-info">
+                        <p>Improve language skills, comprehension, and business communication.</p>
+                        <div class="subject-stats">
+                            <span><i class="fas fa-book"></i> 8 Chapters</span>
+                            <span><i class="fas fa-clock"></i> 15 hours</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Informatics Practices -->
+                <div class="subject-card" data-subject="informatics">
+                    <div class="subject-header" style="background: linear-gradient(45deg, #EA4335, #34A853);">
+                        <div class="subject-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h2 class="subject-title">Informatics Practices</h2>
+                    </div>
+                    <div class="subject-info">
+                        <p>Learn programming, databases, and information technology applications.</p>
+                        <div class="subject-stats">
+                            <span><i class="fas fa-book"></i> 12 Chapters</span>
+                            <span><i class="fas fa-clock"></i> 22 hours</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="content-container">
-            <h2 class="section-title"><i class="fas fa-book-open"></i> Lesson Content</h2>
             
-            <div id="lessonContent">
-                <div class="content-placeholder">
-                    <p>Select a subject to view lessons</p>
+            <!-- Chapters Container (initially hidden) -->
+            <div class="chapters-container" id="chaptersContainer">
+                <div class="chapters-header">
+                    <h2 class="chapters-title"><i class="fas fa-list-ol"></i> <span id="chaptersTitle">Chapters</span></h2>
+                    <button class="back-button" id="backButton"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
+                </div>
+                <div class="chapter-list" id="chapterList">
+                    <!-- Chapters will be dynamically inserted here -->
                 </div>
             </div>
-            
-            <div class="database-info">
-                <h3>Database Connection Info</h3>
-                <p>This page would normally connect to your MongoDB database at:<br>
-                <code>mongodb://username:password@0939f713-2c29-40cb-8029-9cef3f53a873.asia-south1.firestore.goog:443/default</code></p>
-                <p>In a real implementation, you would use a backend API to securely fetch data from your database.</p>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
-        // Simulated database content
-        const lessonData = {
-            math: [
-                {
-                    title: "Introduction to Algebra",
-                    content: `<h2>Introduction to Algebra</h2>
-                    <p>Algebra is a branch of mathematics dealing with symbols and the rules for manipulating those symbols. In elementary algebra, those symbols represent quantities without fixed values, known as variables.</p>
-                    <p>Key concepts in algebra include:</p>
-                    <ul>
-                        <li>Variables and expressions</li>
-                        <li>Equations and inequalities</li>
-                        <li>Functions</li>
-                        <li>Graphing</li>
-                        <li>Polynomials</li>
-                    </ul>`
-                },
-                {
-                    title: "Calculus Fundamentals",
-                    content: `<h2>Calculus Fundamentals</h2>
-                    <p>Calculus is the mathematical study of continuous change, in the same way that geometry is the study of shape and algebra is the study of generalizations of arithmetic operations.</p>
-                    <p>It has two major branches:</p>
-                    <ol>
-                        <li>Differential calculus: concerning instantaneous rates of change and slopes of curves</li>
-                        <li>Integral calculus: concerning accumulation of quantities and areas under or between curves</li>
-                    </ol>`
-                }
-            ],
-            physics: [
-                {
-                    title: "Newton's Laws of Motion",
-                    content: `<h2>Newton's Laws of Motion</h2>
-                    <p>Newton's laws of motion are three physical laws that, together, laid the foundation for classical mechanics. They describe the relationship between a body and the forces acting upon it, and its motion in response to those forces.</p>
-                    <p>The three laws are:</p>
-                    <ol>
-                        <li>An object at rest remains at rest, and an object in motion remains in motion at constant speed and in a straight line unless acted on by an unbalanced force.</li>
-                        <li>The acceleration of an object depends on the mass of the object and the amount of force applied.</li>
-                        <li>Whenever one object exerts a force on another object, the second object exerts an equal and opposite force on the first.</li>
-                    </ol>`
-                }
-            ],
-            chemistry: [
-                {
-                    title: "Periodic Table Elements",
-                    content: `<h2>Periodic Table of Elements</h2>
-                    <p>The periodic table is a tabular arrangement of chemical elements, organized on the basis of their atomic numbers, electron configurations, and recurring chemical properties.</p>
-                    <p>Elements are presented in order of increasing atomic number. The standard form of the table consists of a grid of elements laid out in 18 columns and 7 rows, with a double row of elements below that.</p>
-                    <p>The table can be used to derive relationships between the properties of the elements and predict the properties of new elements yet to be discovered or synthesized.</p>`
-                }
-            ]
+        // Sample chapters data for each subject
+        const subjectsData = {
+            accountancy: {
+                title: "Accountancy Chapters",
+                chapters: [
+                    { number: 1, name: "Introduction to Accounting", duration: "2 hours" },
+                    { number: 2, name: "Theory Base of Accounting", duration: "1.5 hours" },
+                    { number: 3, name: "Recording of Transactions", duration: "3 hours" },
+                    { number: 4, name: "Bank Reconciliation Statement", duration: "2 hours" },
+                    { number: 5, name: "Depreciation Provisions and Reserves", duration: "2.5 hours" },
+                    { number: 6, name: "Accounting for Bills of Exchange", duration: "2 hours" },
+                    { number: 7, name: "Financial Statements", duration: "3 hours" },
+                    { number: 8, name: "Financial Statements of Not-for-Profit Organizations", duration: "2.5 hours" },
+                    { number: 9, name: "Accounts from Incomplete Records", duration: "2 hours" },
+                    { number: 10, name: "Computers in Accounting", duration: "1.5 hours" }
+                ]
+            },
+            business: {
+                title: "Business Studies Chapters",
+                chapters: [
+                    { number: 1, name: "Nature and Significance of Management", duration: "2 hours" },
+                    { number: 2, name: "Principles of Management", duration: "1.5 hours" },
+                    { number: 3, name: "Business Environment", duration: "2 hours" },
+                    { number: 4, name: "Planning", duration: "2 hours" },
+                    { number: 5, name: "Organizing", duration: "2.5 hours" },
+                    { number: 6, name: "Staffing", duration: "2 hours" },
+                    { number: 7, name: "Directing", duration: "2.5 hours" },
+                    { number: 8, name: "Controlling", duration: "2 hours" },
+                    { number: 9, name: "Financial Management", duration: "3 hours" },
+                    { number: 10, name: "Financial Markets", duration: "2 hours" }
+                ]
+            },
+            economics: {
+                title: "Economics Chapters",
+                chapters: [
+                    { number: 1, name: "Introduction to Microeconomics", duration: "2 hours" },
+                    { number: 2, name: "Theory of Consumer Behavior", duration: "2.5 hours" },
+                    { number: 3, name: "Production and Costs", duration: "2 hours" },
+                    { number: 4, name: "The Theory of the Firm", duration: "3 hours" },
+                    { number: 5, name: "Market Equilibrium", duration: "2 hours" },
+                    { number: 6, name: "Introduction to Macroeconomics", duration: "2 hours" },
+                    { number: 7, name: "National Income Accounting", duration: "2.5 hours" },
+                    { number: 8, name: "Money and Banking", duration: "2 hours" },
+                    { number: 9, name: "Determination of Income and Employment", duration: "3 hours" },
+                    { number: 10, name: "Government Budget and the Economy", duration: "2 hours" }
+                ]
+            },
+            mathematics: {
+                title: "Mathematics Chapters",
+                chapters: [
+                    { number: 1, name: "Relations and Functions", duration: "3 hours" },
+                    { number: 2, name: "Inverse Trigonometric Functions", duration: "2.5 hours" },
+                    { number: 3, name: "Matrices", duration: "3 hours" },
+                    { number: 4, name: "Determinants", duration: "2.5 hours" },
+                    { number: 5, name: "Continuity and Differentiability", duration: "4 hours" },
+                    { number: 6, name: "Application of Derivatives", duration: "3 hours" },
+                    { number: 7, name: "Integrals", duration: "4 hours" },
+                    { number: 8, name: "Application of Integrals", duration: "3 hours" },
+                    { number: 9, name: "Differential Equations", duration: "3 hours" },
+                    { number: 10, name: "Vector Algebra", duration: "3 hours" }
+                ]
+            },
+            english: {
+                title: "English Chapters",
+                chapters: [
+                    { number: 1, name: "Reading Comprehension", duration: "2 hours" },
+                    { number: 2, name: "Writing Skills", duration: "3 hours" },
+                    { number: 3, name: "Literature: The Last Lesson", duration: "1.5 hours" },
+                    { number: 4, name: "Literature: Lost Spring", duration: "1.5 hours" },
+                    { number: 5, name: "Literature: Deep Water", duration: "2 hours" },
+                    { number: 6, name: "Grammar: Tenses", duration: "2 hours" },
+                    { number: 7, name: "Grammar: Modals", duration: "1.5 hours" },
+                    { number: 8, name: "Business Correspondence", duration: "2 hours" }
+                ]
+            },
+            informatics: {
+                title: "Informatics Practices Chapters",
+                chapters: [
+                    { number: 1, name: "Introduction to Computer Systems", duration: "2 hours" },
+                    { number: 2, name: "Introduction to Python", duration: "3 hours" },
+                    { number: 3, name: "Python Programming Fundamentals", duration: "3 hours" },
+                    { number: 4, name: "Data Handling", duration: "3 hours" },
+                    { number: 5, name: "Database Concepts", duration: "2.5 hours" },
+                    { number: 6, name: "Structured Query Language (SQL)", duration: "4 hours" },
+                    { number: 7, name: "Introduction to Emerging Trends", duration: "2 hours" },
+                    { number: 8, name: "Society, Law and Ethics", duration: "2 hours" }
+                ]
+            }
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const lessonContent = document.getElementById('lessonContent');
-            const subjectButtons = document.querySelectorAll('.card-button[data-subject]');
-            
-            // Handle subject button clicks
-            subjectButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const subject = this.getAttribute('data-subject');
-                    loadSubjectContent(subject);
-                });
+        // DOM Elements
+        const subjectsGrid = document.getElementById('subjectsGrid');
+        const chaptersContainer = document.getElementById('chaptersContainer');
+        const chaptersTitle = document.getElementById('chaptersTitle');
+        const chapterList = document.getElementById('chapterList');
+        const backButton = document.getElementById('backButton');
+
+        // Add click events to subject cards
+        document.querySelectorAll('.subject-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const subject = card.getAttribute('data-subject');
+                showChapters(subject);
             });
-            
-            // Load subject content
-            function loadSubjectContent(subject) {
-                if (lessonData[subject]) {
-                    let contentHTML = '';
-                    
-                    lessonData[subject].forEach(lesson => {
-                        contentHTML += `
-                            <div class="lesson-content">
-                                ${lesson.content}
-                            </div>
-                            <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;">
-                        `;
-                    });
-                    
-                    lessonContent.innerHTML = contentHTML;
-                } else {
-                    lessonContent.innerHTML = `
-                        <div class="content-placeholder">
-                            <p>No content available for this subject yet.</p>
-                        </div>
-                    `;
-                }
-            }
-            
-            // Logout functionality
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                if (confirm('Are you sure you want to logout?')) {
-                    // In a real app, this would sign out from Firebase
-                    window.location.href = 'index.html'; // Redirect to login page
-                }
-            });
-            
-            // Simulate loading from database
-            const loadFromDBBtn = document.createElement('button');
-            loadFromDBBtn.textContent = 'Simulate Load from DB';
-            loadFromDBBtn.className = 'card-button';
-            loadFromDBBtn.style.marginTop = '16px';
-            loadFromDBBtn.addEventListener('click', function() {
-                const placeholder = document.querySelector('.content-placeholder');
-                placeholder.innerHTML = '';
-                
-                // Simulate loading animation
-                for (let i = 0; i < 5; i++) {
-                    const line = document.createElement('div');
-                    line.className = 'placeholder-line';
-                    line.style.width = i % 2 === 0 ? '100%' : '80%';
-                    placeholder.appendChild(line);
-                }
-                
-                // Simulate data loading after a delay
-                setTimeout(() => {
-                    loadSubjectContent('math');
-                }, 1500);
-            });
-            
-            document.querySelector('.database-info').appendChild(loadFromDBBtn);
         });
+
+        // Back button event
+        backButton.addEventListener('click', showSubjects);
+
+        // Function to show chapters for a subject
+        function showChapters(subject) {
+            // Hide subjects grid and show chapters container
+            subjectsGrid.style.display = 'none';
+            chaptersContainer.style.display = 'block';
+            
+            // Set the chapters title
+            chaptersTitle.textContent = subjectsData[subject].title;
+            
+            // Clear previous chapters
+            chapterList.innerHTML = '';
+            
+            // Add chapters to the list
+            subjectsData[subject].chapters.forEach(chapter => {
+                const chapterElement = document.createElement('div');
+                chapterElement.className = 'chapter-item';
+                chapterElement.innerHTML = `
+                    <div class="chapter-number">${chapter.number}</div>
+                    <div class="chapter-details">
+                        <div class="chapter-name">${chapter.name}</div>
+                        <div class="chapter-duration"><i class="fas fa-clock"></i> ${chapter.duration}</div>
+                    </div>
+                `;
+                chapterList.appendChild(chapterElement);
+            });
+        }
+
+        // Function to show subjects list
+        function showSubjects() {
+            chaptersContainer.style.display = 'none';
+            subjectsGrid.style.display = 'grid';
+        }
     </script>
 </body>
 </html>
