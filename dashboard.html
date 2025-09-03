@@ -3,509 +3,574 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Smartbase</title>
+    <title>Smartbase - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #4285F4;
+            --secondary: #34A853;
+            --accent1: #FBBC05;
+            --accent2: #EA4335;
+            --dark: #202124;
+            --light: #FFFFFF;
+            --gray: #F8F9FA;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        :root {
-            --primary: #4285f4;
-            --secondary: #6066ff;
-            --accent: #00c853;
-            --light: #f8f9fa;
-            --dark: #202124;
-            --gray: #5f6368;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
+        
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(135deg, var(--gray) 0%, #E4EDF5 100%);
+            min-height: 100vh;
             color: var(--dark);
-            display: flex;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
             min-height: 100vh;
         }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 260px;
-            background: white;
-            box-shadow: var(--card-shadow);
-            padding: 24px 0;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            padding: 0 24px 24px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            margin-bottom: 24px;
-        }
-
-        .logo-icon {
-            font-size: 28px;
-            color: var(--primary);
-            margin-right: 12px;
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 24px;
-            margin: 6px 12px;
-            border-radius: 10px;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover {
-            background: rgba(66, 133, 244, 0.08);
-            color: var(--primary);
-        }
-
-        .nav-item.active {
-            background: rgba(66, 133, 244, 0.12);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .nav-icon {
-            margin-right: 12px;
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-        }
-
-        .header {
+        
+        /* Header Styles */
+        header {
+            grid-column: 1 / -1;
+            background: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            padding: 0 30px;
+            z-index: 10;
         }
-
-        .welcome h1 {
+        
+        .logo {
             font-size: 24px;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: var(--gray);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        /* Dashboard Cards */
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(66, 133, 244, 0.1);
+            font-weight: 700;
             color: var(--primary);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 20px;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
             margin-right: 12px;
+            border: 2px solid var(--primary);
         }
-
-        .card-title {
-            font-size: 18px;
+        
+        .user-name {
             font-weight: 600;
             color: var(--dark);
         }
-
-        .card-content {
-            color: var(--gray);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .card-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--primary);
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary) 0%, #3367D6 100%);
             color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.2s ease;
-        }
-
-        .card-button:hover {
-            background: #3367d6;
-        }
-
-        /* Progress Section */
-        .progress-section {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
+            padding: 25px 0;
             box-shadow: var(--card-shadow);
-            margin-bottom: 32px;
         }
-
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent1);
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid var(--light);
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        main {
+            padding: 25px;
+            overflow-y: auto;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .welcome-banner h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-banner p {
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-header i {
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            background: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .card:nth-child(1) .card-header i {
+            color: var(--primary);
+        }
+        
+        .card:nth-child(2) .card-header i {
+            color: var(--secondary);
+        }
+        
+        .card:nth-child(3) .card-header i {
+            color: var(--accent2);
+        }
+        
+        .card h3 {
+            font-size: 18px;
+        }
+        
+        .card p {
+            color: #5F6368;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .progress-container {
+            margin-top: 15px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .card:nth-child(1) .progress {
+            background: var(--primary);
+            width: 75%;
+        }
+        
+        .card:nth-child(2) .progress {
+            background: var(--secondary);
+            width: 60%;
+        }
+        
+        .card:nth-child(3) .progress {
+            background: var(--accent2);
+            width: 45%;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #5F6368;
+        }
+        
         .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 22px;
+            margin: 30px 0 20px;
             color: var(--dark);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray);
         }
-
-        .progress-grid {
+        
+        .courses-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
         }
-
-        .progress-item {
-            display: flex;
-            align-items: center;
+        
+        .course-card {
+            background: var(--light);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
         }
-
-        .progress-circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: conic-gradient(var(--primary) 75%, #ddd 0);
-            margin-right: 16px;
-            position: relative;
+        
+        .course-card:hover {
+            transform: translateY(-5px);
         }
-
-        .progress-circle::before {
-            content: '75%';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .progress-info h3 {
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-
-        .progress-info p {
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        /* Recent Activity */
-        .activity-list {
-            list-style: none;
-        }
-
-        .activity-item {
-            display: flex;
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .activity-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            background: rgba(0, 200, 83, 0.1);
-            color: var(--accent);
+        
+        .course-img {
+            height: 140px;
+            background: linear-gradient(45deg, var(--accent1), var(--accent2));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 16px;
-            font-size: 18px;
+            color: white;
+            font-size: 20px;
         }
-
-        .activity-content {
-            flex: 1;
+        
+        .course-content {
+            padding: 15px;
         }
-
-        .activity-content h3 {
+        
+        .course-title {
             font-size: 16px;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
-
-        .activity-content p {
-            font-size: 14px;
-            color: var(--gray);
+        
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            color: #5F6368;
+            font-size: 13px;
+            margin-top: 15px;
         }
-
-        .activity-time {
+        
+        .course-info i {
+            margin-right: 5px;
+        }
+        
+        .badge {
+            background: var(--gray);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
             font-size: 12px;
-            color: var(--gray);
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
         }
-
+        
         /* Responsive Design */
-        @media (max-width: 992px) {
-            .dashboard-cards {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
             }
             
             .sidebar {
-                width: 100%;
-                padding: 16px;
+                display: none;
             }
             
-            .nav-items {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 8px;
-            }
-            
-            .nav-item {
-                flex-shrink: 0;
-            }
-            
-            .dashboard-cards {
+            .cards-container {
                 grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .user-name {
+                display: none;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .welcome-banner h1 {
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-icon"><i class="fas fa-brain"></i></div>
-            <div class="logo-text">Smartbase</div>
-        </div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smartbase</span>
+            </div>
+            <div class="user-info">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="User Profile">
+                <div class="user-name">Alex Johnson</div>
+            </div>
+        </header>
         
-        <a href="learn.html" class="nav-item active">
-            <div class="nav-icon"><i class="fas fa-book"></i></div>
-            <span>Learn</span>
-        </a>
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-book-open"></i>
+                <span>Learn</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-task"></i>
+                <span>Test</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-video"></i>
+                <span>Resources</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Community</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
         
-        <a href="practice.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-pen-to-square"></i></div>
-            <span>Practice</span>
-        </a>
-        
-        <a href="test.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
-            <span>Test</span>
-        </a>
-        
-        <a href="resources.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-box-open"></i></div>
-            <span>Resources</span>
-        </a>
-        
-        <a href="progress.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
-            <span>Progress</span>
-        </a>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="header">
-            <div class="welcome">
+        <!-- Main Content -->
+        <main>
+            <div class="welcome-banner">
                 <h1>Welcome back, Alex!</h1>
-                <p>Continue your learning journey from where you left off.</p>
+                <p>You have 3 new resources to explore. Continue your learning journey from where you left off.</p>
             </div>
             
-            <div class="user-profile">
-                <div class="user-avatar">A</div>
-                <div>
-                    <div style="font-weight: 600;">Alex Johnson</div>
-                    <div style="font-size: 13px; color: var(--gray);">Student</div>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-book"></i>
+                        <h3>Current Course</h3>
+                    </div>
+                    <p>Advanced Mathematics - Calculus II</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Progress</span>
+                            <span>75%</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Cards -->
-        <div class="dashboard-cards">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon"><i class="fas fa-book"></i></div>
-                    <h2 class="card-title">Learn</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-tasks"></i>
+                        <h3>Assignments</h3>
+                    </div>
+                    <p>2 pending assignments due this week</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Completed</span>
+                            <span>60%</span>
+                        </div>
+                    </div>
                 </div>
-                <p class="card-content">Access comprehensive study materials, video lessons, and interactive content tailored to your courses.</p>
-                <a href="learn.html" class="card-button">Start Learning</a>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>Achievements</h3>
+                    </div>
+                    <p>Unlocked 8 of 15 badges this month</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Progress</span>
+                            <span>45%</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon"><i class="fas fa-pen-to-square"></i></div>
-                    <h2 class="card-title">Practice</h2>
+            <h2 class="section-title">Continue Learning</h2>
+            <div class="courses-container">
+                <div class="course-card">
+                    <div class="course-img">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Calculus II - Integration</h3>
+                        <p>Master integration techniques and applications</p>
+                        <span class="badge">Mathematics</span>
+                        <div class="course-info">
+                            <span><i class="far fa-clock"></i> 45 min</span>
+                            <span><i class="far fa-file-alt"></i> 5 lessons</span>
+                        </div>
+                    </div>
                 </div>
-                <p class="card-content">Reinforce your knowledge with practice problems, quizzes, and interactive exercises.</p>
-                <a href="practice.html" class="card-button">Practice Now</a>
+                
+                <div class="course-card">
+                    <div class="course-img" style="background:linear-gradient(45deg, var(--primary), var(--secondary));">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Physics - Thermodynamics</h3>
+                        <p>Understand laws of thermodynamics and entropy</p>
+                        <span class="badge">Science</span>
+                        <div class="course-info">
+                            <span><i class="far fa-clock"></i> 32 min</span>
+                            <span><i class="far fa-file-alt"></i> 4 lessons</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-img" style="background:linear-gradient(45deg, var(--accent2), var(--primary));">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Python Programming</h3>
+                        <p>Learn Python from basics to advanced concepts</p>
+                        <span class="badge">Computer Science</span>
+                        <div class="course-info">
+                            <span><i class="far fa-clock"></i> 58 min</span>
+                            <span><i class="far fa-file-alt"></i> 6 lessons</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-img" style="background:linear-gradient(45deg, var(--secondary), var(--accent1));">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Chemistry Lab</h3>
+                        <p>Practical experiments and chemical reactions</p>
+                        <span class="badge">Science</span>
+                        <div class="course-info">
+                            <span><i class="far fa-clock"></i> 25 min</span>
+                            <span><i class="far fa-file-alt"></i> 3 lessons</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon"><i class="fas fa-file-alt"></i></div>
-                    <h2 class="card-title">Test</h2>
-                </div>
-                <p class="card-content">Evaluate your understanding with timed tests and get detailed performance analysis.</p>
-                <a href="test.html" class="card-button">Take a Test</a>
-            </div>
-        </div>
-
-        <!-- Progress Section -->
-        <div class="progress-section">
-            <h2 class="section-title">Your Progress</h2>
-            <div class="progress-grid">
-                <div class="progress-item">
-                    <div class="progress-circle"></div>
-                    <div class="progress-info">
-                        <h3>Mathematics</h3>
-                        <p>12/16 topics completed</p>
+            <h2 class="section-title">Upcoming Tests</h2>
+            <div class="courses-container">
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3 class="course-title">Mathematics Quiz</h3>
+                        <p>Integration techniques and applications</p>
+                        <div class="course-info">
+                            <span><i class="far fa-calendar"></i> Tomorrow, 10:00 AM</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="progress-item">
-                    <div class="progress-circle" style="background: conic-gradient(var(--accent) 52%, #ddd 0);">
-                        <div class="progress-value">52%</div>
-                    </div>
-                    <div class="progress-info">
-                        <h3>Physics</h3>
-                        <p>8/15 topics completed</p>
-                    </div>
-                </div>
-                
-                <div class="progress-item">
-                    <div class="progress-circle" style="background: conic-gradient(var(--secondary) 35%, #ddd 0);">
-                        <div class="progress-value">35%</div>
-                    </div>
-                    <div class="progress-info">
-                        <h3>Chemistry</h3>
-                        <p>7/20 topics completed</p>
+                <div class="course-card">
+                    <div class="course-content">
+                        <h3 class="course-title">Physics Midterm</h3>
+                        <p>Thermodynamics and energy transfer</p>
+                        <div class="course-info">
+                            <span><i class="far fa-calendar"></i> Feb 15, 2:30 PM</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="progress-section">
-            <h2 class="section-title">Recent Activity</h2>
-            <ul class="activity-list">
-                <li class="activity-item">
-                    <div class="activity-icon"><i class="fas fa-book"></i></div>
-                    <div class="activity-content">
-                        <h3>Completed Calculus Lesson</h3>
-                        <p>Differential Equations</p>
-                    </div>
-                    <div class="activity-time">2 hours ago</div>
-                </li>
-                
-                <li class="activity-item">
-                    <div class="activity-icon"><i class="fas fa-pen-to-square"></i></div>
-                    <div class="activity-content">
-                        <h3>Practice Quiz Submitted</h3>
-                        <p>Organic Chemistry - 85% Score</p>
-                    </div>
-                    <div class="activity-time">Yesterday</div>
-                </li>
-                
-                <li class="activity-item">
-                    <div class="activity-icon"><i class="fas fa-file-alt"></i></div>
-                    <div class="activity-content">
-                        <h3>Completed Weekly Test</h3>
-                        <p>Physics: Mechanics - 78% Score</p>
-                    </div>
-                    <div class="activity-time">2 days ago</div>
-                </li>
-            </ul>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
-        // Simple JavaScript to handle navigation and active states
+        // Simulate user data - in a real app this would come from Firebase
+        const userData = {
+            name: "Alex Johnson",
+            profilePic: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+            progress: {
+                math: 75,
+                assignments: 60,
+                achievements: 45
+            }
+        };
+        
+        // Update user info in the dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            const navItems = document.querySelectorAll('.nav-item');
+            document.querySelector('.user-name').textContent = userData.name;
+            document.querySelector('.user-info img').src = userData.profilePic;
+            document.querySelector('.welcome-banner h1').textContent = `Welcome back, ${userData.name.split(' ')[0]}!`;
             
+            // Add click events to navigation items
+            const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
                 item.addEventListener('click', function() {
+                    // Remove active class from all items
                     navItems.forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked item
                     this.classList.add('active');
+                    
+                    // In a real app, this would load the corresponding page content
+                    const pageName = this.querySelector('span').textContent;
+                    if (pageName === 'Logout') {
+                        // In a real app, this would call Firebase auth signOut
+                        alert('Logging out...');
+                        window.location.href = 'index.html';
+                    } else {
+                        alert(`Navigating to ${pageName} page...`);
+                    }
                 });
             });
-            
-            // Simulate loading user data (in a real app, this would come from Firebase)
-            const userAvatar = document.querySelector('.user-avatar');
-            const userName = document.querySelector('.user-profile > div > div:first-child');
-            
-            // This would typically come from your Firebase auth state
-            const userData = {
-                name: "Alex Johnson",
-                initial: "A",
-                role: "Student"
-            };
-            
-            userAvatar.textContent = userData.initial;
-            userName.textContent = userData.name;
         });
     </script>
 </body>
