@@ -6,7 +6,6 @@
   <title>Learn - Smartbase</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* same theme as dashboard */
     body { margin:0; font-family:'Segoe UI',Tahoma; background:#f5f7fa; color:#202124; display:flex; min-height:100vh;}
     .sidebar{width:260px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:24px 0;display:flex;flex-direction:column;}
     .logo{display:flex;align-items:center;padding:0 24px 24px;border-bottom:1px solid rgba(0,0,0,.06);margin-bottom:24px;}
@@ -34,7 +33,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script>
-    // Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
       authDomain: "smartbase-dc49d.firebaseapp.com",
@@ -81,23 +79,27 @@
 
     function loadChapters(){
       document.getElementById('loadingState').style.display='block';
-      db.collection('Root').doc('Learn').collection('Accountancy').get()
-      .then(snapshot=>{
+      db.collection('Learn').doc('Accountancy').get()
+      .then(doc=>{
+        if(!doc.exists){showError("No Accountancy document found.");return;}
+        const data=doc.data();
         const list=document.getElementById('chaptersList');
         list.innerHTML='';
-        if(snapshot.empty){showError("No chapters found.");return;}
-        snapshot.forEach(doc=>{
-          const key=doc.id;
-          const value=doc.data()[key]||JSON.stringify(doc.data());
-          const li=document.createElement('li');
-          li.className='chapter-item';
-          li.innerHTML=`
-            <div class="chapter-title"><i class="fas fa-file-alt"></i>${key}</div>
-            <div class="chapter-excerpt">${value}</div>
-          `;
-          li.onclick=()=>alert(`Opening ${key}\n\n${value}`);
-          list.appendChild(li);
-        });
+        let found=false;
+        for(const [key,value] of Object.entries(data)){
+          if(key.startsWith("Chapter")){
+            found=true;
+            const li=document.createElement('li');
+            li.className='chapter-item';
+            li.innerHTML=`
+              <div class="chapter-title"><i class="fas fa-file-alt"></i>${key}</div>
+              <div class="chapter-excerpt">${value}</div>
+            `;
+            li.onclick=()=>alert(`Opening ${key}\n\n${value}`);
+            list.appendChild(li);
+          }
+        }
+        if(!found){showError("No chapters found in document.");return;}
         document.getElementById('loadingState').style.display='none';
         list.style.display='block';
       })
