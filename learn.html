@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn - Smartbase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4285f4;
+            --secondary: #6066ff;
+            --accent: #00c853;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            box-shadow: var(--card-shadow);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 24px 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 24px;
+            margin: 6px 12px;
+            border-radius: 10px;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(66, 133, 244, 0.08);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: rgba(66, 133, 244, 0.12);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome h1 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: var(--gray);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .content-container {
+            display: flex;
+            gap: 24px;
+        }
+
+        .chapters-panel {
+            width: 300px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            height: calc(100vh - 180px);
+            overflow-y: auto;
+        }
+
+        .chapters-panel h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .chapter-item {
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .chapter-item:hover {
+            background: rgba(66, 133, 244, 0.08);
+        }
+
+        .chapter-item.active {
+            background: rgba(66, 133, 244, 0.12);
+            border-left-color: var(--primary);
+            font-weight: 500;
+        }
+
+        .chapter-item h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .chapter-item p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .files-list {
+            margin-top: 15px;
+            padding-left: 20px;
+            display: none;
+        }
+
+        .files-list.show {
+            display: block;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-item:hover {
+            background: rgba(66, 133, 244, 0.08);
+        }
+
+        .file-icon {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        /* Content Viewer */
+        .content-viewer {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            height: calc(100vh - 180px);
+            overflow-y: auto;
+        }
+
+        .content-viewer h2 {
+            font-size: 22px;
+            margin-bottom: 16px;
+            color: var(--dark);
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .content-text {
+            line-height: 1.6;
+            color: var(--dark);
+        }
+
+        .content-text h3 {
+            font-size: 18px;
+            margin: 24px 0 12px;
+            color: var(--primary);
+        }
+
+        .content-text p {
+            margin-bottom: 16px;
+        }
+
+        .content-text ul, .content-text ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .content-text li {
+            margin-bottom: 8px;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #ddd;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .chapters-panel {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 16px;
+            }
+            
+            .nav-items {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 8px;
+            }
+            
+            .nav-item {
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-brain"></i></div>
+            <div class="logo-text">Smartbase</div>
+        </div>
+        
+        <a href="learn.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-book"></i></div>
+            <span>Learn</span>
+        </a>
+        
+        <a href="practice.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-pen-to-square"></i></div>
+            <span>Practice</span>
+        </a>
+        
+        <a href="test.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
+            <span>Test</span>
+        </a>
+        
+        <a href="resources.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-box-open"></i></div>
+            <span>Resources</span>
+        </a>
+        
+        <a href="progress.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+            <span>Progress</span>
+        </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <div class="welcome">
+                <h1>Learning Center</h1>
+                <p>Explore subjects and chapters to expand your knowledge</p>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">A</div>
+                <div>
+                    <div style="font-weight: 600;">Alex Johnson</div>
+                    <div style="font-size: 13px; color: var(--gray);">Student</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <!-- Chapters Panel -->
+            <div class="chapters-panel">
+                <h2>Accountancy</h2>
+                
+                <div class="chapter-item active">
+                    <h3>Chapter 4: Dissolution of Partnership Firm</h3>
+                    <p>5 files • Last studied 2 days ago</p>
+                    
+                    <div class="files-list show">
+                        <div class="file-item" data-file="overview">
+                            <i class="far fa-file-alt file-icon"></i>
+                            <span>1. Overview And Definitions.txt</span>
+                        </div>
+                        <div class="file-item" data-file="accounting">
+                            <i class="far fa-file-alt file-icon"></i>
+                            <span>2. Accounting Treatment.txt</span>
+                        </div>
+                        <div class="file-item" data-file="settlement">
+                            <i class="far fa-file-alt file-icon"></i>
+                            <span>3. Settlement of Accounts.txt</span>
+                        </div>
+                        <div class="file-item" data-file="problems">
+                            <i class="far fa-file-alt file-icon"></i>
+                            <span>4. Practice Problems.txt</span>
+                        </div>
+                        <div class="file-item" data-file="summary">
+                            <i class="far fa-file-alt file-icon"></i>
+                            <span>5. Chapter Summary.txt</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chapter-item">
+                    <h3>Chapter 3: Reconstitution of Partnership</h3>
+                    <p>4 files • Last studied 5 days ago</p>
+                </div>
+                
+                <div class="chapter-item">
+                    <h3>Chapter 2: Accounting for Partnerships</h3>
+                    <p>6 files • Last studied 1 week ago</p>
+                </div>
+                
+                <div class="chapter-item">
+                    <h3>Chapter 1: Introduction to Accounting</h3>
+                    <p>3 files • Last studied 2 weeks ago</p>
+                </div>
+            </div>
+            
+            <!-- Content Viewer -->
+            <div class="content-viewer">
+                <h2>Overview And Definitions</h2>
+                
+                <div class="content-text">
+                    <h3>Dissolution of Partnership Firm</h3>
+                    <p>Dissolution of a partnership firm refers to the process of ending the relationship between the partners of the firm. This involves discontinuing the business, settling accounts, and realizing assets and liabilities.</p>
+                    
+                    <h3>Key Definitions</h3>
+                    <ul>
+                        <li><strong>Dissolution:</strong> The process of ending the existence of the partnership relationship among all partners.</li>
+                        <li><strong>Realization:</strong> The process of converting partnership assets into cash.</li>
+                        <li><strong>Insolvency:</strong> When a partner is unable to pay their share of losses or liabilities.</li>
+                        <li><strong>Goodwill:</strong> The value of the firm's reputation and customer relationships.</li>
+                    </ul>
+                    
+                    <h3>Modes of Dissolution</h3>
+                    <p>There are several ways a partnership firm can be dissolved:</p>
+                    <ol>
+                        <li><strong>Dissolution by Agreement:</strong> When all partners agree to dissolve the firm.</li>
+                        <li><strong>Compulsory Dissolution:</strong> When the business becomes illegal or all partners except one become insolvent.</li>
+                        <li><strong>Dissolution on the Happening of Certain Events:</strong> Such as the expiration of the fixed term, death of a partner, or completion of the specific venture.</li>
+                        <li><strong>Dissolution by Notice:</strong> In partnership at will, any partner can dissolve by giving notice.</li>
+                        <li><strong>Dissolution by Court:</strong> When a court orders dissolution due to insanity, misconduct, or persistent breach of agreement.</li>
+                    </ol>
+                    
+                    <h3>Accounting Process</h3>
+                    <p>The accounting process for dissolution involves:</p>
+                    <ol>
+                        <li>Closing the books of accounts</li>
+                        <li>Preparing a realization account</li>
+                        <li>Settling assets and liabilities</li>
+                        <li>Distributing any remaining cash to partners</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle chapter clicks
+            const chapterItems = document.querySelectorAll('.chapter-item');
+            
+            chapterItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all chapters
+                    chapterItems.forEach(i => {
+                        i.classList.remove('active');
+                        const filesList = i.querySelector('.files-list');
+                        if (filesList) filesList.classList.remove('show');
+                    });
+                    
+                    // Add active class to clicked chapter
+                    this.classList.add('active');
+                    
+                    // Toggle files list visibility
+                    const filesList = this.querySelector('.files-list');
+                    if (filesList) filesList.classList.toggle('show');
+                });
+            });
+            
+            // Handle file clicks
+            const fileItems = document.querySelectorAll('.file-item');
+            
+            fileItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // You would typically fetch the file content from a server here
+                    // For demonstration, we'll just change the content viewer title
+                    const fileName = this.querySelector('span').textContent;
+                    document.querySelector('.content-viewer h2').textContent = fileName.replace('.txt', '');
+                    
+                    // Simulate different content based on file clicked
+                    const fileType = this.getAttribute('data-file');
+                    const contentViewer = document.querySelector('.content-text');
+                    
+                    if (fileType === 'overview') {
+                        contentViewer.innerHTML = `
+                            <h3>Dissolution of Partnership Firm</h3>
+                            <p>Dissolution of a partnership firm refers to the process of ending the relationship between the partners of the firm. This involves discontinuing the business, settling accounts, and realizing assets and liabilities.</p>
+                            
+                            <h3>Key Definitions</h3>
+                            <ul>
+                                <li><strong>Dissolution:</strong> The process of ending the existence of the partnership relationship among all partners.</li>
+                                <li><strong>Realization:</strong> The process of converting partnership assets into cash.</li>
+                                <li><strong>Insolvency:</strong> When a partner is unable to pay their share of losses or liabilities.</li>
+                                <li><strong>Goodwill:</strong> The value of the firm's reputation and customer relationships.</li>
+                            </ul>
+                        `;
+                    } else if (fileType === 'accounting') {
+                        contentViewer.innerHTML = `
+                            <h3>Accounting Treatment</h3>
+                            <p>The accounting process for dissolution involves several important steps:</p>
+                            
+                            <h3>Realization Account</h3>
+                            <p>A realization account is prepared to record the sale of assets and payment of liabilities. The format is as follows:</p>
+                            
+                            <p><strong>Debit Side:</strong> All assets (except cash) and dissolution expenses</p>
+                            <p><strong>Credit Side:</strong> All liabilities, reserves, and profit on realization</p>
+                            
+                            <h3>Settlement of Partner Accounts</h3>
+                            <p>After realization, the remaining cash is distributed to partners according to their capital balances.</p>
+                        `;
+                    } else {
+                        contentViewer.innerHTML = `
+                            <h3>${fileName.replace('.txt', '')}</h3>
+                            <p>This is the content of the ${fileName} file. In a real application, this content would be fetched from a server or database.</p>
+                            <p>For demonstration purposes, we're showing sample content. The actual implementation would retrieve the text file content from your repository.</p>
+                            
+                            <h3>How it would work</h3>
+                            <ol>
+                                <li>The system would make an API call to your backend</li>
+                                <li>The backend would retrieve the file from the repository</li>
+                                <li>The content would be formatted and displayed here</li>
+                            </ol>
+                        `;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
