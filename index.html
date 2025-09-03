@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smartbase - Sign In</title>
     <style>
+        :root {
+            --primary: #4285F4;
+            --secondary: #34A853;
+            --accent1: #FBBC05;
+            --accent2: #EA4335;
+            --dark: #202124;
+            --light: #FFFFFF;
+            --gray: #F8F9FA;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +23,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, var(--gray) 0%, #E4EDF5 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,140 +32,143 @@
         }
         
         .container {
-            background: white;
+            background: var(--light);
             border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 450px;
             overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .container:hover {
-            transform: translateY(-5px);
+            position: relative;
         }
         
         .header {
-            background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             padding: 40px 30px;
             text-align: center;
             color: white;
         }
         
         .logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            letter-spacing: 1px;
             margin-bottom: 10px;
+            letter-spacing: 1px;
         }
         
-        .subtitle {
-            font-weight: 300;
+        .tagline {
+            font-size: 16px;
             opacity: 0.9;
+            font-weight: 500;
         }
         
-        .form-container {
-            padding: 40px 30px;
+        .content {
+            padding: 30px;
+        }
+        
+        .welcome {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .instruction {
+            color: #5F6368;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 15px;
         }
         
         .google-btn {
             display: flex;
             align-items: center;
             justify-content: center;
+            background: var(--light);
+            border: 1px solid #DADCE0;
+            border-radius: 10px;
+            padding: 12px;
             width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: white;
-            color: #757575;
-            font-size: 16px;
-            font-weight: 500;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
         
         .google-btn:hover {
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            background: #F8F9FA;
             transform: translateY(-2px);
-        }
-        
-        .google-btn:active {
-            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         .google-icon {
-            margin-right: 15px;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+        
+        .google-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #3C4043;
         }
         
         .divider {
             display: flex;
             align-items: center;
-            margin: 30px 0;
+            margin: 25px 0;
         }
         
         .divider-line {
             flex: 1;
             height: 1px;
-            background: #eee;
+            background: #DADCE0;
         }
         
         .divider-text {
             padding: 0 15px;
-            color: #999;
-            font-weight: 500;
+            color: #5F6368;
             font-size: 14px;
         }
         
         .footer {
             text-align: center;
             padding: 20px;
-            color: #999;
-            font-size: 14px;
-            background: #f9f9f9;
+            color: #5F6368;
+            font-size: 12px;
+            border-top: 1px solid #F1F1F1;
         }
         
-        .footer a {
-            color: #6e45e2;
-            text-decoration: none;
-        }
-        
-        .user-info {
-            display: none;
+        .error-message {
+            color: var(--accent2);
             text-align: center;
-            padding: 20px;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
         }
         
-        .user-pic {
+        .shape {
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .shape-1 {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent1), var(--accent2));
+            top: -30px;
+            left: -30px;
+            opacity: 0.3;
+        }
+        
+        .shape-2 {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            margin-bottom: 15px;
-            border: 3px solid #6e45e2;
-        }
-        
-        .welcome-text {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .sign-out {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .sign-out:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            bottom: -20px;
+            right: -20px;
+            opacity: 0.3;
         }
         
         @media (max-width: 480px) {
@@ -167,62 +180,51 @@
                 padding: 30px 20px;
             }
             
-            .form-container {
-                padding: 30px 20px;
+            .content {
+                padding: 25px 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        
         <div class="header">
             <div class="logo">Smartbase</div>
-            <div class="subtitle">Your Gateway to Educational Excellence</div>
+            <div class="tagline">Elevate Your Learning Experience</div>
         </div>
         
-        <div class="form-container">
-            <button id="googleSignIn" class="google-btn">
+        <div class="content">
+            <h1 class="welcome">Welcome Back</h1>
+            <p class="instruction">Sign in to access your educational dashboard</p>
+            
+            <div class="google-btn" id="googleSignIn">
                 <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
-                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
-                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
-                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                 </svg>
-                Sign in with Google
-            </button>
-            
-            <div class="divider">
-                <div class="divider-line"></div>
-                <div class="divider-text">or</div>
-                <div class="divider-line"></div>
+                <span class="google-text">Sign in with Google</span>
             </div>
             
-            <div class="user-info" id="userInfo">
-                <img class="user-pic" id="userPic" src="" alt="User Profile Picture">
-                <div class="welcome-text">Welcome, <span id="userName"></span>!</div>
-                <button class="sign-out" id="signOut">Sign Out</button>
-            </div>
+            <div class="error-message" id="errorMessage"></div>
         </div>
         
         <div class="footer">
-            By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+            © 2023 Smartbase. All rights reserved.
         </div>
     </div>
 
-    <!-- Import Firebase -->
+    <!-- Import Firebase scripts -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
+        // Import the functions you need from the SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
-        import { 
-            getAuth, 
-            signInWithPopup, 
-            GoogleAuthProvider, 
-            signOut,
-            onAuthStateChanged 
-        } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-
-        // Your web app's Firebase configuration
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
             authDomain: "smartbase-dc49d.firebaseapp.com",
@@ -236,62 +238,41 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         
-        // Google Auth Provider
+        // Set up Google provider
         const provider = new GoogleAuthProvider();
         
-        // DOM Elements
+        // Get DOM elements
         const googleSignInBtn = document.getElementById('googleSignIn');
-        const signOutBtn = document.getElementById('signOut');
-        const userInfo = document.getElementById('userInfo');
-        const userPic = document.getElementById('userPic');
-        const userName = document.getElementById('userName');
+        const errorMessage = document.getElementById('errorMessage');
         
-        // Sign in with Google
-        googleSignInBtn.addEventListener('click', () => {
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    // This gives you a Google Access Token
-                    const credential = GoogleAuthProvider.credentialFromResult(result);
-                    const token = credential.accessToken;
-                    
-                    // The signed-in user info
-                    const user = result.user;
-                    updateUI(user);
-                })
-                .catch((error) => {
-                    console.error("Error during sign in:", error);
-                });
-        });
+        // Add click event to Google sign-in button
+        googleSignInBtn.addEventListener('click', signInWithGoogle);
         
-        // Sign out
-        signOutBtn.addEventListener('click', () => {
-            signOut(auth)
-                .then(() => {
-                    userInfo.style.display = 'none';
-                    googleSignInBtn.style.display = 'flex';
-                })
-                .catch((error) => {
-                    console.error("Error during sign out:", error);
-                });
-        });
-        
-        // Auth state observer
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                updateUI(user);
-            }
-        });
-        
-        // Update UI based on user state
-        function updateUI(user) {
-            if (user) {
-                userPic.src = user.photoURL;
-                userName.textContent = user.displayName;
-                userInfo.style.display = 'block';
-                googleSignInBtn.style.display = 'none';
+        // Google sign-in function
+        async function signInWithGoogle() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                // This gives you a Google Access Token
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                
+                // The signed-in user info
+                const user = result.user;
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                // Handle Errors here
+                const errorCode = error.code;
+                const errorMessageText = error.message;
+                
+                // Display error message
+                errorMessage.textContent = `Sign-in failed: ${errorMessageText}`;
+                errorMessage.style.display = 'block';
+                
+                console.error('Error during sign-in:', error);
             }
         }
     </script>
