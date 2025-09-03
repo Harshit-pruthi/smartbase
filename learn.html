@@ -21,7 +21,6 @@
             --dark: #202124;
             --gray: #5f6368;
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --sidebar-width: 260px;
         }
 
         body {
@@ -33,14 +32,13 @@
 
         /* Sidebar Navigation */
         .sidebar {
-            width: var(--sidebar-width);
+            width: 260px;
             background: white;
             box-shadow: var(--card-shadow);
             padding: 24px 0;
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
-            z-index: 100;
         }
 
         .logo {
@@ -98,6 +96,8 @@
             flex: 1;
             padding: 24px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -135,156 +135,233 @@
             font-weight: 600;
         }
 
-        /* Content Area */
-        .content-container {
+        /* Learn Page Specific Styles */
+        .learn-container {
             display: flex;
             gap: 24px;
+            flex: 1;
         }
 
         .chapters-panel {
-            width: 300px;
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: var(--card-shadow);
-            height: calc(100vh - 180px);
-            overflow-y: auto;
-        }
-
-        .chapters-panel h2 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .chapter-item {
-            padding: 14px 16px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-left: 4px solid transparent;
-        }
-
-        .chapter-item:hover {
-            background: rgba(66, 133, 244, 0.08);
-        }
-
-        .chapter-item.active {
-            background: rgba(66, 133, 244, 0.12);
-            border-left-color: var(--primary);
-            font-weight: 500;
-        }
-
-        .chapter-item h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
-        }
-
-        .chapter-item p {
-            font-size: 13px;
-            color: var(--gray);
-        }
-
-        .files-list {
-            margin-top: 15px;
-            padding-left: 20px;
-            display: none;
-        }
-
-        .files-list.show {
-            display: block;
-        }
-
-        .file-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .file-item:hover {
-            background: rgba(66, 133, 244, 0.08);
-        }
-
-        .file-icon {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-
-        /* Content Viewer */
-        .content-viewer {
-            flex: 1;
+            flex: 0 0 300px;
             background: white;
             border-radius: 16px;
             padding: 24px;
             box-shadow: var(--card-shadow);
-            height: calc(100vh - 180px);
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .content-viewer h2 {
-            font-size: 22px;
-            margin-bottom: 16px;
-            color: var(--dark);
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .content-text {
-            line-height: 1.6;
-            color: var(--dark);
-        }
-
-        .content-text h3 {
+        .panel-title {
             font-size: 18px;
-            margin: 24px 0 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title i {
             color: var(--primary);
         }
 
-        .content-text p {
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .chapter-btn {
+            background: var(--light);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .chapter-btn:hover {
+            background: rgba(66, 133, 244, 0.08);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .chapter-btn.active {
+            background: rgba(66, 133, 244, 0.12);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .viewer-panel {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .viewer-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .viewer-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .viewer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--light);
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #f1f3f4;
+        }
+
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .action-btn.primary:hover {
+            background: #3367d6;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--light);
+            border-radius: 8px;
+            padding: 0 12px;
+            border: 1px solid #e0e0e0;
+            margin: 16px 24px 0;
+        }
+
+        .search-box i {
+            color: var(--gray);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .viewer-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .content-placeholder {
+            color: var(--gray);
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .content-placeholder i {
+            font-size: 48px;
             margin-bottom: 16px;
+            color: #dadce0;
         }
 
-        .content-text ul, .content-text ol {
-            margin-left: 24px;
-            margin-bottom: 16px;
-        }
-
-        .content-text li {
-            margin-bottom: 8px;
-        }
-
-        .empty-state {
+        .loading-indicator {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            padding: 40px;
             color: var(--gray);
-            text-align: center;
         }
 
-        .empty-state i {
-            font-size: 48px;
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(66, 133, 244, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
             margin-bottom: 16px;
-            color: #ddd;
+        }
+
+        .error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .error-state i {
+            font-size: 48px;
+            color: #f44336;
+            margin-bottom: 16px;
+        }
+
+        .retry-btn {
+            margin-top: 16px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background-color: rgba(255, 234, 0, 0.5);
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .content-container {
+            .learn-container {
                 flex-direction: column;
             }
             
             .chapters-panel {
-                width: 100%;
-                height: auto;
-                max-height: 300px;
+                flex: 0;
+            }
+            
+            .chapters-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -306,6 +383,26 @@
             
             .nav-item {
                 flex-shrink: 0;
+            }
+            
+            .chapters-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .chapters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .viewer-actions {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 14px;
             }
         }
     </style>
@@ -349,7 +446,7 @@
         <div class="header">
             <div class="welcome">
                 <h1>Learning Center</h1>
-                <p>Explore subjects and chapters to expand your knowledge</p>
+                <p>Select a chapter to start learning</p>
             </div>
             
             <div class="user-profile">
@@ -361,175 +458,267 @@
             </div>
         </div>
 
-        <div class="content-container">
+        <div class="learn-container">
             <!-- Chapters Panel -->
             <div class="chapters-panel">
-                <h2>Accountancy</h2>
-                
-                <div class="chapter-item active">
-                    <h3>Chapter 4: Dissolution of Partnership Firm</h3>
-                    <p>5 files • Last studied 2 days ago</p>
-                    
-                    <div class="files-list show">
-                        <div class="file-item" data-file="overview">
-                            <i class="far fa-file-alt file-icon"></i>
-                            <span>1. Overview And Definitions.txt</span>
-                        </div>
-                        <div class="file-item" data-file="accounting">
-                            <i class="far fa-file-alt file-icon"></i>
-                            <span>2. Accounting Treatment.txt</span>
-                        </div>
-                        <div class="file-item" data-file="settlement">
-                            <i class="far fa-file-alt file-icon"></i>
-                            <span>3. Settlement of Accounts.txt</span>
-                        </div>
-                        <div class="file-item" data-file="problems">
-                            <i class="far fa-file-alt file-icon"></i>
-                            <span>4. Practice Problems.txt</span>
-                        </div>
-                        <div class="file-item" data-file="summary">
-                            <i class="far fa-file-alt file-icon"></i>
-                            <span>5. Chapter Summary.txt</span>
-                        </div>
-                    </div>
+                <div class="panel-title">
+                    <i class="fas fa-list-ol"></i>
+                    Chapters
                 </div>
-                
-                <div class="chapter-item">
-                    <h3>Chapter 3: Reconstitution of Partnership</h3>
-                    <p>4 files • Last studied 5 days ago</p>
-                </div>
-                
-                <div class="chapter-item">
-                    <h3>Chapter 2: Accounting for Partnerships</h3>
-                    <p>6 files • Last studied 1 week ago</p>
-                </div>
-                
-                <div class="chapter-item">
-                    <h3>Chapter 1: Introduction to Accounting</h3>
-                    <p>3 files • Last studied 2 weeks ago</p>
+                <div class="chapters-grid" id="chaptersGrid">
+                    <!-- Chapters will be generated by JavaScript -->
                 </div>
             </div>
-            
-            <!-- Content Viewer -->
-            <div class="content-viewer">
-                <h2>Overview And Definitions</h2>
-                
-                <div class="content-text">
-                    <h3>Dissolution of Partnership Firm</h3>
-                    <p>Dissolution of a partnership firm refers to the process of ending the relationship between the partners of the firm. This involves discontinuing the business, settling accounts, and realizing assets and liabilities.</p>
-                    
-                    <h3>Key Definitions</h3>
-                    <ul>
-                        <li><strong>Dissolution:</strong> The process of ending the existence of the partnership relationship among all partners.</li>
-                        <li><strong>Realization:</strong> The process of converting partnership assets into cash.</li>
-                        <li><strong>Insolvency:</strong> When a partner is unable to pay their share of losses or liabilities.</li>
-                        <li><strong>Goodwill:</strong> The value of the firm's reputation and customer relationships.</li>
-                    </ul>
-                    
-                    <h3>Modes of Dissolution</h3>
-                    <p>There are several ways a partnership firm can be dissolved:</p>
-                    <ol>
-                        <li><strong>Dissolution by Agreement:</strong> When all partners agree to dissolve the firm.</li>
-                        <li><strong>Compulsory Dissolution:</strong> When the business becomes illegal or all partners except one become insolvent.</li>
-                        <li><strong>Dissolution on the Happening of Certain Events:</strong> Such as the expiration of the fixed term, death of a partner, or completion of the specific venture.</li>
-                        <li><strong>Dissolution by Notice:</strong> In partnership at will, any partner can dissolve by giving notice.</li>
-                        <li><strong>Dissolution by Court:</strong> When a court orders dissolution due to insanity, misconduct, or persistent breach of agreement.</li>
-                    </ol>
-                    
-                    <h3>Accounting Process</h3>
-                    <p>The accounting process for dissolution involves:</p>
-                    <ol>
-                        <li>Closing the books of accounts</li>
-                        <li>Preparing a realization account</li>
-                        <li>Settling assets and liabilities</li>
-                        <li>Distributing any remaining cash to partners</li>
-                    </ol>
+
+            <!-- Viewer Panel -->
+            <div class="viewer-panel">
+                <div class="viewer-header">
+                    <div class="viewer-title" id="viewerTitle">Select a chapter to view content</div>
+                    <div class="viewer-actions">
+                        <button class="action-btn" id="copyBtn" disabled>
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button class="action-btn" id="downloadBtn" disabled>
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search in text..." disabled>
+                </div>
+
+                <div class="viewer-content" id="viewerContent">
+                    <div class="content-placeholder">
+                        <i class="fas fa-book-open"></i>
+                        <p>Select a chapter from the list to view its content</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
+        // Configuration
+        const GITHUB_OWNER = 'your-username';
+        const GITHUB_REPO = 'your-repo';
+        const GITHUB_BRANCH = 'main';
+        
+        // Chapter path mapping (example for Accountancy)
+        const chapterPaths = {
+            1: "smartbase/Accountancy/Chapter 1 Introduction/Chapter 1 Introduction/Overview.txt",
+            2: "smartbase/Accountancy/Chapter 2 Fundamentals/Chapter 2 Fundamentals/Overview.txt",
+            3: "smartbase/Accountancy/Chapter 3 Advanced Topics/Chapter 3 Advanced Topics/Overview.txt",
+            4: "smartbase/Accountancy/Chapter 4 Dissolution of partnership firm/Chapter 4 Dissolution of partnership firm/Overview.txt",
+            5: "smartbase/Accountancy/Chapter 5 Accounting Procedures/Chapter 5 Accounting Procedures/Overview.txt",
+            6: "smartbase/Accountancy/Chapter 6 Financial Statements/Chapter 6 Financial Statements/Overview.txt",
+            7: "smartbase/Accountancy/Chapter 7 Analysis/Chapter 7 Analysis/Overview.txt",
+            8: "smartbase/Accountancy/Chapter 8 Cash Flow/Chapter 8 Cash Flow/Overview.txt",
+            9: "smartbase/Accountancy/Chapter 9 Accounting Standards/Chapter 9 Accounting Standards/Overview.txt",
+            10: "smartbase/Accountancy/Chapter 10 Special Transactions/Chapter 10 Special Transactions/Overview.txt",
+            11: "smartbase/Accountancy/Chapter 11 Company Accounts/Chapter 11 Company Accounts/Overview.txt",
+            12: "smartbase/Accountancy/Chapter 12 Computerized Accounting/Chapter 12 Computerized Accounting/Overview.txt"
+        };
+
+        // State management
+        let currentChapter = null;
+        let chapterCache = {};
+        let searchTimeout = null;
+
+        // DOM elements
+        const chaptersGrid = document.getElementById('chaptersGrid');
+        const viewerTitle = document.getElementById('viewerTitle');
+        const viewerContent = document.getElementById('viewerContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const searchInput = document.getElementById('searchInput');
+
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle chapter clicks
-            const chapterItems = document.querySelectorAll('.chapter-item');
-            
-            chapterItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Remove active class from all chapters
-                    chapterItems.forEach(i => {
-                        i.classList.remove('active');
-                        const filesList = i.querySelector('.files-list');
-                        if (filesList) filesList.classList.remove('show');
-                    });
-                    
-                    // Add active class to clicked chapter
-                    this.classList.add('active');
-                    
-                    // Toggle files list visibility
-                    const filesList = this.querySelector('.files-list');
-                    if (filesList) filesList.classList.toggle('show');
-                });
-            });
-            
-            // Handle file clicks
-            const fileItems = document.querySelectorAll('.file-item');
-            
-            fileItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // You would typically fetch the file content from a server here
-                    // For demonstration, we'll just change the content viewer title
-                    const fileName = this.querySelector('span').textContent;
-                    document.querySelector('.content-viewer h2').textContent = fileName.replace('.txt', '');
-                    
-                    // Simulate different content based on file clicked
-                    const fileType = this.getAttribute('data-file');
-                    const contentViewer = document.querySelector('.content-text');
-                    
-                    if (fileType === 'overview') {
-                        contentViewer.innerHTML = `
-                            <h3>Dissolution of Partnership Firm</h3>
-                            <p>Dissolution of a partnership firm refers to the process of ending the relationship between the partners of the firm. This involves discontinuing the business, settling accounts, and realizing assets and liabilities.</p>
-                            
-                            <h3>Key Definitions</h3>
-                            <ul>
-                                <li><strong>Dissolution:</strong> The process of ending the existence of the partnership relationship among all partners.</li>
-                                <li><strong>Realization:</strong> The process of converting partnership assets into cash.</li>
-                                <li><strong>Insolvency:</strong> When a partner is unable to pay their share of losses or liabilities.</li>
-                                <li><strong>Goodwill:</strong> The value of the firm's reputation and customer relationships.</li>
-                            </ul>
-                        `;
-                    } else if (fileType === 'accounting') {
-                        contentViewer.innerHTML = `
-                            <h3>Accounting Treatment</h3>
-                            <p>The accounting process for dissolution involves several important steps:</p>
-                            
-                            <h3>Realization Account</h3>
-                            <p>A realization account is prepared to record the sale of assets and payment of liabilities. The format is as follows:</p>
-                            
-                            <p><strong>Debit Side:</strong> All assets (except cash) and dissolution expenses</p>
-                            <p><strong>Credit Side:</strong> All liabilities, reserves, and profit on realization</p>
-                            
-                            <h3>Settlement of Partner Accounts</h3>
-                            <p>After realization, the remaining cash is distributed to partners according to their capital balances.</p>
-                        `;
-                    } else {
-                        contentViewer.innerHTML = `
-                            <h3>${fileName.replace('.txt', '')}</h3>
-                            <p>This is the content of the ${fileName} file. In a real application, this content would be fetched from a server or database.</p>
-                            <p>For demonstration purposes, we're showing sample content. The actual implementation would retrieve the text file content from your repository.</p>
-                            
-                            <h3>How it would work</h3>
-                            <ol>
-                                <li>The system would make an API call to your backend</li>
-                                <li>The backend would retrieve the file from the repository</li>
-                                <li>The content would be formatted and displayed here</li>
-                            </ol>
-                        `;
-                    }
-                });
-            });
+            initializeChapters();
+            loadLastOpenedChapter();
+            setupEventListeners();
         });
+
+        // Create chapter buttons
+        function initializeChapters() {
+            for (let i = 1; i <= 12; i++) {
+                const chapterBtn = document.createElement('button');
+                chapterBtn.className = 'chapter-btn';
+                chapterBtn.id = `chapter-${i}`;
+                chapterBtn.textContent = `Chapter ${i}`;
+                chapterBtn.setAttribute('aria-label', `Open Chapter ${i}`);
+                chapterBtn.addEventListener('click', () => selectChapter(i));
+                chaptersGrid.appendChild(chapterBtn);
+            }
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            copyBtn.addEventListener('click', copyContent);
+            downloadBtn.addEventListener('click', downloadContent);
+            
+            searchInput.addEventListener('input', function(e) {
+                // Debounce search to improve performance
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    highlightSearchTerms(e.target.value);
+                }, 300);
+            });
+        }
+
+        // Select a chapter
+        function selectChapter(chapterNumber) {
+            // Update UI
+            document.querySelectorAll('.chapter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`chapter-${chapterNumber}`).classList.add('active');
+            
+            // Update state
+            currentChapter = chapterNumber;
+            viewerTitle.textContent = `Chapter ${chapterNumber}`;
+            
+            // Save to localStorage
+            localStorage.setItem('lastChapter', chapterNumber);
+            
+            // Check if chapter is cached
+            if (chapterCache[chapterNumber]) {
+                displayContent(chapterCache[chapterNumber]);
+            } else {
+                fetchChapterContent(chapterNumber);
+            }
+        }
+
+        // Fetch chapter content from GitHub
+        function fetchChapterContent(chapterNumber) {
+            // Show loading state
+            viewerContent.innerHTML = `
+                <div class="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>Loading content...</p>
+                </div>
+            `;
+            
+            // Enable search and buttons
+            searchInput.disabled = false;
+            copyBtn.disabled = false;
+            downloadBtn.disabled = false;
+            
+            const path = chapterPaths[chapterNumber];
+            if (!path) {
+                showError("Chapter path not configured");
+                return;
+            }
+            
+            // Encode each segment of the path
+            const encodedPath = path.split('/').map(segment => encodeURIComponent(segment)).join('/');
+            const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${encodedPath}`;
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    // Cache the content
+                    chapterCache[chapterNumber] = text;
+                    displayContent(text);
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                    showError(`Failed to load content: ${error.message}`);
+                });
+        }
+
+        // Display content in viewer
+        function displayContent(text) {
+            // Format text with line breaks
+            const formattedText = text.replace(/\n/g, '<br>');
+            viewerContent.innerHTML = formattedText;
+            
+            // Clear search
+            searchInput.value = '';
+        }
+
+        // Show error state
+        function showError(message) {
+            viewerContent.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>${message}</p>
+                    <button class="retry-btn" onclick="fetchChapterContent(${currentChapter})">Retry</button>
+                </div>
+            `;
+        }
+
+        // Highlight search terms in content
+        function highlightSearchTerms(term) {
+            if (!term.trim()) {
+                // Reset to original content if search is empty
+                const originalContent = chapterCache[currentChapter];
+                if (originalContent) {
+                    displayContent(originalContent);
+                }
+                return;
+            }
+            
+            const content = chapterCache[currentChapter];
+            if (!content) return;
+            
+            const regex = new RegExp(term, 'gi');
+            const highlightedContent = content.replace(regex, match => 
+                `<span class="highlight">${match}</span>`
+            );
+            
+            viewerContent.innerHTML = highlightedContent.replace(/\n/g, '<br>');
+        }
+
+        // Copy content to clipboard
+        function copyContent() {
+            const content = chapterCache[currentChapter];
+            if (!content) return;
+            
+            navigator.clipboard.writeText(content)
+                .then(() => {
+                    // Show temporary feedback
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        }
+
+        // Download content as text file
+        function downloadContent() {
+            const content = chapterCache[currentChapter];
+            if (!content) return;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Chapter-${currentChapter}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Load last opened chapter from localStorage
+        function loadLastOpenedChapter() {
+            const lastChapter = localStorage.getItem('lastChapter');
+            if (lastChapter) {
+                selectChapter(parseInt(lastChapter));
+            }
+        }
     </script>
 </body>
 </html>
