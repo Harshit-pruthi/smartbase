@@ -1,492 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn - Smartbase</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn - Smartbase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* same theme as dashboard */
+    body { margin:0; font-family:'Segoe UI',Tahoma; background:#f5f7fa; color:#202124; display:flex; min-height:100vh;}
+    .sidebar{width:260px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:24px 0;display:flex;flex-direction:column;}
+    .logo{display:flex;align-items:center;padding:0 24px 24px;border-bottom:1px solid rgba(0,0,0,.06);margin-bottom:24px;}
+    .logo-icon{font-size:28px;color:#4285f4;margin-right:12px;}
+    .logo-text{font-size:22px;font-weight:700;}
+    .nav-item{display:flex;align-items:center;padding:14px 24px;margin:6px 12px;border-radius:10px;color:#5f6368;text-decoration:none;}
+    .nav-item.active{background:rgba(66,133,244,.12);color:#4285f4;font-weight:600;}
+    .nav-icon{margin-right:12px;font-size:20px;}
+    .main-content{flex:1;padding:24px;overflow-y:auto;}
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+    .chapters-container{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 12px rgba(0,0,0,.08);}
+    .chapter-item{padding:20px;border-bottom:1px solid rgba(0,0,0,.06);cursor:pointer;}
+    .chapter-title{font-size:18px;font-weight:600;color:#4285f4;margin-bottom:8px;display:flex;align-items:center;}
+    .chapter-title i{margin-right:10px;}
+    .chapter-excerpt{color:#5f6368;margin-left:26px;}
+    .loading{text-align:center;padding:40px;}
+    .spinner{width:40px;height:40px;border:4px solid rgba(0,0,0,.1);border-radius:50%;border-left-color:#4285f4;animation:spin 1s linear infinite;margin:0 auto 16px;}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .error-state{text-align:center;background:#ffebee;border-radius:12px;padding:24px;margin-bottom:24px;}
+    .error-state h3{color:#c62828;}
+  </style>
 
-        :root {
-            --primary: #4285f4;
-            --secondary: #6066ff;
-            --accent: #00c853;
-            --light: #f8f9fa;
-            --dark: #202124;
-            --gray: #5f6368;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        body {
-            background-color: #f5f7fa;
-            color: var(--dark);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 260px;
-            background: white;
-            box-shadow: var(--card-shadow);
-            padding: 24px 0;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            padding: 0 24px 24px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            margin-bottom: 24px;
-        }
-
-        .logo-icon {
-            font-size: 28px;
-            color: var(--primary);
-            margin-right: 12px;
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 24px;
-            margin: 6px 12px;
-            border-radius: 10px;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover {
-            background: rgba(66, 133, 244, 0.08);
-            color: var(--primary);
-        }
-
-        .nav-item.active {
-            background: rgba(66, 133, 244, 0.12);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .nav-icon {
-            margin-right: 12px;
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .welcome h1 {
-            font-size: 24px;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: var(--gray);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        /* Chapters List */
-        .chapters-container {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: var(--card-shadow);
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-        }
-
-        .section-title i {
-            margin-right: 12px;
-            color: var(--primary);
-        }
-
-        .chapters-list {
-            list-style: none;
-        }
-
-        .chapter-item {
-            padding: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .chapter-item:hover {
-            background-color: #f9f9f9;
-        }
-
-        .chapter-item:last-child {
-            border-bottom: none;
-        }
-
-        .chapter-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-
-        .chapter-title i {
-            margin-right: 10px;
-            font-size: 16px;
-        }
-
-        .chapter-excerpt {
-            color: var(--gray);
-            line-height: 1.5;
-            margin-left: 26px;
-        }
-
-        /* Loading and Error States */
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-left-color: var(--primary);
-            animation: spin 1s linear infinite;
-            margin-bottom: 16px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-state {
-            background: #ffebee;
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .error-icon {
-            font-size: 48px;
-            color: #f44336;
-            margin-bottom: 16px;
-        }
-
-        .error-state h3 {
-            color: #c62828;
-            margin-bottom: 12px;
-        }
-
-        .error-state p {
-            color: #5f6368;
-            margin-bottom: 20px;
-        }
-
-        .retry-button {
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .retry-button:hover {
-            background: #3367d6;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .chapters-container {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                padding: 16px;
-            }
-            
-            .nav-items {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 8px;
-            }
-            
-            .nav-item {
-                flex-shrink: 0;
-            }
-            
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-            
-            .user-profile {
-                align-self: flex-end;
-            }
-        }
-    </style>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
-            authDomain: "smartbase-dc49d.firebaseapp.com",
-            databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "smartbase-dc49d",
-            storageBucket: "smartbase-dc49d.firebasestorage.app",
-            messagingSenderId: "786622743871",
-            appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
-            measurementId: "G-6BDB0TD641"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-    </script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
+      authDomain: "smartbase-dc49d.firebaseapp.com",
+      projectId: "smartbase-dc49d",
+      storageBucket: "smartbase-dc49d.firebasestorage.app",
+      messagingSenderId: "786622743871",
+      appId: "1:786622743871:web:3adcfe2c399208042b7f8a"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+  </script>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-icon"><i class="fas fa-brain"></i></div>
-            <div class="logo-text">Smartbase</div>
-        </div>
-        
-        <a href="learn.html" class="nav-item active">
-            <div class="nav-icon"><i class="fas fa-book"></i></div>
-            <span>Learn</span>
-        </a>
-        
-        <a href="practice.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-pen-to-square"></i></div>
-            <span>Practice</span>
-        </a>
-        
-        <a href="test.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
-            <span>Test</span>
-        </a>
-        
-        <a href="resources.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-box-open"></i></div>
-            <span>Resources</span>
-        </a>
-        
-        <a href="progress.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
-            <span>Progress</span>
-        </a>
-    </aside>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo"><div class="logo-icon"><i class="fas fa-brain"></i></div><div class="logo-text">Smartbase</div></div>
+    <a href="learn.html" class="nav-item active"><div class="nav-icon"><i class="fas fa-book"></i></div>Learn</a>
+  </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="header">
-            <div class="welcome">
-                <h1>Accountancy Chapters</h1>
-                <p>Select a chapter to start learning</p>
-            </div>
-            
-            <div class="user-profile">
-                <div class="user-avatar" id="userAvatar">A</div>
-                <div>
-                    <div style="font-weight: 600;" id="userName">Loading...</div>
-                    <div style="font-size: 13px; color: var(--gray);">Student</div>
-                </div>
-            </div>
-        </div>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="header">
+      <h1>Accountancy Chapters</h1>
+      <div id="userName">Loading...</div>
+    </div>
+    <div class="chapters-container">
+      <h2><i class="fas fa-book-open"></i> Available Chapters</h2>
+      <div id="loadingState" class="loading"><div class="spinner"></div><p>Loading chapters...</p></div>
+      <div id="errorState" class="error-state" style="display:none;"><h3 id="errorMessage"></h3></div>
+      <ul id="chaptersList" style="list-style:none;display:none;"></ul>
+    </div>
+  </main>
 
-        <!-- Chapters Container -->
-        <div class="chapters-container">
-            <h2 class="section-title">
-                <i class="fas fa-book-open"></i>Available Chapters
-            </h2>
-            
-            <div id="loadingState" class="loading">
-                <div class="spinner"></div>
-                <p>Loading chapters...</p>
-            </div>
-            
-            <div id="errorState" class="error-state" style="display: none;">
-                <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
-                <h3>Failed to Load Chapters</h3>
-                <p id="errorMessage">An unexpected error occurred</p>
-                <button class="retry-button" onclick="loadChapters()">Try Again</button>
-            </div>
-            
-            <ul class="chapters-list" id="chaptersList" style="display: none;">
-                <!-- Chapters will be loaded here dynamically -->
-            </ul>
-        </div>
-    </main>
+  <script>
+    auth.onAuthStateChanged(user=>{
+      if(user){
+        document.getElementById('userName').textContent=user.displayName||user.email;
+        loadChapters();
+      }else{
+        window.location.href='signin.html';
+      }
+    });
 
-    <script>
-        // Check authentication state and load data
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                document.getElementById('userAvatar').textContent = user.displayName ? user.displayName.charAt(0) : user.email.charAt(0);
-                document.getElementById('userName').textContent = user.displayName || user.email;
-                
-                // Load chapters
-                loadChapters();
-            } else {
-                // No user is signed in, redirect to sign-in page
-                window.location.href = 'signin.html';
-            }
+    function loadChapters(){
+      document.getElementById('loadingState').style.display='block';
+      db.collection('Root').doc('Learn').collection('Accountancy').get()
+      .then(snapshot=>{
+        const list=document.getElementById('chaptersList');
+        list.innerHTML='';
+        if(snapshot.empty){showError("No chapters found.");return;}
+        snapshot.forEach(doc=>{
+          const key=doc.id;
+          const value=doc.data()[key]||JSON.stringify(doc.data());
+          const li=document.createElement('li');
+          li.className='chapter-item';
+          li.innerHTML=`
+            <div class="chapter-title"><i class="fas fa-file-alt"></i>${key}</div>
+            <div class="chapter-excerpt">${value}</div>
+          `;
+          li.onclick=()=>alert(`Opening ${key}\n\n${value}`);
+          list.appendChild(li);
         });
-
-        // Function to load chapters from Firestore
-        function loadChapters() {
-            // Show loading state, hide others
-            document.getElementById('loadingState').style.display = 'flex';
-            document.getElementById('errorState').style.display = 'none';
-            document.getElementById('chaptersList').style.display = 'none';
-            
-            // Reference to the Learn collection in Firestore
-            const learnRef = db.collection('Learn');
-            
-            // Get the Accountancy document from the Learn collection
-            learnRef.doc('Accountancy').get()
-                .then((doc) => {
-                    if (!doc.exists) {
-                        showError('Accountancy document not found in the Learn collection.');
-                        return;
-                    }
-                    
-                    const accountancyData = doc.data();
-                    const chaptersList = document.getElementById('chaptersList');
-                    chaptersList.innerHTML = ''; // Clear any existing content
-                    
-                    // Check if there are any chapters in the document
-                    if (!accountancyData || Object.keys(accountancyData).length === 0) {
-                        showError('No chapters found in the Accountancy document.');
-                        return;
-                    }
-                    
-                    // Process each chapter field in the document
-                    let chapterCount = 0;
-                    for (const [key, value] of Object.entries(accountancyData)) {
-                        if (key.startsWith('Chapter')) {
-                            chapterCount++;
-                            const listItem = document.createElement('li');
-                            listItem.className = 'chapter-item';
-                            listItem.innerHTML = `
-                                <div class="chapter-title">
-                                    <i class="fas fa-file-alt"></i>
-                                    ${key}
-                                </div>
-                                <div class="chapter-excerpt">
-                                    ${typeof value === 'string' ? value : 'Content available'}
-                                </div>
-                            `;
-                            
-                            // Add click event to navigate to chapter details
-                            listItem.addEventListener('click', () => {
-                                // In a real app, you would navigate to a page showing the full content
-                                alert(`Opening ${key}\n\n${value}`);
-                            });
-                            
-                            chaptersList.appendChild(listItem);
-                        }
-                    }
-                    
-                    if (chapterCount === 0) {
-                        showError('No chapters found in the Accountancy document. Make sure your chapters are named with "Chapter" prefix (e.g., "Chapter 1").');
-                        return;
-                    }
-                    
-                    // Show chapters, hide loading state
-                    document.getElementById('loadingState').style.display = 'none';
-                    document.getElementById('chaptersList').style.display = 'block';
-                })
-                .catch((error) => {
-                    console.error('Error loading chapters:', error);
-                    showError('Failed to load chapters: ' + error.message);
-                });
-        }
-
-        // Function to show error state
-        function showError(message) {
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('errorState').style.display = 'block';
-        }
-    </script>
+        document.getElementById('loadingState').style.display='none';
+        list.style.display='block';
+      })
+      .catch(err=>showError(err.message));
+    }
+    function showError(msg){
+      document.getElementById('loadingState').style.display='none';
+      document.getElementById('errorMessage').textContent=msg;
+      document.getElementById('errorState').style.display='block';
+    }
+  </script>
 </body>
 </html>
