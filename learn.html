@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Accountancy - Smartbase</title>
+    <title>Learn - Smartbase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -133,18 +133,19 @@
             font-weight: 600;
         }
 
-        /* Chapters List */
-        .chapters-container {
+        /* Content Area */
+        .content-container {
             background: white;
             border-radius: 16px;
-            padding: 24px;
+            padding: 32px;
             box-shadow: var(--card-shadow);
+            margin-bottom: 32px;
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             color: var(--dark);
             display: flex;
             align-items: center;
@@ -155,112 +156,116 @@
             color: var(--primary);
         }
 
-        .chapters-list {
-            list-style: none;
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
-        .chapter-item {
-            padding: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            cursor: pointer;
-            transition: background-color 0.2s;
+        .subject-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
         }
 
-        .chapter-item:hover {
-            background-color: #f9f9f9;
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
         }
 
-        .chapter-item:last-child {
-            border-bottom: none;
-        }
-
-        .chapter-title {
+        .subject-card h3 {
             font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
+            margin-bottom: 12px;
+            color: var(--dark);
         }
 
-        .chapter-title i {
-            margin-right: 10px;
-            font-size: 16px;
-        }
-
-        .chapter-excerpt {
+        .subject-card p {
             color: var(--gray);
-            line-height: 1.5;
-            margin-left: 26px;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
-        /* Loading and Error States */
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
+        .card-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s ease;
+            font-size: 14px;
         }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-left-color: var(--primary);
-            animation: spin 1s linear infinite;
+        .card-button:hover {
+            background: #3367d6;
+        }
+
+        .lesson-content {
+            line-height: 1.8;
+            color: var(--dark);
+        }
+
+        .lesson-content h2 {
+            font-size: 22px;
+            margin: 24px 0 16px;
+            color: var(--primary);
+        }
+
+        .lesson-content p {
             margin-bottom: 16px;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .lesson-content ul, .lesson-content ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
         }
 
-        .error-state {
-            background: #ffebee;
+        .lesson-content li {
+            margin-bottom: 8px;
+        }
+
+        .content-placeholder {
+            background: var(--light);
             border-radius: 12px;
             padding: 24px;
-            text-align: center;
             margin-bottom: 24px;
         }
 
-        .error-icon {
-            font-size: 48px;
-            color: #f44336;
-            margin-bottom: 16px;
-        }
-
-        .error-state h3 {
-            color: #c62828;
-            margin-bottom: 12px;
-        }
-
-        .error-state p {
-            color: #5f6368;
-            margin-bottom: 20px;
-        }
-
-        .retry-button {
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
+        .placeholder-line {
+            height: 16px;
+            background: #e0e0e0;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
+            margin-bottom: 12px;
+            animation: pulse 1.5s infinite;
         }
 
-        .retry-button:hover {
-            background: #3367d6;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .database-info {
+            background: rgba(66, 133, 244, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+            font-size: 14px;
+        }
+
+        .database-info h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
         }
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .chapters-container {
-                padding: 20px;
+            .subject-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -284,65 +289,15 @@
                 flex-shrink: 0;
             }
             
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
+            .subject-grid {
+                grid-template-columns: 1fr;
             }
             
-            .user-profile {
-                align-self: flex-end;
+            .content-container {
+                padding: 20px;
             }
         }
     </style>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyA0cWgKUrqdjvqui7EcBHb41e7vzFRjdLw",
-            authDomain: "smartbase-dc49d.firebaseapp.com",
-            databaseURL: "https://smartbase-dc49d-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "smartbase-dc49d",
-            storageBucket: "smartbase-dc49d.firebasestorage.app",
-            messagingSenderId: "786622743871",
-            appId: "1:786622743871:web:3adcfe2c399208042b7f8a",
-            measurementId: "G-6BDB0TD641"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        
-        // Sample data structure based on your image
-        const sampleChapters = {
-            "Chapter 1": {
-                title: "Introduction to Accounting",
-                excerpt: "Learn the basic principles of accounting, including the accounting equation and double-entry bookkeeping."
-            },
-            "Chapter 2": {
-                title: "Financial Statements",
-                excerpt: "Understand how to prepare and interpret balance sheets, income statements, and cash flow statements."
-            },
-            "Chapter 3": {
-                title: "Bookkeeping Fundamentals",
-                excerpt: "Master the art of recording financial transactions and maintaining accurate financial records."
-            },
-            "Chapter 4": {
-                title: "Accounting Cycles",
-                excerpt: "Explore the complete accounting cycle from journal entries to closing the books at period end."
-            },
-            "Chapter 5": {
-                title: "Managerial Accounting",
-                excerpt: "Learn how accounting information is used for internal decision-making and performance evaluation."
-            }
-        };
-    </script>
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -376,163 +331,196 @@
             <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
             <span>Progress</span>
         </a>
+        
+        <div style="margin-top: auto; padding: 24px;">
+            <a href="#" id="logoutBtn" class="card-button" style="display: block; text-align: center;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content">
         <div class="header">
             <div class="welcome">
-                <h1>Accountancy Chapters</h1>
-                <p>Select a chapter to start learning</p>
+                <h1>Learning Center</h1>
+                <p>Explore subjects and expand your knowledge</p>
             </div>
             
             <div class="user-profile">
-                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-avatar">A</div>
                 <div>
-                    <div style="font-weight: 600;" id="userName">Loading...</div>
+                    <div style="font-weight: 600;">Alex Johnson</div>
                     <div style="font-size: 13px; color: var(--gray);">Student</div>
                 </div>
             </div>
         </div>
 
-        <!-- Chapters Container -->
-        <div class="chapters-container">
-            <h2 class="section-title">
-                <i class="fas fa-book-open"></i>Available Chapters
-            </h2>
+        <div class="content-container">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Available Subjects</h2>
             
-            <div id="loadingState" class="loading">
-                <div class="spinner"></div>
-                <p>Loading chapters...</p>
+            <div class="subject-grid">
+                <div class="subject-card">
+                    <h3>Mathematics</h3>
+                    <p>Algebra, Calculus, Geometry, and more. Build your mathematical foundation.</p>
+                    <a href="#" class="card-button" data-subject="math">View Lessons</a>
+                </div>
+                
+                <div class="subject-card">
+                    <h3>Physics</h3>
+                    <p>Mechanics, Thermodynamics, Electromagnetism. Understand the laws of nature.</p>
+                    <a href="#" class="card-button" data-subject="physics">View Lessons</a>
+                </div>
+                
+                <div class="subject-card">
+                    <h3>Chemistry</h3>
+                    <p>Organic, Inorganic, Physical chemistry. Explore the world of elements and reactions.</p>
+                    <a href="#" class="card-button" data-subject="chemistry">View Lessons</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <h2 class="section-title"><i class="fas fa-book-open"></i> Lesson Content</h2>
+            
+            <div id="lessonContent">
+                <div class="content-placeholder">
+                    <p>Select a subject to view lessons</p>
+                </div>
             </div>
             
-            <div id="errorState" class="error-state" style="display: none;">
-                <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
-                <h3>Failed to Load Chapters</h3>
-                <p id="errorMessage">An unexpected error occurred</p>
-                <button class="retry-button" onclick="loadChapters()">Try Again</button>
+            <div class="database-info">
+                <h3>Database Connection Info</h3>
+                <p>This page would normally connect to your MongoDB database at:<br>
+                <code>mongodb://username:password@0939f713-2c29-40cb-8029-9cef3f53a873.asia-south1.firestore.goog:443/default</code></p>
+                <p>In a real implementation, you would use a backend API to securely fetch data from your database.</p>
             </div>
-            
-            <ul class="chapters-list" id="chaptersList" style="display: none;">
-                <!-- Chapters will be loaded here dynamically -->
-            </ul>
         </div>
     </main>
 
     <script>
-        // Check authentication state and load data
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                document.getElementById('userAvatar').textContent = user.displayName ? user.displayName.charAt(0) : user.email.charAt(0);
-                document.getElementById('userName').textContent = user.displayName || user.email;
-                
-                // Load chapters
-                loadChapters();
-            } else {
-                // No user is signed in, redirect to sign-in page
-                window.location.href = 'signin.html';
-            }
-        });
+        // Simulated database content
+        const lessonData = {
+            math: [
+                {
+                    title: "Introduction to Algebra",
+                    content: `<h2>Introduction to Algebra</h2>
+                    <p>Algebra is a branch of mathematics dealing with symbols and the rules for manipulating those symbols. In elementary algebra, those symbols represent quantities without fixed values, known as variables.</p>
+                    <p>Key concepts in algebra include:</p>
+                    <ul>
+                        <li>Variables and expressions</li>
+                        <li>Equations and inequalities</li>
+                        <li>Functions</li>
+                        <li>Graphing</li>
+                        <li>Polynomials</li>
+                    </ul>`
+                },
+                {
+                    title: "Calculus Fundamentals",
+                    content: `<h2>Calculus Fundamentals</h2>
+                    <p>Calculus is the mathematical study of continuous change, in the same way that geometry is the study of shape and algebra is the study of generalizations of arithmetic operations.</p>
+                    <p>It has two major branches:</p>
+                    <ol>
+                        <li>Differential calculus: concerning instantaneous rates of change and slopes of curves</li>
+                        <li>Integral calculus: concerning accumulation of quantities and areas under or between curves</li>
+                    </ol>`
+                }
+            ],
+            physics: [
+                {
+                    title: "Newton's Laws of Motion",
+                    content: `<h2>Newton's Laws of Motion</h2>
+                    <p>Newton's laws of motion are three physical laws that, together, laid the foundation for classical mechanics. They describe the relationship between a body and the forces acting upon it, and its motion in response to those forces.</p>
+                    <p>The three laws are:</p>
+                    <ol>
+                        <li>An object at rest remains at rest, and an object in motion remains in motion at constant speed and in a straight line unless acted on by an unbalanced force.</li>
+                        <li>The acceleration of an object depends on the mass of the object and the amount of force applied.</li>
+                        <li>Whenever one object exerts a force on another object, the second object exerts an equal and opposite force on the first.</li>
+                    </ol>`
+                }
+            ],
+            chemistry: [
+                {
+                    title: "Periodic Table Elements",
+                    content: `<h2>Periodic Table of Elements</h2>
+                    <p>The periodic table is a tabular arrangement of chemical elements, organized on the basis of their atomic numbers, electron configurations, and recurring chemical properties.</p>
+                    <p>Elements are presented in order of increasing atomic number. The standard form of the table consists of a grid of elements laid out in 18 columns and 7 rows, with a double row of elements below that.</p>
+                    <p>The table can be used to derive relationships between the properties of the elements and predict the properties of new elements yet to be discovered or synthesized.</p>`
+                }
+            ]
+        };
 
-        // Function to load chapters from Firestore
-        function loadChapters() {
-            // Show loading state, hide others
-            document.getElementById('loadingState').style.display = 'flex';
-            document.getElementById('errorState').style.display = 'none';
-            document.getElementById('chaptersList').style.display = 'none';
+        document.addEventListener('DOMContentLoaded', function() {
+            const lessonContent = document.getElementById('lessonContent');
+            const subjectButtons = document.querySelectorAll('.card-button[data-subject]');
             
-            // Reference to the Accountancy document in Firestore
-            const accountancyRef = db.collection('Learn').doc('Accountancy');
-            
-            // Get the document
-            accountancyRef.get()
-                .then((doc) => {
-                    const chaptersList = document.getElementById('chaptersList');
-                    chaptersList.innerHTML = ''; // Clear any existing content
-                    
-                    if (!doc.exists) {
-                        // If no data found in Firestore, use sample data
-                        renderChapters(sampleChapters);
-                        return;
-                    }
-                    
-                    const data = doc.data();
-                    
-                    // Check if we have chapter data
-                    if (!data || Object.keys(data).length === 0) {
-                        // If no chapter data, use sample data
-                        renderChapters(sampleChapters);
-                        return;
-                    }
-                    
-                    // Render the chapters from Firestore
-                    renderChapters(data);
-                })
-                .catch((error) => {
-                    console.error('Error loading chapters:', error);
-                    
-                    // On error, use sample data as fallback
-                    renderChapters(sampleChapters);
+            // Handle subject button clicks
+            subjectButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const subject = this.getAttribute('data-subject');
+                    loadSubjectContent(subject);
                 });
-        }
-
-        // Function to render chapters to the UI
-        function renderChapters(chaptersData) {
-            const chaptersList = document.getElementById('chaptersList');
-            chaptersList.innerHTML = '';
-            
-            // Extract and sort chapters by their numbers
-            const chapterEntries = Object.entries(chaptersData)
-                .filter(([key]) => key.startsWith('Chapter '))
-                .sort(([keyA], [keyB]) => {
-                    const numA = parseInt(keyA.replace('Chapter ', ''));
-                    const numB = parseInt(keyB.replace('Chapter ', ''));
-                    return numA - numB;
-                });
-            
-            if (chapterEntries.length === 0) {
-                showError('No chapters found. Please check back later.');
-                return;
-            }
-            
-            // Process each chapter
-            chapterEntries.forEach(([chapterKey, chapterData]) => {
-                const listItem = document.createElement('li');
-                listItem.className = 'chapter-item';
-                
-                // Extract chapter number from the key
-                const chapterNumber = chapterKey.replace('Chapter ', '');
-                
-                listItem.innerHTML = `
-                    <div class="chapter-title">
-                        <i class="fas fa-file-alt"></i>
-                        Chapter ${chapterNumber}: ${chapterData.title || 'Untitled Chapter'}
-                    </div>
-                    <div class="chapter-excerpt">
-                        ${chapterData.excerpt || 'No description available.'}
-                    </div>
-                `;
-                
-                // Add click event to navigate to chapter details
-                listItem.addEventListener('click', () => {
-                    window.location.href = `chapter.html?id=${chapterKey}`;
-                });
-                
-                chaptersList.appendChild(listItem);
             });
             
-            // Show chapters, hide loading state
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('chaptersList').style.display = 'block';
-        }
-
-        // Function to show error state
-        function showError(message) {
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('errorState').style.display = 'block';
-        }
+            // Load subject content
+            function loadSubjectContent(subject) {
+                if (lessonData[subject]) {
+                    let contentHTML = '';
+                    
+                    lessonData[subject].forEach(lesson => {
+                        contentHTML += `
+                            <div class="lesson-content">
+                                ${lesson.content}
+                            </div>
+                            <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;">
+                        `;
+                    });
+                    
+                    lessonContent.innerHTML = contentHTML;
+                } else {
+                    lessonContent.innerHTML = `
+                        <div class="content-placeholder">
+                            <p>No content available for this subject yet.</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    // In a real app, this would sign out from Firebase
+                    window.location.href = 'index.html'; // Redirect to login page
+                }
+            });
+            
+            // Simulate loading from database
+            const loadFromDBBtn = document.createElement('button');
+            loadFromDBBtn.textContent = 'Simulate Load from DB';
+            loadFromDBBtn.className = 'card-button';
+            loadFromDBBtn.style.marginTop = '16px';
+            loadFromDBBtn.addEventListener('click', function() {
+                const placeholder = document.querySelector('.content-placeholder');
+                placeholder.innerHTML = '';
+                
+                // Simulate loading animation
+                for (let i = 0; i < 5; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'placeholder-line';
+                    line.style.width = i % 2 === 0 ? '100%' : '80%';
+                    placeholder.appendChild(line);
+                }
+                
+                // Simulate data loading after a delay
+                setTimeout(() => {
+                    loadSubjectContent('math');
+                }, 1500);
+            });
+            
+            document.querySelector('.database-info').appendChild(loadFromDBBtn);
+        });
     </script>
 </body>
 </html>
