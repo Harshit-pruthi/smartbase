@@ -180,6 +180,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             text-align: center;
+            position: relative;
         }
         
         .subject-card:hover {
@@ -227,6 +228,21 @@
         
         .subject-stats i {
             margin-right: 5px;
+        }
+        
+        .completion-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
         
         /* Chapters View */
@@ -298,6 +314,7 @@
             align-items: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
         }
         
         .chapter-item:hover {
@@ -351,6 +368,29 @@
         
         .chapter-duration i {
             margin-right: 5px;
+        }
+        
+        .chapter-checkbox {
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--secondary);
+        }
+        
+        .chapter-completed {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
         
         .definitions-container {
@@ -431,6 +471,29 @@
             color: var(--accent2);
         }
         
+        /* Progress bar styles */
+        .progress-container {
+            margin-top: 10px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: #5F6368;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
         /* Responsive Design */
         @media (max-width: 900px) {
             .container {
@@ -474,6 +537,10 @@
             
             .subjects-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .chapter-checkbox {
+                margin-left: 5px;
             }
         }
     </style>
@@ -552,6 +619,10 @@
                             <span><i class="fas fa-book"></i> 7 Chapters</span>
                             <span><i class="fas fa-clock"></i> 24 hours</span>
                         </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%" id="accountancy-progress"></div>
+                        </div>
+                        <div class="progress-text" id="accountancy-progress-text">0% Complete</div>
                     </div>
                     
                     <div class="subject-card" data-subject="business">
@@ -564,6 +635,10 @@
                             <span><i class="fas fa-book"></i> 10 Chapters</span>
                             <span><i class="fas fa-clock"></i> 18 hours</span>
                         </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%" id="business-progress"></div>
+                        </div>
+                        <div class="progress-text" id="business-progress-text">0% Complete</div>
                     </div>
                     
                     <div class="subject-card" data-subject="economics">
@@ -576,6 +651,10 @@
                             <span><i class="fas fa-book"></i> 8 Chapters</span>
                             <span><i class="fas fa-clock"></i> 20 hours</span>
                         </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%" id="economics-progress"></div>
+                        </div>
+                        <div class="progress-text" id="economics-progress-text">0% Complete</div>
                     </div>
                     
                     <div class="subject-card" data-subject="mathematics">
@@ -588,6 +667,10 @@
                             <span><i class="fas fa-book"></i> 12 Chapters</span>
                             <span><i class="fas fa-clock"></i> 30 hours</span>
                         </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%" id="mathematics-progress"></div>
+                        </div>
+                        <div class="progress-text" id="mathematics-progress-text">0% Complete</div>
                     </div>
                     
                     <div class="subject-card" data-subject="english">
@@ -600,6 +683,10 @@
                             <span><i class="fas fa-book"></i> 6 Chapters</span>
                             <span><i class="fas fa-clock"></i> 15 hours</span>
                         </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%" id="english-progress"></div>
+                        </div>
+                        <div class="progress-text" id="english-progress-text">0% Complete</div>
                     </div>
                     
                     <div class="subject-card" data-subject="informatics">
@@ -612,6 +699,10 @@
                             <span><i class="fas fa-book"></i> 9 Chapters</span>
                             <span><i class="fas fa-clock"></i> 22 hours</span>
                         </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%" id="informatics-progress"></div>
+                        </div>
+                        <div class="progress-text" id="informatics-progress-text">0% Complete</div>
                     </div>
                 </div>
             </div>
@@ -760,11 +851,17 @@
         const chaptersList = document.getElementById('chaptersList');
         const backToSubjects = document.getElementById('backToSubjects');
         const definitionsContent = document.getElementById('definitions-content');
+        
+        // Current user ID (in a real app, this would come from authentication)
+        const userId = "user_alex_johnson";
+        let currentSubject = null;
+        let userProgress = {};
 
         // Add click events to subject cards
         document.querySelectorAll('.subject-card').forEach(card => {
             card.addEventListener('click', () => {
                 const subject = card.getAttribute('data-subject');
+                currentSubject = subject;
                 showChapters(subject);
             });
         });
@@ -790,26 +887,44 @@
                 chapterElement.className = 'chapter-item';
                 chapterElement.setAttribute('data-chapter', chapter.number);
                 chapterElement.setAttribute('data-subject', subject);
+                
+                // Check if this chapter is completed
+                const isCompleted = userProgress[subject] && 
+                                   userProgress[subject].completedChapters && 
+                                   userProgress[subject].completedChapters.includes(chapter.number);
+                
                 chapterElement.innerHTML = `
                     <div class="chapter-number">${chapter.number}</div>
                     <div class="chapter-details">
                         <div class="chapter-name">${chapter.name}</div>
                         <div class="chapter-duration"><i class="fas fa-clock"></i> ${chapter.duration}</div>
                     </div>
+                    <input type="checkbox" class="chapter-checkbox" ${isCompleted ? 'checked' : ''}>
+                    ${isCompleted ? '<div class="chapter-completed"><i class="fas fa-check"></i></div>' : ''}
                 `;
                 chaptersList.appendChild(chapterElement);
                 
-                // Add click event to chapter
-                chapterElement.addEventListener('click', function() {
-                    const chapterNumber = this.getAttribute('data-chapter');
-                    const subject = this.getAttribute('data-subject');
-                    loadDefinitions(subject, chapterNumber);
-                    
-                    // Highlight selected chapter
-                    document.querySelectorAll('.chapter-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    this.classList.add('active');
+                // Add click event to chapter to load definitions
+                chapterElement.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const chapterNumber = this.getAttribute('data-chapter');
+                        const subject = this.getAttribute('data-subject');
+                        loadDefinitions(subject, chapterNumber);
+                        
+                        // Highlight selected chapter
+                        document.querySelectorAll('.chapter-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+                
+                // Add event to checkbox
+                const checkbox = chapterElement.querySelector('.chapter-checkbox');
+                checkbox.addEventListener('change', function() {
+                    const chapterNumber = chapterElement.getAttribute('data-chapter');
+                    const subject = chapterElement.getAttribute('data-subject');
+                    toggleChapterCompletion(subject, chapterNumber, this.checked);
                 });
             });
             
@@ -834,6 +949,9 @@
                     <p>Select a chapter to view definitions</p>
                 </div>
             `;
+            
+            // Update progress indicators
+            updateAllSubjectProgress();
         }
 
         // Function to load definitions from Firestore
@@ -901,6 +1019,150 @@
             }
         }
 
+        // Function to toggle chapter completion status
+        async function toggleChapterCompletion(subject, chapterNumber, isCompleted) {
+            try {
+                // Get the user's progress document
+                const userProgressRef = db.collection("userProgress").doc(userId);
+                const doc = await userProgressRef.get();
+                
+                let updatedProgress = {};
+                
+                if (doc.exists) {
+                    updatedProgress = doc.data();
+                    
+                    // Initialize subject progress if it doesn't exist
+                    if (!updatedProgress[subject]) {
+                        updatedProgress[subject] = {
+                            completedChapters: [],
+                            completed: false
+                        };
+                    }
+                    
+                    // Update completed chapters array
+                    if (isCompleted) {
+                        // Add chapter if not already in the array
+                        if (!updatedProgress[subject].completedChapters.includes(chapterNumber)) {
+                            updatedProgress[subject].completedChapters.push(chapterNumber);
+                        }
+                    } else {
+                        // Remove chapter from array
+                        updatedProgress[subject].completedChapters = 
+                            updatedProgress[subject].completedChapters.filter(ch => ch !== chapterNumber);
+                    }
+                    
+                    // Check if all chapters are completed
+                    const totalChapters = subjectsData[subject].chapters.length;
+                    updatedProgress[subject].completed = updatedProgress[subject].completedChapters.length === totalChapters;
+                    
+                } else {
+                    // Create new progress document
+                    updatedProgress[subject] = {
+                        completedChapters: isCompleted ? [chapterNumber] : [],
+                        completed: false
+                    };
+                }
+                
+                // Save to Firestore
+                await userProgressRef.set(updatedProgress);
+                
+                // Update local progress data
+                userProgress = updatedProgress;
+                
+                // Update UI
+                updateChapterUI(subject, chapterNumber, isCompleted);
+                updateSubjectProgress(subject);
+                
+            } catch (error) {
+                console.error("Error updating progress: ", error);
+                alert("Error saving progress. Please try again.");
+            }
+        }
+
+        // Function to update chapter UI after completion toggle
+        function updateChapterUI(subject, chapterNumber, isCompleted) {
+            const chapterElement = document.querySelector(`.chapter-item[data-subject="${subject}"][data-chapter="${chapterNumber}"]`);
+            
+            if (chapterElement) {
+                if (isCompleted) {
+                    if (!chapterElement.querySelector('.chapter-completed')) {
+                        chapterElement.innerHTML += '<div class="chapter-completed"><i class="fas fa-check"></i></div>';
+                    }
+                } else {
+                    const completedBadge = chapterElement.querySelector('.chapter-completed');
+                    if (completedBadge) {
+                        completedBadge.remove();
+                    }
+                }
+                
+                // Update checkbox
+                const checkbox = chapterElement.querySelector('.chapter-checkbox');
+                if (checkbox) {
+                    checkbox.checked = isCompleted;
+                }
+            }
+        }
+
+        // Function to update progress for a specific subject
+        function updateSubjectProgress(subject) {
+            if (userProgress[subject]) {
+                const completedChapters = userProgress[subject].completedChapters.length;
+                const totalChapters = subjectsData[subject].chapters.length;
+                const progressPercent = Math.round((completedChapters / totalChapters) * 100);
+                
+                // Update progress bar
+                const progressBar = document.getElementById(`${subject}-progress`);
+                const progressText = document.getElementById(`${subject}-progress-text`);
+                
+                if (progressBar && progressText) {
+                    progressBar.style.width = `${progressPercent}%`;
+                    progressText.textContent = `${progressPercent}% Complete`;
+                    
+                    // Add completion badge if subject is completed
+                    const subjectCard = document.querySelector(`.subject-card[data-subject="${subject}"]`);
+                    let completionBadge = subjectCard.querySelector('.completion-badge');
+                    
+                    if (progressPercent === 100) {
+                        if (!completionBadge) {
+                            completionBadge = document.createElement('div');
+                            completionBadge.className = 'completion-badge';
+                            completionBadge.innerHTML = '<i class="fas fa-check"></i>';
+                            subjectCard.appendChild(completionBadge);
+                        }
+                    } else if (completionBadge) {
+                        completionBadge.remove();
+                    }
+                }
+            }
+        }
+
+        // Function to update progress for all subjects
+        function updateAllSubjectProgress() {
+            for (const subject in subjectsData) {
+                updateSubjectProgress(subject);
+            }
+        }
+
+        // Function to load user progress from Firestore
+        async function loadUserProgress() {
+            try {
+                const userProgressRef = db.collection("userProgress").doc(userId);
+                const doc = await userProgressRef.get();
+                
+                if (doc.exists) {
+                    userProgress = doc.data();
+                    updateAllSubjectProgress();
+                    
+                    // If we're in the chapters view, refresh it to show the updated completion status
+                    if (chaptersView.classList.contains('active') && currentSubject) {
+                        showChapters(currentSubject);
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading user progress: ", error);
+            }
+        }
+
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Highlight current page in navigation
@@ -915,6 +1177,9 @@
                     item.classList.remove('active');
                 }
             });
+            
+            // Load user progress
+            loadUserProgress();
         });
     </script>
 </body>
