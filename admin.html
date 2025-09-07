@@ -200,7 +200,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // DOM elements
         const chapterSelect = document.getElementById('chapter');
         const termInput = document.getElementById('term');
         const definitionInput = document.getElementById('definition');
@@ -208,7 +207,7 @@
         const messageDiv = document.getElementById('message');
         const definitionsList = document.getElementById('definitionsList');
 
-        // Add definition to Firestore
+        // Add definition
         addButton.addEventListener('click', async function() {
             const chapter = chapterSelect.value;
             const term = termInput.value.trim();
@@ -220,35 +219,24 @@
             }
             
             try {
-                // Get the current document for this chapter
-                const docRef = db.collection("subjects").dbcollection("accountancy").doc(`chapter${chapter}`);
+                const docRef = db.collection("subjects").doc("accountancy").collection("chapters").doc(`chapter${chapter}`);
                 const doc = await docRef.get();
                 
                 if (doc.exists) {
-                    // Document exists, update it by adding the new definition
                     const data = doc.data();
                     const definitions = data.definitions || [];
-                    
-                    // Add the new definition
                     definitions.push({ term, definition });
-                    
-                    // Update the document
                     await docRef.update({ definitions });
                 } else {
-                    // Document doesn't exist, create it with the first definition
                     await docRef.set({
                         chapter: parseInt(chapter),
                         definitions: [{ term, definition }]
                     });
                 }
                 
-                // Clear the form
                 termInput.value = '';
                 definitionInput.value = '';
-                
                 showMessage('Definition added successfully!', 'success');
-                
-                // Refresh the definitions list
                 loadDefinitions(chapter);
                 
             } catch (error) {
@@ -257,15 +245,14 @@
             }
         });
 
-        // Load definitions for the selected chapter
+        // Load definitions
         chapterSelect.addEventListener('change', function() {
             loadDefinitions(this.value);
         });
 
-        // Function to load definitions from Firestore
         async function loadDefinitions(chapterNumber) {
             try {
-                const docRef = db.collection("accountancy").doc(`chapter${chapterNumber}`);
+                const docRef = db.collection("subjects").doc("accountancy").collection("chapters").doc(`chapter${chapterNumber}`);
                 const doc = await docRef.get();
                 
                 if (doc.exists) {
@@ -280,7 +267,6 @@
             }
         }
 
-        // Function to display definitions
         function displayDefinitions(definitions) {
             if (definitions.length === 0) {
                 definitionsList.innerHTML = '<p>No definitions found for this chapter.</p>';
@@ -302,7 +288,6 @@
             
             definitionsList.innerHTML = html;
             
-            // Add event listeners to delete buttons
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
@@ -311,27 +296,19 @@
             });
         }
 
-        // Function to delete a definition
         async function deleteDefinition(index) {
             const chapter = chapterSelect.value;
             
             try {
-                const docRef = db.collection("accountancy").doc(`chapter${chapter}`);
+                const docRef = db.collection("subjects").doc("accountancy").collection("chapters").doc(`chapter${chapter}`);
                 const doc = await docRef.get();
                 
                 if (doc.exists) {
                     const data = doc.data();
                     const definitions = data.definitions || [];
-                    
-                    // Remove the definition at the specified index
                     definitions.splice(index, 1);
-                    
-                    // Update the document
                     await docRef.update({ definitions });
-                    
                     showMessage('Definition deleted successfully!', 'success');
-                    
-                    // Refresh the definitions list
                     loadDefinitions(chapter);
                 }
             } catch (error) {
@@ -340,19 +317,15 @@
             }
         }
 
-        // Function to show message
         function showMessage(text, type) {
             messageDiv.textContent = text;
             messageDiv.className = `message ${type}`;
             messageDiv.style.display = 'block';
-            
-            // Hide message after 3 seconds
             setTimeout(() => {
                 messageDiv.style.display = 'none';
             }, 3000);
         }
 
-        // Load definitions for the initially selected chapter on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadDefinitions(chapterSelect.value);
         });
