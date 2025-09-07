@@ -221,7 +221,7 @@
             
             try {
                 // Get the current document for this chapter
-                const docRef = db.collection("accountancy").doc(`chapter${chapter}`);
+                const docRef = db.collection("subjects").dbcollection("accountancy").doc(`chapter${chapter}`);
                 const doc = await docRef.get();
                 
                 if (doc.exists) {
